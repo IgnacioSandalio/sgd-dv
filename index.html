@@ -1,4 +1,7 @@
-<!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="theme-color" content="#242732"> <meta name="description" content="SGD-DV - Sistema de Gestión Documental y Trazabilidad"> <title>SGD-DV · Gestión Documental</title> <!-- Librerías QR --> <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> <style> /* ========================================================= VARIABLES INSTITUCIONALES ========================================================= */ 
+<!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>SGD-DV · Sistema de Gestión Documental</title> <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> <style> 
+/* =========================================================
+VARIABLES INSTITUCIONALES
+========================================================= */
 :root {
 --blanco: #FFFFFF;
 --dorado: #B5993A;
@@ -20,7 +23,6 @@
     0 2px 8px rgba(36, 39, 50, 0.07);
 --sombra-media:
     0 5px 18px rgba(36, 39, 50, 0.10);
---radio: 10px;
 }
 /* =========================================================
 RESET
@@ -46,199 +48,82 @@ color: var(--azul-institucional);
 line-height: 1.45;
 }
 /* =========================================================
-ELEMENTOS GENERALES
-========================================================= */
-button,
-input,
-select,
-textarea {
-font: inherit;
-}
-button {
-cursor: pointer;
-}
-a {
-color: var(--dorado-oscuro);
-}
-.oculto {
-display: none !important;
-}
-.contenedor {
-width: min(1180px, calc(100% - 28px));
-margin: 0 auto;
-}
-.card {
-background: var(--blanco);
-border: 1px solid var(--gris-borde);
-border-radius: var(--radio);
-padding: 18px;
-box-shadow: var(--sombra-suave);
-}
-.card h2 {
-margin: 0 0 14px;
-font-size: 15px;
-color: var(--gris-institucional);
-text-transform: uppercase;
-letter-spacing: .045em;
-}
-.card h3 {
-margin: 0 0 10px;
-font-size: 14px;
-color: var(--azul-institucional);
-}
-label {
-display: block;
-margin: 8px 0 5px;
-font-size: 13px;
-font-weight: 600;
-color: var(--gris-institucional);
-}
-input,
-select,
-textarea {
-width: 100%;
-padding: 10px 11px;
-border: 1px solid var(--gris-borde);
-border-radius: 7px;
-background: #fff;
-color: var(--azul-institucional);
-outline: none;
-transition:
-border-color .15s ease,
-box-shadow .15s ease;
-}
-input:focus,
-select:focus,
-textarea:focus {
-border-color: var(--dorado);
-box-shadow: 0 0 0 3px rgba(181,153,58,.14);
-}
-textarea {
-min-height: 90px;
-resize: vertical;
-}
-button {
-border: none;
-border-radius: 7px;
-padding: 10px 14px;
-font-weight: 700;
-transition:
-background .15s ease,
-transform .05s ease,
-opacity .15s ease;
-}
-button:active {
-transform: translateY(1px);
-}
-.btn-principal {
-width: 100%;
-background: var(--dorado);
-color: var(--azul-institucional);
-}
-.btn-principal:hover {
-background: var(--dorado-oscuro);
-color: var(--blanco);
-}
-.btn-secundario {
-background: var(--azul-institucional);
-color: var(--blanco);
-}
-.btn-secundario:hover {
-background: var(--azul-hover);
-}
-.btn-peligro {
-background: var(--rojo-error);
-color: var(--blanco);
-}
-.btn-pequeno {
-width: auto;
-padding: 7px 10px;
-font-size: 12px;
-}
-button:disabled {
-opacity: .55;
-cursor: not-allowed;
-}
-/* =========================================================
 ENCABEZADO
 ========================================================= */
 header {
-background: var(--azul-institucional);
+background:
+    var(--azul-institucional);
 color: var(--blanco);
-box-shadow: var(--sombra-media);
-}
-.header-superior {
-min-height: 72px;
+padding: 15px 22px;
 display: flex;
-align-items: center;
 justify-content: space-between;
-gap: 18px;
+align-items: center;
+gap: 20px;
+box-shadow:
+    var(--sombra-media);
 }
-.identidad {
+.marca {
 display: flex;
 align-items: center;
 gap: 12px;
 }
-.logo-simulado {
+.marca-icono {
 width: 42px;
 height: 42px;
-border-radius: 9px;
-display: grid;
-place-items: center;
-background: var(--dorado);
-color: var(--azul-institucional);
-font-size: 21px;
-font-weight: 900;
-}
-.identidad h1 {
-margin: 0;
-font-size: 18px;
-letter-spacing: .02em;
-}
-.identidad small {
-display: block;
-margin-top: 2px;
-color: #d8d8d8;
-font-size: 11px;
-}
-.estado-sesion {
+border-radius: 8px;
+background:
+    var(--dorado);
 display: flex;
 align-items: center;
-gap: 9px;
-text-align: right;
+justify-content: center;
+font-size: 22px;
 }
-.estado-sesion-texto {
+.marca h1 {
+font-size: 17px;
+margin: 0;
+letter-spacing: .02em;
+}
+.marca small {
+display: block;
+margin-top: 2px;
+color: #D9D9D7;
+font-size: 11px;
+}
+#estadoSesion {
+background:
+    rgba(255,255,255,.08);
+border:
+    1px solid rgba(255,255,255,.12);
+border-radius: 20px;
+padding:
+    7px 12px;
 font-size: 12px;
+white-space: nowrap;
 }
-.indicador-sesion {
-width: 9px;
-height: 9px;
-border-radius: 50%;
-background: var(--gris-medio);
-}
-.indicador-sesion.activo {
-background: var(--verde-ok);
-box-shadow: 0 0 0 3px rgba(0,135,57,.18);
-}
+/* =========================================================
+FRANJA BOLIVIANA
+========================================================= */
 .tricolor {
 height: 4px;
 background:
-linear-gradient(
-to right,
-var(--rojo-bolivia) 33.333%,
-var(--amarillo-bolivia) 33.333% 66.666%,
-var(--verde-bolivia) 66.666%
-);
+    linear-gradient(
+        to right,
+        var(--rojo-bolivia) 33.33%,
+        var(--amarillo-bolivia) 33.33% 66.66%,
+        var(--verde-bolivia) 66.66%
+    );
 }
 /* =========================================================
-CONTENIDO PRINCIPAL
+CONTENEDOR PRINCIPAL
 ========================================================= */
 main {
-padding: 20px 0 30px;
-}
-.grid-principal {
+max-width: 1180px;
+margin: 0 auto;
+padding: 20px;
 display: grid;
-grid-template-columns: minmax(300px, .82fr) minmax(420px, 1.45fr);
+grid-template-columns:
+    minmax(280px, .85fr)
+    minmax(420px, 1.5fr);
 gap: 18px;
 }
 .columna {
@@ -247,863 +132,1097 @@ flex-direction: column;
 gap: 18px;
 }
 /* =========================================================
+TARJETAS
+========================================================= */
+.card {
+background:
+    var(--blanco);
+border:
+    1px solid var(--gris-borde);
+border-radius: 11px;
+padding: 17px;
+box-shadow:
+    var(--sombra-suave);
+}
+.card h2 {
+font-size: 14px;
+text-transform: uppercase;
+letter-spacing: .04em;
+color:
+    var(--gris-institucional);
+margin:
+    0 0 13px;
+}
+.card-subtitulo {
+color:
+    var(--gris-medio);
+font-size: 12px;
+margin-top: -7px;
+margin-bottom: 12px;
+}
+/* =========================================================
+FORMULARIOS
+========================================================= */
+label {
+display: block;
+margin:
+    6px 0 4px;
+font-size: 12px;
+font-weight: 600;
+color:
+    var(--gris-institucional);
+}
+input,
+select,
+textarea {
+width: 100%;
+padding:
+    9px 10px;
+margin-bottom: 8px;
+border:
+    1px solid var(--gris-borde);
+border-radius: 7px;
+background:
+    var(--blanco);
+color:
+    var(--azul-institucional);
+font-size: 14px;
+outline: none;
+transition:
+    border-color .15s,
+    box-shadow .15s;
+}
+input:focus,
+select:focus,
+textarea:focus {
+border-color:
+    var(--dorado);
+box-shadow:
+    0 0 0 3px
+    rgba(181,153,58,.13);
+}
+textarea {
+min-height: 80px;
+resize: vertical;
+}
+/* =========================================================
+BOTONES
+========================================================= */
+button {
+width: 100%;
+padding:
+    10px 12px;
+margin-top: 3px;
+margin-bottom: 8px;
+border: none;
+border-radius: 7px;
+background:
+    var(--dorado);
+color:
+    var(--azul-institucional);
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+transition:
+    background .15s,
+    transform .05s;
+}
+button:hover {
+background:
+    var(--dorado-oscuro);
+color:
+    var(--blanco);
+}
+button:active {
+transform:
+    translateY(1px);
+}
+button.secundario {
+background:
+    var(--azul-institucional);
+color:
+    var(--blanco);
+}
+button.secundario:hover {
+background:
+    var(--azul-hover);
+}
+button.peligro {
+background:
+    var(--rojo-error);
+color:
+    var(--blanco);
+}
+/* =========================================================
+MENSAJES
+========================================================= */
+.aviso,
+.ok,
+.info {
+padding:
+    9px 11px;
+border-radius: 6px;
+font-size: 12px;
+margin-top: 7px;
+}
+.aviso {
+background:
+    #FDECEC;
+border-left:
+    4px solid var(--rojo-error);
+color:
+    #7B1E1E;
+}
+.ok {
+background:
+    #EAF7EE;
+border-left:
+    4px solid var(--verde-ok);
+color:
+    #155D2C;
+}
+.info {
+background:
+    #EEF2F8;
+border-left:
+    4px solid var(--azul-institucional);
+color:
+    var(--azul-institucional);
+}
+/* =========================================================
 LOGIN
 ========================================================= */
-.login-ayuda {
-margin: -5px 0 12px;
-color: var(--gris-medio);
-font-size: 12px;
+.login-icono {
+width: 54px;
+height: 54px;
+border-radius: 50%;
+background:
+    rgba(181,153,58,.14);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 25px;
+margin:
+    0 auto 10px;
 }
-.usuario-publico {
-background: var(--gris-claro);
-border-radius: 7px;
-padding: 9px;
-font-size: 12px;
-color: var(--gris-institucional);
+.login-titulo {
+text-align: center;
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 4px;
+}
+.login-ayuda {
+text-align: center;
+color:
+    var(--gris-medio);
+font-size: 11px;
+margin-bottom: 15px;
+}
+/* =========================================================
+ESTADO DE CONEXIÓN
+========================================================= */
+.estado-backend {
+display: flex;
+align-items: center;
+gap: 7px;
+font-size: 11px;
+color:
+    var(--gris-medio);
+}
+.punto {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background:
+    var(--gris-medio);
+}
+.punto.ok {
+background:
+    var(--verde-ok);
+}
+.punto.error {
+background:
+    var(--rojo-error);
 }
 /* =========================================================
 QR
 ========================================================= */
 #lector {
-width: 100%;
+border:
+    1px solid var(--gris-borde);
+border-radius: 8px;
 overflow: hidden;
-border: 1px solid var(--gris-borde);
-border-radius: 9px;
-background: #fafafa;
+background:
+    #FAFAF9;
 }
-.qr-ayuda {
-color: var(--gris-medio);
-font-size: 12px;
+.qr-contenedor {
+text-align: center;
+margin-top: 12px;
 }
-.codigo-manual {
-display: grid;
-grid-template-columns: 1fr auto;
-gap: 8px;
+.qr-contenedor img,
+.qr-contenedor canvas {
+max-width: 200px;
+border:
+    6px solid var(--blanco);
+box-shadow:
+    var(--sombra-suave);
 }
-.codigo-manual button {
-width: auto;
+.qr-url {
+font-size: 10px;
+color:
+    var(--gris-medio);
+word-break: break-all;
+margin-top: 7px;
 }
 /* =========================================================
 UBICACIÓN
 ========================================================= */
 .ubicacion {
 display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 10px;
+grid-template-columns:
+    repeat(3, 1fr);
+gap: 9px;
 }
-.ubicacion-item {
-background: var(--gris-claro);
-border-radius: 9px;
-padding: 12px 8px;
+.ubicacion div {
+background:
+    var(--gris-claro);
+border-radius: 8px;
+padding: 11px;
 text-align: center;
 }
-.ubicacion-item small {
+.ubicacion label {
+margin: 0;
+color:
+    var(--gris-institucional);
+font-size: 10px;
+text-transform: uppercase;
+}
+.ubicacion span {
 display: block;
-color: var(--gris-institucional);
-font-size: 11px;
-margin-bottom: 4px;
-}
-.ubicacion-item strong {
-display: block;
-font-size: 21px;
-color: var(--azul-institucional);
-}
-/* =========================================================
-INFORMACIÓN TOMO
-========================================================= */
-.info-tomo {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 8px 14px;
-}
-.info-tomo div {
-padding: 7px 0;
-border-bottom: 1px solid var(--gris-claro);
-}
-.info-tomo span {
-display: block;
-font-size: 11px;
-color: var(--gris-medio);
-}
-.info-tomo strong {
-font-size: 13px;
+margin-top: 4px;
+font-size: 22px;
+font-weight: 800;
+color:
+    var(--azul-institucional);
 }
 /* =========================================================
 TABLAS
 ========================================================= */
 .tabla-contenedor {
+width: 100%;
 overflow-x: auto;
-border: 1px solid var(--gris-borde);
-border-radius: 8px;
+border:
+    1px solid var(--gris-borde);
+border-radius: 7px;
 }
 table {
 width: 100%;
 border-collapse: collapse;
 font-size: 12px;
-min-width: 520px;
-}
-th {
-background: var(--azul-institucional);
-color: var(--blanco);
-font-weight: 700;
-text-align: left;
 }
 th,
 td {
-padding: 9px 8px;
-border-bottom: 1px solid var(--gris-claro);
+border-bottom:
+    1px solid var(--gris-claro);
+padding:
+    8px;
+text-align: left;
 vertical-align: top;
 }
-tbody tr:hover {
-background: #fafaf8;
+th {
+background:
+    var(--azul-institucional);
+color:
+    var(--blanco);
+font-size: 11px;
+white-space: nowrap;
 }
-.estado-documento {
-color: var(--gris-medio);
-font-size: 12px;
+tr:last-child td {
+border-bottom: none;
 }
-/* =========================================================
-QR GENERADO
-========================================================= */
-.qr-generador {
-display: grid;
-grid-template-columns: 1fr auto;
-gap: 8px;
+td a {
+color:
+    var(--dorado-oscuro);
+font-weight: 700;
+text-decoration: none;
 }
-.qr-generador button {
-width: auto;
-}
-#qrContenedor {
-margin-top: 15px;
-text-align: center;
-}
-#qrContenedor img,
-#qrContenedor canvas {
-max-width: 220px;
-height: auto;
-}
-.qr-enlace {
-margin: 8px auto 0;
-max-width: 480px;
-word-break: break-all;
-font-size: 10px;
-color: var(--gris-medio);
+td a:hover {
+text-decoration: underline;
 }
 /* =========================================================
 ADMINISTRACIÓN
 ========================================================= */
-.panel-admin {
-margin-top: 0;
-margin-bottom: 30px;
-}
-.admin-titulo {
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap: 12px;
-margin-bottom: 15px;
-}
-.admin-titulo h2 {
-margin: 0;
-color: var(--gris-institucional);
-font-size: 15px;
-text-transform: uppercase;
+#panelAdmin {
+max-width: 1180px;
+margin:
+    0 auto 20px;
+padding:
+    0 20px;
 }
 .admin-grid {
 display: grid;
-grid-template-columns: repeat(2, 1fr);
+grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 gap: 18px;
 }
-.admin-card-completa {
-grid-column: 1 / -1;
+.admin-ancho {
+grid-column:
+    span 2;
 }
-.form-grid {
+.admin-cabecera {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 10px;
+margin-bottom: 13px;
+}
+.badge {
+display: inline-block;
+padding:
+    4px 8px;
+border-radius: 20px;
+font-size: 10px;
+font-weight: 700;
+background:
+    rgba(181,153,58,.14);
+color:
+    var(--dorado-oscuro);
+}
+/* =========================================================
+USUARIOS
+========================================================= */
+.usuario-nota {
+background:
+    #F7F7F5;
+border:
+    1px solid var(--gris-borde);
+border-radius: 7px;
+padding:
+    9px;
+font-size: 11px;
+color:
+    var(--gris-institucional);
+margin-bottom: 10px;
+}
+/* =========================================================
+UTILIDADES
+========================================================= */
+.oculto {
+display: none !important;
+}
+.grid-2 {
 display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 8px 12px;
+grid-template-columns:
+    1fr 1fr;
+gap: 10px;
 }
-.form-grupo-completo {
-grid-column: 1 / -1;
-}
-/* =========================================================
-MENSAJES
-========================================================= */
-.mensaje {
-margin-top: 9px;
-}
-.ok,
-.aviso,
-.error,
-.info {
-padding: 9px 11px;
-border-radius: 6px;
-font-size: 12px;
-}
-.ok {
-background: #eaf7ee;
-border-left: 4px solid var(--verde-ok);
-color: #155d34;
-}
-.aviso {
-background: #fff9df;
-border-left: 4px solid var(--amarillo-alerta);
-color: #6b5800;
-}
-.error {
-background: #fdecec;
-border-left: 4px solid var(--rojo-error);
-color: #8e2020;
-}
-.info {
-background: #eef1f6;
-border-left: 4px solid var(--azul-institucional);
-color: var(--azul-institucional);
-}
-/* =========================================================
-CARGA
-========================================================= */
 .cargando {
 opacity: .65;
 pointer-events: none;
+}
+.texto-pequeno {
+font-size: 11px;
+color:
+    var(--gris-medio);
+}
+.texto-centro {
+text-align: center;
+}
+.vacio {
+text-align: center;
+padding:
+    18px;
+color:
+    var(--gris-medio);
+font-size: 12px;
 }
 /* =========================================================
 PIE
 ========================================================= */
 footer {
-margin-top: 30px;
-background: var(--azul-institucional);
-color: #ddd;
-padding: 14px 0;
-font-size: 11px;
-}
-.footer-contenido {
-display: flex;
-justify-content: space-between;
-gap: 15px;
+margin-top: 20px;
+border-top:
+    3px solid transparent;
+border-image:
+    linear-gradient(
+        to right,
+        var(--rojo-bolivia) 33.33%,
+        var(--amarillo-bolivia) 33.33% 66.66%,
+        var(--verde-bolivia) 66.66%
+    ) 1;
+padding:
+    14px 20px;
+text-align: center;
+color:
+    var(--gris-medio);
+font-size: 10px;
 }
 /* =========================================================
 RESPONSIVE
 ========================================================= */
-@media (max-width: 900px) {
-.grid-principal {
-grid-template-columns: 1fr;
+@media (max-width: 850px) {
+main {
+    grid-template-columns:
+        1fr;
+    padding:
+        12px;
+}
+#panelAdmin {
+    padding:
+        0 12px;
 }
 .admin-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+        1fr;
 }
-.admin-card-completa {
-    grid-column: auto;
+.admin-ancho {
+    grid-column:
+        span 1;
+}
+header {
+    align-items:
+        flex-start;
+    flex-direction:
+        column;
+}
+#estadoSesion {
+    width:
+        100%;
+    text-align:
+        center;
 }
 }
-@media (max-width: 650px) {
-.header-superior {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 13px 0;
-}
-.estado-sesion {
-    width: 100%;
-    justify-content: flex-start;
-    text-align: left;
+@media (max-width: 520px) {
+.grid-2 {
+    grid-template-columns:
+        1fr;
 }
 .ubicacion {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+        1fr;
 }
-.info-tomo {
-    grid-template-columns: 1fr;
-}
-.form-grid {
-    grid-template-columns: 1fr;
-}
-.form-grupo-completo {
-    grid-column: auto;
-}
-.codigo-manual,
-.qr-generador {
-    grid-template-columns: 1fr;
-}
-.codigo-manual button,
-.qr-generador button {
-    width: 100%;
-}
-.footer-contenido {
-    flex-direction: column;
+.marca h1 {
+    font-size:
+        14px;
 }
 }
-</style>
-</head> <body> <!-- ========================================================= ENCABEZADO ========================================================= --> <header> <div class="contenedor header-superior"> 
-    <div class="identidad">
-        <div class="logo-simulado">📦</div>
-        <div>
-            <h1>SGD-DV</h1>
-            <small>
-                Sistema de Gestión Documental y Trazabilidad
-            </small>
-        </div>
+</style> </head> <body> <!-- ========================================================= ENCABEZADO ========================================================= --> <header> 
+<div class="marca">
+    <div class="marca-icono">
+        📦
     </div>
-    <div class="estado-sesion">
-        <span id="indicadorSesion" class="indicador-sesion"></span>
-        <span
-            id="estadoSesion"
-            class="estado-sesion-texto">
-            Invitado · consulta pública
-        </span>
-        <button
-            id="btnCerrarSesion"
-            class="btn-secundario btn-pequeno oculto"
-            onclick="cerrarSesion()">
-            Cerrar sesión
-        </button>
+    <div>
+        <h1>
+            SGD-DV · Gestión Documental
+        </h1>
+        <small>
+            Sistema de Gestión Documental y Trazabilidad
+        </small>
     </div>
 </div>
-<div class="tricolor"></div>
-</header> <!-- ========================================================= CONTENIDO PRINCIPAL ========================================================= --> <main> <div class="contenedor"> <div class="grid-principal"> <!-- ======================================================= COLUMNA IZQUIERDA ======================================================= --> <div class="columna"> 
-<!-- LOGIN -->
-<section class="card" id="cardLogin">
-    <h2>🔑 Acceso autorizado</h2>
-    <p class="login-ayuda">
-        Ingrese su <strong>Nombre de usuario</strong> institucional.
-        El sistema utiliza internamente un identificador
-        automático para la trazabilidad.
-    </p>
-    <label for="usuario">
-        Nombre de usuario
-    </label>
-    <input
-        type="text"
-        id="usuario"
-        autocomplete="username"
-        placeholder="Ej. JoseMMendez">
-    <label for="clave">
-        Contraseña
-    </label>
-    <input
-        type="password"
-        id="clave"
-        autocomplete="current-password"
-        placeholder="Contraseña">
-    <button
-        id="btnLogin"
-        class="btn-principal"
-        onclick="iniciarSesion()">
-        Iniciar sesión
-    </button>
-    <div
-        id="mensajeLogin"
-        class="mensaje">
+<div id="estadoSesion">
+    👤 Invitado
+</div>
+</header> <div class="tricolor"></div> <!-- ========================================================= CONTENIDO PRINCIPAL ========================================================= --> <main> 
+<!-- =====================================================
+     COLUMNA IZQUIERDA
+     ===================================================== -->
+<div class="columna">
+    <!-- LOGIN -->
+    <div class="card" id="cardLogin">
+        <div class="login-icono">
+            🔐
+        </div>
+        <div class="login-titulo">
+            Acceso al sistema
+        </div>
+        <div class="login-ayuda">
+            Utiliza tu nombre de usuario institucional.
+        </div>
+        <label for="usuario">
+            Nombre de usuario
+        </label>
+        <input
+            type="text"
+            id="usuario"
+            autocomplete="username"
+            placeholder="Ej. JoseMMendez"
+            onkeydown="if(event.key==='Enter') iniciarSesion()"
+        >
+        <label for="clave">
+            Contraseña
+        </label>
+        <input
+            type="password"
+            id="clave"
+            autocomplete="current-password"
+            placeholder="Contraseña"
+            onkeydown="if(event.key==='Enter') iniciarSesion()"
+        >
+        <button
+            id="btnLogin"
+            onclick="iniciarSesion()"
+        >
+            🔑 Iniciar sesión
+        </button>
+        <div id="mensajeLogin"></div>
+        <div
+            class="estado-backend"
+            style="margin-top:10px;"
+        >
+            <span
+                id="puntoBackend"
+                class="punto"
+            ></span>
+            <span id="estadoBackend">
+                Comprobando conexión...
+            </span>
+        </div>
     </div>
-</section>
-<!-- ESCÁNER -->
-<section class="card">
-    <h2>📷 Consulta mediante QR</h2>
-    <div id="lector"></div>
-    <p class="qr-ayuda">
-        Escanee el código QR del tomo o introduzca
-        manualmente su código.
-    </p>
-    <div class="codigo-manual">
+    <!-- ESCÁNER QR -->
+    <div class="card">
+        <h2>
+            📷 Escáner QR
+        </h2>
+        <div class="card-subtitulo">
+            Escanea el código QR del tomo para consultar su ubicación.
+        </div>
+        <div id="lector"></div>
+        <p class="texto-pequeno">
+            También puedes ingresar manualmente el código del tomo.
+        </p>
         <input
             type="text"
             id="codigoManual"
-            placeholder="Ej. 2026-IN-T03">
+            placeholder="Ej. 2026-IN-T03"
+            onkeydown="if(event.key==='Enter') consultarTomo(document.getElementById('codigoManual').value.trim())"
+        >
         <button
-            class="btn-secundario"
-            onclick="consultarTomoDesdeCampo()">
-            Consultar
+            onclick="consultarTomo(document.getElementById('codigoManual').value.trim())"
+        >
+            🔎 Consultar tomo
         </button>
     </div>
-</section>
-<!-- GENERADOR QR -->
-<section class="card">
-    <h2>🏷️ Generar código QR</h2>
-    <div class="qr-generador">
+    <!-- GENERADOR QR -->
+    <div class="card">
+        <h2>
+            🏷️ Generar código QR
+        </h2>
+        <div class="card-subtitulo">
+            Genera el QR correspondiente a un tomo registrado.
+        </div>
+        <label for="qrCodigoTomo">
+            Código de tomo
+        </label>
         <input
             type="text"
             id="qrCodigoTomo"
-            placeholder="Ej. 2026-IN-T03">
+            placeholder="Ej. 2026-IN-T03"
+        >
         <button
-            class="btn-principal"
-            onclick="generarQR()">
-            Generar QR
+            onclick="generarQR()"
+        >
+            ▣ Generar QR
+        </button>
+        <div
+            id="qrContenedor"
+            class="qr-contenedor"
+        ></div>
+        <button
+            id="btnDescargarQR"
+            class="oculto secundario"
+            onclick="descargarQR()"
+        >
+            ⬇ Descargar QR
         </button>
     </div>
-    <div id="qrContenedor"></div>
-    <button
-        id="btnDescargarQR"
-        class="btn-secundario oculto"
-        onclick="descargarQR()">
-        Descargar QR
-    </button>
-</section>
-</div> <!-- ======================================================= COLUMNA DERECHA ======================================================= --> <div class="columna"> 
-<!-- UBICACIÓN -->
-<section
-    class="card oculto"
-    id="cardUbicacion">
-    <h2>📍 Ubicación física del tomo</h2>
-    <div class="ubicacion">
-        <div class="ubicacion-item">
-            <small>Estante</small>
-            <strong id="ubEstante">-</strong>
-        </div>
-        <div class="ubicacion-item">
-            <small>Balda</small>
-            <strong id="ubBalda">-</strong>
-        </div>
-        <div class="ubicacion-item">
-            <small>Posición</small>
-            <strong id="ubPosicion">-</strong>
-        </div>
-    </div>
-</section>
-<!-- INFORMACIÓN TOMO -->
-<section
-    class="card oculto"
-    id="cardTomoInfo">
-    <h2>📚 Información del tomo</h2>
-    <div class="info-tomo">
-        <div>
-            <span>Código del tomo</span>
-            <strong id="infoCodigoTomo">-</strong>
-        </div>
-        <div>
-            <span>Gestión</span>
-            <strong id="infoGestion">-</strong>
-        </div>
-        <div>
-            <span>Tipo documental</span>
-            <strong id="infoTipoDocumental">-</strong>
-        </div>
-        <div>
-            <span>Número de tomo</span>
-            <strong id="infoNumeroTomo">-</strong>
-        </div>
-        <div>
-            <span>Rango de numeración</span>
-            <strong id="infoRango">-</strong>
-        </div>
-        <div>
-            <span>Estado</span>
-            <strong id="infoEstado">-</strong>
-        </div>
-    </div>
-</section>
-<!-- ÍNDICE -->
-<section
-    class="card oculto"
-    id="cardIndice">
-    <h2>📑 Contenido documental</h2>
+</div>
+<!-- =====================================================
+     COLUMNA DERECHA
+     ===================================================== -->
+<div class="columna">
+    <!-- UBICACIÓN -->
     <div
-        id="estadoIndice"
-        class="estado-documento">
-        Consultando índice...
+        class="card oculto"
+        id="cardUbicacion"
+    >
+        <h2>
+            📍 Ubicación física del tomo
+        </h2>
+        <div class="card-subtitulo">
+            Ubicación consultada directamente desde el registro actual.
+        </div>
+        <div class="ubicacion">
+            <div>
+                <label>
+                    Estante
+                </label>
+                <span id="ubEstante">
+                    -
+                </span>
+            </div>
+            <div>
+                <label>
+                    Balda
+                </label>
+                <span id="ubBalda">
+                    -
+                </span>
+            </div>
+            <div>
+                <label>
+                    Posición
+                </label>
+                <span id="ubPosicion">
+                    -
+                </span>
+            </div>
+        </div>
+        <div
+            id="infoTomo"
+            class="info oculto"
+            style="margin-top:10px;"
+        ></div>
     </div>
-    <div class="tabla-contenedor">
-        <table>
-            <thead>
-                <tr>
-                    <th>Cite</th>
-                    <th>Asunto</th>
-                    <th>Folios</th>
-                    <th>Archivo</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpoIndice">
-            </tbody>
-        </table>
-    </div>
-</section>
-<!-- MOVIMIENTO -->
-<section
-    class="card oculto"
-    id="cardMovimiento">
-    <h2>🔀 Actualizar ubicación</h2>
-    <p class="qr-ayuda">
-        Tomo seleccionado:
-        <strong id="movCodigoTomo">-</strong>
-    </p>
-    <div class="form-grid">
-        <div>
-            <label for="movEstante">
-                Nuevo estante
-            </label>
-            <input
-                type="text"
-                id="movEstante">
+    <!-- ÍNDICE -->
+    <div
+        class="card oculto"
+        id="cardIndice"
+    >
+        <h2>
+            📑 Contenido digital del tomo
+        </h2>
+        <div class="card-subtitulo">
+            Los archivos PDF requieren autenticación.
         </div>
-        <div>
-            <label for="movBalda">
-                Nueva balda
-            </label>
-            <input
-                type="text"
-                id="movBalda">
-        </div>
-        <div>
-            <label for="movPosicion">
-                Nueva posición
-            </label>
-            <input
-                type="text"
-                id="movPosicion">
-        </div>
-        <div style="display:flex;align-items:end;">
-            <button
-                class="btn-principal"
-                onclick="registrarMovimiento()">
-                Registrar movimiento
-            </button>
-        </div>
-    </div>
-    <div id="mensajeMovimiento" class="mensaje"></div>
-</section>
-<!-- REGISTRO DOCUMENTO -->
-<section
-    class="card oculto"
-    id="cardRegistro">
-    <h2>📝 Registrar documento</h2>
-    <p class="qr-ayuda">
-        El documento será asociado al tomo actualmente consultado.
-    </p>
-    <div class="form-grid">
-        <div>
-            <label for="regDireccion">
-                Dirección
-            </label>
-            <select
-                id="regDireccion"
-                onchange="cargarUnidades()">
-            </select>
-        </div>
-        <div>
-            <label for="regUnidad">
-                Unidad
-            </label>
-            <select id="regUnidad"></select>
-        </div>
-        <div>
-            <label for="regNumeroCite">
-                Número de Cite
-            </label>
-            <input
-                type="text"
-                id="regNumeroCite"
-                placeholder="Ej. 3">
-        </div>
-        <div>
-            <label for="regFecha">
-                Fecha del documento
-            </label>
-            <input
-                type="date"
-                id="regFecha">
-        </div>
-        <div>
-            <label for="regRemitente">
-                Remitente
-            </label>
-            <input
-                type="text"
-                id="regRemitente">
-        </div>
-        <div>
-            <label for="regDestinatario">
-                Destinatario
-            </label>
-            <input
-                type="text"
-                id="regDestinatario">
-        </div>
-        <div class="form-grupo-completo">
-            <label for="regAsunto">
-                Asunto
-            </label>
-            <input
-                type="text"
-                id="regAsunto">
-        </div>
-        <div>
-            <label for="regFolioInicio">
-                Folio inicio
-            </label>
-            <input
-                type="number"
-                id="regFolioInicio"
-                min="1">
-        </div>
-        <div>
-            <label for="regFolioFin">
-                Folio fin
-            </label>
-            <input
-                type="number"
-                id="regFolioFin"
-                min="1">
-        </div>
-        <div class="form-grupo-completo">
-            <label for="regObservaciones">
-                Observaciones
-            </label>
-            <textarea
-                id="regObservaciones"></textarea>
-        </div>
-        <div class="form-grupo-completo">
-            <label for="regPdf">
-                Archivo PDF
-            </label>
-            <input
-                type="file"
-                id="regPdf"
-                accept="application/pdf">
-        </div>
-        <div class="form-grupo-completo">
-            <button
-                class="btn-principal"
-                onclick="registrarDocumento()">
-                Guardar documento
-            </button>
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cite</th>
+                        <th>Asunto</th>
+                        <th>Folios</th>
+                        <th>Archivo</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoIndice">
+                </tbody>
+            </table>
         </div>
     </div>
-    <div id="mensajeRegistro" class="mensaje"></div>
-</section>
-</div> </div> </div> </main> <!-- ========================================================= PANEL ADMINISTRATIVO ========================================================= --> <section id="panelAdmin" class="panel-admin oculto"> 
-<div class="contenedor">
+    <!-- MOVIMIENTO -->
+    <div
+        class="card oculto"
+        id="cardMovimiento"
+    >
+        <h2>
+            🔀 Actualizar movimiento del tomo
+        </h2>
+        <div class="card-subtitulo">
+            Esta operación requiere permisos de Administrador.
+        </div>
+        <p class="texto-pequeno">
+            Tomo actual:
+            <strong id="movCodigoTomo">
+                -
+            </strong>
+        </p>
+        <div class="grid-2">
+            <div>
+                <label>
+                    Nuevo estante
+                </label>
+                <input
+                    type="text"
+                    id="movEstante"
+                >
+            </div>
+            <div>
+                <label>
+                    Nueva balda
+                </label>
+                <input
+                    type="text"
+                    id="movBalda"
+                >
+            </div>
+        </div>
+        <label>
+            Nueva posición
+        </label>
+        <input
+            type="text"
+            id="movPosicion"
+        >
+        <button
+            onclick="registrarMovimiento()"
+        >
+            💾 Registrar movimiento
+        </button>
+        <div id="mensajeMovimiento"></div>
+    </div>
+    <!-- REGISTRO DOCUMENTO -->
+    <div
+        class="card oculto"
+        id="cardRegistro"
+    >
+        <h2>
+            📝 Registrar documento
+        </h2>
+        <div class="card-subtitulo">
+            Registra un documento digital dentro del tomo actualmente seleccionado.
+        </div>
+        <label>
+            Dirección
+        </label>
+        <select
+            id="regDireccion"
+            onchange="cargarUnidades()"
+        ></select>
+        <label>
+            Unidad
+        </label>
+        <select
+            id="regUnidad"
+        ></select>
+        <label>
+            Número de Cite
+        </label>
+        <input
+            type="text"
+            id="regNumeroCite"
+            placeholder="Ej. 3"
+        >
+        <label>
+            Fecha del documento
+        </label>
+        <input
+            type="date"
+            id="regFecha"
+        >
+        <div class="grid-2">
+            <div>
+                <label>
+                    Remitente
+                </label>
+                <input
+                    type="text"
+                    id="regRemitente"
+                >
+            </div>
+            <div>
+                <label>
+                    Destinatario
+                </label>
+                <input
+                    type="text"
+                    id="regDestinatario"
+                >
+            </div>
+        </div>
+        <label>
+            Asunto
+        </label>
+        <input
+            type="text"
+            id="regAsunto"
+        >
+        <div class="grid-2">
+            <div>
+                <label>
+                    Folio inicio
+                </label>
+                <input
+                    type="number"
+                    id="regFolioInicio"
+                    min="1"
+                >
+            </div>
+            <div>
+                <label>
+                    Folio fin
+                </label>
+                <input
+                    type="number"
+                    id="regFolioFin"
+                    min="1"
+                >
+            </div>
+        </div>
+        <label>
+            Observaciones
+        </label>
+        <textarea
+            id="regObservaciones"
+        ></textarea>
+        <label>
+            Archivo PDF
+        </label>
+        <input
+            type="file"
+            id="regPdf"
+            accept="application/pdf"
+        >
+        <button
+            onclick="registrarDocumento()"
+        >
+            💾 Guardar documento
+        </button>
+        <div id="mensajeRegistro"></div>
+    </div>
+</div>
+</main> <!-- ========================================================= PANEL ADMINISTRADOR ========================================================= --> <section id="panelAdmin" class="oculto" > 
+<div class="admin-grid">
+    <!-- DIRECCIÓN -->
     <div class="card">
-        <div class="admin-titulo">
+        <div class="admin-cabecera">
             <h2>
-                ⚙️ Administración del sistema
+                🏢 Nueva Dirección
             </h2>
-            <span
-                id="adminUsuarioActivo"
-                class="usuario-publico">
+            <span class="badge">
+                ADMIN
             </span>
         </div>
-        <div class="admin-grid">
-            <!-- DIRECCIÓN -->
-            <div class="card">
-                <h3>🏢 Nueva dirección</h3>
-                <label>Sigla</label>
+        <input
+            type="text"
+            id="admDireccionSigla"
+            placeholder="Sigla, ej. DGAC"
+        >
+        <input
+            type="text"
+            id="admDireccionDenom"
+            placeholder="Denominación completa"
+        >
+        <button
+            onclick="crearDireccion()"
+        >
+            + Crear dirección
+        </button>
+        <div id="mensajeAdmDireccion"></div>
+    </div>
+    <!-- UNIDAD -->
+    <div class="card">
+        <div class="admin-cabecera">
+            <h2>
+                🧩 Nueva Unidad
+            </h2>
+            <span class="badge">
+                ADMIN
+            </span>
+        </div>
+        <select
+            id="admUnidadDireccion"
+        ></select>
+        <input
+            type="text"
+            id="admUnidadSigla"
+            placeholder="Sigla, ej. UGEC"
+        >
+        <input
+            type="text"
+            id="admUnidadDenom"
+            placeholder="Denominación completa"
+        >
+        <button
+            onclick="crearUnidad()"
+        >
+            + Crear unidad
+        </button>
+        <div id="mensajeAdmUnidad"></div>
+    </div>
+    <!-- TIPO DOCUMENTAL -->
+    <div class="card">
+        <div class="admin-cabecera">
+            <h2>
+                📄 Nuevo Tipo Documental
+            </h2>
+            <span class="badge">
+                ADMIN
+            </span>
+        </div>
+        <input
+            type="text"
+            id="admTipoCodigo"
+            placeholder="Código, ej. NI"
+        >
+        <input
+            type="text"
+            id="admTipoNombre"
+            placeholder="Nombre, ej. Nota Interna"
+        >
+        <input
+            type="text"
+            id="admTipoNaturaleza"
+            placeholder="Naturaleza"
+        >
+        <input
+            type="text"
+            id="admTipoUso"
+            placeholder="Uso"
+        >
+        <button
+            onclick="crearTipoDocumental()"
+        >
+            + Crear tipo documental
+        </button>
+        <div id="mensajeAdmTipo"></div>
+    </div>
+    <!-- TOMO -->
+    <div class="card">
+        <div class="admin-cabecera">
+            <h2>
+                📚 Nuevo Tomo
+            </h2>
+            <span class="badge">
+                ADMIN
+            </span>
+        </div>
+        <input
+            type="text"
+            id="admTomoGestion"
+            placeholder="Gestión, ej. 2026"
+        >
+        <select
+            id="admTomoTipo"
+        ></select>
+        <input
+            type="text"
+            id="admTomoNumero"
+            placeholder="Número de tomo, ej. T03"
+        >
+        <div class="grid-2">
+            <input
+                type="text"
+                id="admTomoEstante"
+                placeholder="Estante inicial"
+            >
+            <input
+                type="text"
+                id="admTomoBalda"
+                placeholder="Balda inicial"
+            >
+        </div>
+        <input
+            type="text"
+            id="admTomoPosicion"
+            placeholder="Posición inicial"
+        >
+        <button
+            onclick="crearTomo()"
+        >
+            + Crear tomo
+        </button>
+        <div id="mensajeAdmTomo"></div>
+    </div>
+    <!-- USUARIOS -->
+    <div
+        class="card admin-ancho"
+    >
+        <div class="admin-cabecera">
+            <h2>
+                👤 Administración de usuarios
+            </h2>
+            <span class="badge">
+                ADMIN
+            </span>
+        </div>
+        <div class="usuario-nota">
+            El sistema genera automáticamente el
+            <strong>ID_Usuario</strong>
+            interno, por ejemplo
+            <strong>U001</strong>.
+            <br><br>
+            El usuario inicia sesión mediante
+            <strong>Nombre_Usuario</strong>.
+            El ID interno no se utiliza para iniciar sesión.
+        </div>
+        <div class="grid-2">
+            <div>
+                <label>
+                    Nombre completo
+                </label>
                 <input
                     type="text"
-                    id="admDireccionSigla"
-                    placeholder="Ej. DGAC">
-                <label>Denominación</label>
+                    id="admUsuarioNombre"
+                    placeholder="Ej. Juan Jose Mendez Mendez"
+                >
+                <label>
+                    Nombre de usuario
+                </label>
                 <input
                     type="text"
-                    id="admDireccionDenom"
-                    placeholder="Denominación completa">
-                <button
-                    class="btn-principal"
-                    onclick="crearDireccion()">
-                    Crear dirección
-                </button>
-                <div
-                    id="mensajeAdmDireccion"
-                    class="mensaje">
-                </div>
-            </div>
-            <!-- UNIDAD -->
-            <div class="card">
-                <h3>🧩 Nueva unidad</h3>
-                <label>Dirección</label>
+                    id="admUsuarioId"
+                    placeholder="Ej. JoseMMendez"
+                >
+                <label>
+                    Contraseña inicial
+                </label>
+                <input
+                    type="password"
+                    id="admUsuarioClave"
+                    placeholder="Contraseña"
+                >
+                <label>
+                    Rol
+                </label>
                 <select
-                    id="admUnidadDireccion">
+                    id="admUsuarioRol"
+                >
+                    <option value="Lector">
+                        Lector
+                    </option>
+                    <option value="Administrador">
+                        Administrador
+                    </option>
                 </select>
-                <label>Sigla</label>
-                <input
-                    type="text"
-                    id="admUnidadSigla"
-                    placeholder="Ej. UGEC">
-                <label>Denominación</label>
-                <input
-                    type="text"
-                    id="admUnidadDenom"
-                    placeholder="Denominación completa">
                 <button
-                    class="btn-principal"
-                    onclick="crearUnidad()">
-                    Crear unidad
+                    onclick="crearUsuario()"
+                >
+                    + Crear usuario
                 </button>
-                <div
-                    id="mensajeAdmUnidad"
-                    class="mensaje">
-                </div>
-            </div>
-            <!-- TIPO DOCUMENTAL -->
-            <div class="card">
-                <h3>📄 Nuevo tipo documental</h3>
-                <label>Código</label>
-                <input
-                    type="text"
-                    id="admTipoCodigo"
-                    placeholder="Ej. NI">
-                <label>Tipo</label>
-                <input
-                    type="text"
-                    id="admTipoNombre"
-                    placeholder="Ej. Nota Interna">
-                <label>Naturaleza</label>
-                <input
-                    type="text"
-                    id="admTipoNaturaleza">
-                <label>Uso</label>
-                <input
-                    type="text"
-                    id="admTipoUso">
-                <label>Ordenación</label>
-                <input
-                    type="text"
-                    id="admTipoOrdenacion">
-                <button
-                    class="btn-principal"
-                    onclick="crearTipoDocumental()">
-                    Crear tipo documental
-                </button>
-                <div
-                    id="mensajeAdmTipo"
-                    class="mensaje">
-                </div>
-            </div>
-            <!-- TOMO -->
-            <div class="card">
-                <h3>📚 Nuevo tomo</h3>
-                <label>Gestión</label>
-                <input
-                    type="text"
-                    id="admTomoGestion"
-                    placeholder="Ej. 2026">
-                <label>Tipo documental</label>
-                <select id="admTomoTipo"></select>
-                <label>Número de tomo</label>
-                <input
-                    type="text"
-                    id="admTomoNumero"
-                    placeholder="Ej. T03">
-                <label>Estante inicial</label>
-                <input
-                    type="text"
-                    id="admTomoEstante">
-                <label>Balda inicial</label>
-                <input
-                    type="text"
-                    id="admTomoBalda">
-                <label>Posición inicial</label>
-                <input
-                    type="text"
-                    id="admTomoPosicion">
-                <button
-                    class="btn-principal"
-                    onclick="crearTomo()">
-                    Crear tomo
-                </button>
-                <div
-                    id="mensajeAdmTomo"
-                    class="mensaje">
-                </div>
-            </div>
-            <!-- USUARIOS -->
-            <div class="card admin-card-completa">
-                <h3>👤 Gestión de usuarios</h3>
-                <p class="qr-ayuda">
-                    El <strong>ID_Usuario</strong> es generado
-                    automáticamente por el sistema
-                    (U001, U002, U003...).
-                    El usuario solamente proporciona su
-                    <strong>Nombre de usuario</strong>.
-                </p>
-                <div class="form-grid">
-                    <div>
-                        <label>
-                            Nombre de usuario
-                        </label>
-                        <input
-                            type="text"
-                            id="admUsuarioNombreUsuario"
-                            placeholder="Ej. JoseMMendez"
-                            autocomplete="off">
-                    </div>
-                    <div>
-                        <label>
-                            Nombre completo
-                        </label>
-                        <input
-                            type="text"
-                            id="admUsuarioNombre"
-                            placeholder="Ej. Juan Jose Mendez Mendez">
-                    </div>
-                    <div>
-                        <label>
-                            Contraseña inicial
-                        </label>
-                        <input
-                            type="password"
-                            id="admUsuarioClave"
-                            autocomplete="new-password">
-                    </div>
-                    <div>
-                        <label>
-                            Rol
-                        </label>
-                        <select id="admUsuarioRol">
-                            <option value="Lector">
-                                Lector
-                            </option>
-                            <option value="Administrador">
-                                Administrador
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-grupo-completo">
-                        <button
-                            class="btn-principal"
-                            onclick="crearUsuario()">
-                            Crear usuario
-                        </button>
-                    </div>
-                </div>
                 <div
                     id="mensajeAdmUsuario"
-                    class="mensaje">
+                ></div>
+            </div>
+            <div>
+                <div class="texto-pequeno">
+                    Usuarios registrados
                 </div>
-                <br>
-                <div class="tabla-contenedor">
+                <div
+                    class="tabla-contenedor"
+                    style="margin-top:7px;"
+                >
                     <table>
                         <thead>
                             <tr>
-                                <th>Nombre de usuario</th>
-                                <th>Nombre completo</th>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
                                 <th>Rol</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
-                        <tbody id="cuerpoUsuarios">
-                        </tbody>
+                        <tbody
+                            id="cuerpoUsuarios"
+                        ></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</section> <!-- ========================================================= PIE ========================================================= --> <footer> 
-<div class="contenedor footer-contenido">
-    <span>
-        SGD-DV · Sistema de Gestión Documental y Trazabilidad
-    </span>
-    <span>
-        Gestión documental institucional
-    </span>
-</div>
+</section> <footer> 
+SGD-DV · Sistema de Gestión Documental y Trazabilidad
 </footer> <script> 
 /* =========================================================
-CONFIGURACIÓN DEL BACKEND
+CONFIGURACIÓN
 ========================================================= */
 const WEB_APP_URL =
 "https://script.google.com/macros/s/AKfycbzipWBjNWJcEc1CoyUyIIVpkNPKWtXYcMqDVSvlGaPJOK3drwbjMgfXwXcle56JG4yB/exec";
 /* =========================================================
-ESTADO DE LA APLICACIÓN
+VARIABLES DE SESIÓN
 ========================================================= */
 let sesion = null;
 let tomoActual = null;
-let datosTomoActual = null;
 let catalogos = null;
 let qrGenerado = null;
 /* =========================================================
@@ -1111,14 +1230,17 @@ SHA-256
 ========================================================= */
 async function sha256(texto) {
 const datos =
-    new TextEncoder().encode(texto);
+    new TextEncoder()
+        .encode(texto);
 const hashBuffer =
     await crypto.subtle.digest(
         'SHA-256',
         datos
     );
 return Array
-    .from(new Uint8Array(hashBuffer))
+    .from(
+        new Uint8Array(hashBuffer)
+    )
     .map(
         b =>
             b.toString(16)
@@ -1129,23 +1251,29 @@ return Array
 /* =========================================================
 LLAMADA AL BACKEND
 ========================================================= */
-async function llamarBackend(accion, datos = {}) {
+async function llamarBackend(
+accion,
+datos = {}
+) {
 try {
-    const cuerpo = Object.assign(
-        { accion: accion },
-        datos
-    );
-    const respuesta = await fetch(
-        WEB_APP_URL,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type':
-                    'text/plain;charset=utf-8'
-            },
-            body: JSON.stringify(cuerpo)
-        }
-    );
+    const cuerpo =
+        Object.assign(
+            { accion: accion },
+            datos
+        );
+    const respuesta =
+        await fetch(
+            WEB_APP_URL,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type':
+                        'text/plain;charset=utf-8'
+                },
+                body:
+                    JSON.stringify(cuerpo)
+            }
+        );
     if (!respuesta.ok) {
         throw new Error(
             'El servidor respondió con HTTP ' +
@@ -1158,16 +1286,17 @@ try {
         ok: false,
         datos: null,
         error: {
-            codigo: 'ERROR_RED',
+            codigo:
+                'ERROR_CONEXION',
             mensaje:
-                'No fue posible comunicarse con el servidor: ' +
-                error.message
+                error.message ||
+                'No se pudo conectar con el servidor.'
         }
     };
 }
 }
 /* =========================================================
-CREDENCIALES DE SESIÓN
+CREDENCIALES PARA ACCIONES PROTEGIDAS
 ========================================================= */
 function credenciales() {
 if (!sesion) {
@@ -1181,40 +1310,56 @@ return {
 };
 }
 /* =========================================================
+MENSAJE DE CARGA
+========================================================= */
+function mostrarCargando(
+elemento,
+texto = 'Procesando...'
+) {
+if (elemento) {
+    elemento.innerHTML =
+        '<div class="info">' +
+        '⏳ ' + texto +
+        '</div>';
+}
+}
+/* =========================================================
 LOGIN
 ========================================================= */
 async function iniciarSesion() {
-const campoUsuario =
-    document.getElementById('usuario');
-const campoClave =
-    document.getElementById('clave');
-const btn =
-    document.getElementById('btnLogin');
-const mensaje =
-    document.getElementById('mensajeLogin');
+const boton =
+    document.getElementById(
+        'btnLogin'
+    );
+const msj =
+    document.getElementById(
+        'mensajeLogin'
+    );
 const nombreUsuario =
-    campoUsuario.value.trim();
+    document.getElementById(
+        'usuario'
+    )
+    .value
+    .trim();
 const clave =
-    campoClave.value;
+    document.getElementById(
+        'clave'
+    )
+    .value;
 if (!nombreUsuario || !clave) {
-    mensaje.innerHTML =
+    msj.innerHTML =
         '<div class="aviso">' +
-        'Ingrese nombre de usuario y contraseña.' +
+        'Ingresa tu nombre de usuario y contraseña.' +
         '</div>';
     return;
 }
-btn.disabled = true;
-btn.innerText = 'Validando...';
+boton.disabled = true;
+boton.innerText =
+    '⏳ Verificando...';
 try {
     const claveHash =
         await sha256(clave);
-    /*
-     * IMPORTANTE:
-     * El login utiliza Nombre_Usuario.
-     * ID_Usuario es generado internamente
-     * y no lo introduce el usuario.
-     */
-    const respuesta =
+    const r =
         await llamarBackend(
             'login',
             {
@@ -1224,323 +1369,245 @@ try {
                     claveHash
             }
         );
-    if (!respuesta.ok) {
-        mensaje.innerHTML =
-            '<div class="error">' +
-            escaparHTML(
-                respuesta.error?.mensaje ||
-                'Credenciales inválidas.'
-            ) +
+    if (!r.ok) {
+        msj.innerHTML =
+            '<div class="aviso">' +
+            (r.error?.mensaje ||
+             'No fue posible iniciar sesión.') +
             '</div>';
         return;
     }
-    sesion =
-        respuesta.datos;
     /*
-     * Se conserva el hash en memoria únicamente
-     * para las llamadas protegidas durante esta sesión.
+     * La sesión conserva el ID interno.
+     * El usuario interactúa mediante Nombre_Usuario.
      */
+    sesion =
+        r.datos;
     sesion.claveHash =
         claveHash;
-    actualizarEstadoSesion();
-    mensaje.innerHTML =
+    document.getElementById(
+        'estadoSesion'
+    ).innerText =
+        '👤 ' +
+        sesion.nombre +
+        ' · ' +
+        sesion.rol;
+    msj.innerHTML =
         '<div class="ok">' +
-        'Acceso concedido correctamente.' +
+        '✓ Acceso concedido.' +
         '</div>';
-    campoClave.value = '';
+    document.getElementById(
+        'clave'
+    ).value = '';
     /*
-     * Cargar catálogos si son necesarios.
-     */
-    if (!catalogos) {
-        await cargarCatalogos();
-    }
-    /*
-     * Mostrar funciones administrativas únicamente
-     * para Administrador.
+     * Administrador
      */
     if (
-        String(sesion.rol || '')
-            .toLowerCase() ===
-        'administrador'
+        sesion.rol ===
+        'Administrador'
     ) {
         document
-            .getElementById('panelAdmin')
-            .classList.remove('oculto');
-        document
-            .getElementById('adminUsuarioActivo')
-            .innerText =
-            sesion.nombreUsuario ||
-            '';
+            .getElementById(
+                'panelAdmin'
+            )
+            .classList
+            .remove('oculto');
+        if (!catalogos) {
+            await cargarCatalogos();
+        }
         await cargarListaUsuarios();
         if (tomoActual) {
-            mostrarFuncionesAdministrador();
+            mostrarFormularioRegistro();
         }
     }
     /*
      * Si ya había un tomo consultado,
-     * actualizar su índice con los permisos actuales.
+     * actualizamos el índice.
      */
     if (tomoActual) {
         await actualizarVistaIndice();
     }
 } finally {
-    btn.disabled = false;
-    btn.innerText = 'Iniciar sesión';
+    boton.disabled = false;
+    boton.innerText =
+        '🔑 Iniciar sesión';
 }
-}
-/* =========================================================
-CERRAR SESIÓN
-========================================================= */
-function cerrarSesion() {
-sesion = null;
-document
-    .getElementById('panelAdmin')
-    .classList.add('oculto');
-document
-    .getElementById('cardMovimiento')
-    .classList.add('oculto');
-document
-    .getElementById('cardRegistro')
-    .classList.add('oculto');
-document
-    .getElementById('btnCerrarSesion')
-    .classList.add('oculto');
-document
-    .getElementById('usuario')
-    .value = '';
-document
-    .getElementById('clave')
-    .value = '';
-actualizarEstadoSesion();
-if (tomoActual) {
-    actualizarVistaIndice();
-}
-}
-/* =========================================================
-ESTADO VISUAL DE SESIÓN
-========================================================= */
-function actualizarEstadoSesion() {
-const texto =
-    document.getElementById(
-        'estadoSesion'
-    );
-const indicador =
-    document.getElementById(
-        'indicadorSesion'
-    );
-const btn =
-    document.getElementById(
-        'btnCerrarSesion'
-    );
-if (!sesion) {
-    texto.innerText =
-        'Invitado · consulta pública';
-    indicador.classList.remove(
-        'activo'
-    );
-    btn.classList.add(
-        'oculto'
-    );
-    return;
-}
-texto.innerText =
-    (sesion.nombreUsuario || '') +
-    ' · ' +
-    (sesion.rol || '');
-indicador.classList.add(
-    'activo'
-);
-btn.classList.remove(
-    'oculto'
-);
 }
 /* =========================================================
 CATÁLOGOS
 ========================================================= */
 async function cargarCatalogos() {
-const respuesta =
+const r =
     await llamarBackend(
         'obtenerCatalogos',
         {}
     );
-if (!respuesta.ok) {
+if (!r.ok) {
     console.error(
-        'No se pudieron cargar catálogos:',
-        respuesta.error
+        r.error
     );
     return;
 }
 catalogos =
-    respuesta.datos;
-cargarSelectDirecciones();
-cargarSelectTipos();
-cargarUnidades();
-}
-/* =========================================================
-DIRECCIONES
-========================================================= */
-function cargarSelectDirecciones() {
-const opciones =
+    r.datos;
+const opcionesDir =
     (catalogos.direcciones || [])
-        .map(d => {
-            const sigla =
-                escaparHTML(
-                    String(d.Sigla || '')
-                );
-            const denom =
-                escaparHTML(
-                    String(
-                        d.Denominacion ||
-                        ''
-                    )
-                );
-            return `
-                <option value="${sigla}">
-                    ${sigla} - ${denom}
-                </option>
-            `;
-        })
-        .join('');
-const reg =
+    .map(
+        d =>
+            `<option value="${escapeHtml(d.Sigla)}">
+                ${escapeHtml(d.Sigla)}
+                -
+                ${escapeHtml(d.Denominacion)}
+            </option>`
+    )
+    .join('');
+const regDireccion =
     document.getElementById(
         'regDireccion'
     );
-const adm =
+if (regDireccion) {
+    regDireccion.innerHTML =
+        opcionesDir;
+}
+const admUnidadDireccion =
     document.getElementById(
         'admUnidadDireccion'
     );
-if (reg) {
-    reg.innerHTML =
-        '<option value="">Seleccione...</option>' +
-        opciones;
+if (admUnidadDireccion) {
+    admUnidadDireccion.innerHTML =
+        opcionesDir;
 }
-if (adm) {
-    adm.innerHTML =
-        '<option value="">Seleccione...</option>' +
-        opciones;
-}
-}
-/* =========================================================
-TIPOS DOCUMENTALES
-========================================================= */
-function cargarSelectTipos() {
-const select =
+const admTomoTipo =
     document.getElementById(
         'admTomoTipo'
     );
-if (!select || !catalogos) {
-    return;
-}
-select.innerHTML =
-    '<option value="">Seleccione...</option>' +
-    (catalogos.tiposDocumentales || [])
-        .map(t => {
-            const codigo =
-                escaparHTML(
-                    String(t.Codigo || '')
-                );
-            const tipo =
-                escaparHTML(
-                    String(t.Tipo || '')
-                );
-            return `
-                <option value="${codigo}">
-                    ${codigo} - ${tipo}
-                </option>
-            `;
-        })
+if (admTomoTipo) {
+    admTomoTipo.innerHTML =
+        (catalogos.tiposDocumentales || [])
+        .map(
+            t =>
+                `<option value="${escapeHtml(t.Codigo)}">
+                    ${escapeHtml(t.Codigo)}
+                    -
+                    ${escapeHtml(t.Tipo)}
+                </option>`
+        )
         .join('');
+}
+cargarUnidades();
 }
 /* =========================================================
 UNIDADES
 ========================================================= */
 function cargarUnidades() {
-if (!catalogos) {
-    return;
-}
-const selectDireccion =
+if (!catalogos) return;
+const direccion =
     document.getElementById(
         'regDireccion'
-    );
-const selectUnidad =
+    )?.value;
+const select =
     document.getElementById(
         'regUnidad'
     );
-if (!selectDireccion ||
-    !selectUnidad) {
-    return;
-}
-const direccion =
-    selectDireccion.value;
+if (!select) return;
 const filtradas =
     (catalogos.unidades || [])
-        .filter(
-            u =>
-                String(
-                    u.Dependencia || ''
-                ) === String(direccion)
-        );
-selectUnidad.innerHTML =
-    '<option value="">Seleccione...</option>' +
+    .filter(
+        u =>
+            String(
+                u.Dependencia
+            ) ===
+            String(direccion)
+    );
+select.innerHTML =
     filtradas
-        .map(u => {
-            const sigla =
-                escaparHTML(
-                    String(u.Sigla || '')
-                );
-            const denom =
-                escaparHTML(
-                    String(
-                        u.Denominacion ||
-                        ''
-                    )
-                );
-            return `
-                <option value="${sigla}">
-                    ${sigla} - ${denom}
-                </option>
-            `;
-        })
-        .join('');
+    .map(
+        u =>
+            `<option value="${escapeHtml(u.Sigla)}">
+                ${escapeHtml(u.Sigla)}
+                -
+                ${escapeHtml(u.Denominacion)}
+            </option>`
+    )
+    .join('');
 }
 /* =========================================================
 ESCÁNER QR
 ========================================================= */
-function onEscaneoExitoso(texto) {
+function onEscaneoExitoso(
+textoDecodificado
+) {
 let codigo =
-    String(texto || '').trim();
+    textoDecodificado;
 try {
     const url =
-        new URL(codigo);
-    const parametro =
+        new URL(
+            textoDecodificado
+        );
+    codigo =
         url.searchParams.get(
             'tomo'
-        );
-    if (parametro) {
-        codigo = parametro;
-    }
+        ) ||
+        textoDecodificado;
 } catch (e) {
     /*
-     * No era una URL.
-     * Se utiliza directamente como código.
+     * El QR puede contener directamente
+     * el código del tomo.
      */
 }
+codigo =
+    String(codigo)
+        .trim();
 if (codigo) {
     consultarTomo(codigo);
 }
 }
 /* =========================================================
-CONSULTA DE TOMO
+INICIALIZAR LECTOR QR
 ========================================================= */
-async function consultarTomo(codigo) {
+let lectorQR = null;
+try {
+lectorQR =
+    new Html5QrcodeScanner(
+        'lector',
+        {
+            fps: 10,
+            qrbox: 220
+        }
+    );
+lectorQR.render(
+    onEscaneoExitoso,
+    function(error) {
+        /*
+         * No mostramos continuamente los errores
+         * normales del escáner.
+         */
+    }
+);
+} catch (error) {
+console.warn(
+    'No fue posible iniciar el lector QR.',
+    error
+);
+}
+/* =========================================================
+CONSULTAR TOMO
+========================================================= */
+async function consultarTomo(
+codigo
+) {
 codigo =
-    String(codigo || '').trim();
+    String(codigo || '')
+        .trim();
 if (!codigo) {
+    alert(
+        'Ingresa o escanea un código de tomo.'
+    );
     return;
 }
 tomoActual =
     codigo;
-const respuesta =
+const r =
     await llamarBackend(
         'obtenerTomo',
         {
@@ -1548,405 +1615,241 @@ const respuesta =
                 codigo
         }
     );
-if (!respuesta.ok) {
+if (!r.ok) {
     document
         .getElementById(
             'cardUbicacion'
         )
-        .classList.add(
-            'oculto'
-        );
+        .classList
+        .add('oculto');
     alert(
-        respuesta.error?.mensaje ||
+        r.error?.mensaje ||
         'No se encontró el tomo.'
     );
     return;
 }
-datosTomoActual =
-    respuesta.datos;
-mostrarDatosTomo(
-    datosTomoActual
-);
 document
     .getElementById(
         'cardUbicacion'
     )
-    .classList.remove(
-        'oculto'
+    .classList
+    .remove('oculto');
+document.getElementById(
+    'ubEstante'
+).innerText =
+    r.datos.Estante || '-';
+document.getElementById(
+    'ubBalda'
+).innerText =
+    r.datos.Balda || '-';
+document.getElementById(
+    'ubPosicion'
+).innerText =
+    r.datos.Posicion || '-';
+const info =
+    document.getElementById(
+        'infoTomo'
     );
-document
-    .getElementById(
-        'cardTomoInfo'
-    )
-    .classList.remove(
-        'oculto'
+info.classList.remove(
+    'oculto'
+);
+info.innerHTML =
+    '<strong>Tomo:</strong> ' +
+    escapeHtml(
+        r.datos.Codigo_Tomo
+    ) +
+    ' · <strong>Gestión:</strong> ' +
+    escapeHtml(
+        r.datos.Gestion
+    ) +
+    ' · <strong>Tipo:</strong> ' +
+    escapeHtml(
+        r.datos.TipoDocumental
     );
 document
     .getElementById(
         'cardIndice'
     )
-    .classList.remove(
-        'oculto'
-    );
+    .classList
+    .remove('oculto');
 await actualizarVistaIndice();
 if (
     sesion &&
-    String(sesion.rol || '')
-        .toLowerCase() ===
-    'administrador'
+    sesion.rol ===
+    'Administrador'
 ) {
-    mostrarFuncionesAdministrador();
+    mostrarFormularioRegistro();
 }
 }
 /* =========================================================
-CONSULTA DESDE CAMPO MANUAL
+MOSTRAR FORMULARIOS ADMINISTRADOR
 ========================================================= */
-function consultarTomoDesdeCampo() {
-const codigo =
-    document
-        .getElementById(
-            'codigoManual'
-        )
-        .value
-        .trim();
-consultarTomo(codigo);
-}
-/* =========================================================
-MOSTRAR DATOS DEL TOMO
-========================================================= */
-function mostrarDatosTomo(d) {
-document.getElementById(
-    'ubEstante'
-).innerText =
-    d.Estante || '-';
-document.getElementById(
-    'ubBalda'
-).innerText =
-    d.Balda || '-';
-document.getElementById(
-    'ubPosicion'
-).innerText =
-    d.Posicion || '-';
-document.getElementById(
-    'infoCodigoTomo'
-).innerText =
-    d.Codigo_Tomo || '-';
-document.getElementById(
-    'infoGestion'
-).innerText =
-    d.Gestion || '-';
-document.getElementById(
-    'infoTipoDocumental'
-).innerText =
-    d.TipoDocumental || '-';
-document.getElementById(
-    'infoNumeroTomo'
-).innerText =
-    d.NumeroTomo || '-';
-document.getElementById(
-    'infoRango'
-).innerText =
-    d.RangoNumeracion || '-';
-document.getElementById(
-    'infoEstado'
-).innerText =
-    d.Estado || '-';
-document.getElementById(
-    'movCodigoTomo'
-).innerText =
-    d.Codigo_Tomo || tomoActual;
-}
-/* =========================================================
-ÍNDICE DEL TOMO
-========================================================= */
-async function actualizarVistaIndice() {
-if (!tomoActual) {
-    return;
-}
-const estado =
-    document.getElementById(
-        'estadoIndice'
-    );
-const cuerpo =
-    document.getElementById(
-        'cuerpoIndice'
-    );
-estado.innerText =
-    'Consultando índice...';
-const respuesta =
-    await llamarBackend(
-        'obtenerIndiceTomo',
-        Object.assign(
-            {
-                codigoTomo:
-                    tomoActual
-            },
-            credenciales()
-        )
-    );
-if (!respuesta.ok) {
-    cuerpo.innerHTML = '';
-    estado.innerHTML =
-        '<div class="error">' +
-        escaparHTML(
-            respuesta.error?.mensaje ||
-            'No fue posible obtener el índice.'
-        ) +
-        '</div>';
-    return;
-}
-const documentos =
-    respuesta.datos.documentos || [];
-if (!documentos.length) {
-    cuerpo.innerHTML = '';
-    estado.innerText =
-        'No existen documentos registrados en este tomo.';
-    return;
-}
-estado.innerText =
-    documentos.length +
-    (
-        documentos.length === 1
-            ? ' documento registrado.'
-            : ' documentos registrados.'
-    );
-cuerpo.innerHTML =
-    documentos
-        .map(d => {
-            const cite =
-                escaparHTML(
-                    String(d.Cite || '-')
-                );
-            const asunto =
-                escaparHTML(
-                    String(d.Asunto || '-')
-                );
-            const inicio =
-                escaparHTML(
-                    String(
-                        d.Folio_Inicio || '-'
-                    )
-                );
-            const fin =
-                escaparHTML(
-                    String(
-                        d.Folio_Fin || '-'
-                    )
-                );
-            let archivo =
-                '<span class="estado-documento">' +
-                '🔒 Requiere sesión' +
-                '</span>';
-            if (
-                sesion &&
-                d.URL_Archivo_PDF
-            ) {
-                const url =
-                    escaparAtributo(
-                        d.URL_Archivo_PDF
-                    );
-                archivo =
-                    `<a href="${url}" target="_blank" rel="noopener">
-                        Ver PDF
-                     </a>`;
-            }
-            return `
-                <tr>
-                    <td>${cite}</td>
-                    <td>${asunto}</td>
-                    <td>${inicio}-${fin}</td>
-                    <td>${archivo}</td>
-                </tr>
-            `;
-        })
-        .join('');
-}
-/* =========================================================
-FUNCIONES ADMINISTRADOR
-========================================================= */
-function mostrarFuncionesAdministrador() {
-document
-    .getElementById(
-        'cardMovimiento'
-    )
-    .classList.remove(
-        'oculto'
-    );
+function mostrarFormularioRegistro() {
 document
     .getElementById(
         'cardRegistro'
     )
-    .classList.remove(
-        'oculto'
-    );
+    .classList
+    .remove('oculto');
+document
+    .getElementById(
+        'cardMovimiento'
+    )
+    .classList
+    .remove('oculto');
+document.getElementById(
+    'movCodigoTomo'
+).innerText =
+    tomoActual || '-';
+if (!catalogos) {
+    cargarCatalogos();
+}
 }
 /* =========================================================
 MOVIMIENTO
 ========================================================= */
 async function registrarMovimiento() {
-const mensaje =
+const msj =
     document.getElementById(
         'mensajeMovimiento'
     );
-if (!sesion) {
-    mensaje.innerHTML =
-        '<div class="error">' +
-        'Debe iniciar sesión como Administrador.' +
+if (!sesion ||
+    sesion.rol !==
+    'Administrador') {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        'Se requiere una sesión de Administrador.' +
         '</div>';
     return;
 }
 if (!tomoActual) {
-    mensaje.innerHTML =
+    msj.innerHTML =
         '<div class="aviso">' +
-        'Primero consulte un tomo.' +
+        'Primero consulta un tomo.' +
         '</div>';
     return;
 }
-const estante =
-    document
-        .getElementById(
+const datos = {
+    codigoTomo:
+        tomoActual,
+    estante:
+        document.getElementById(
             'movEstante'
-        )
-        .value
-        .trim();
-const balda =
-    document
-        .getElementById(
+        ).value.trim(),
+    balda:
+        document.getElementById(
             'movBalda'
-        )
-        .value
-        .trim();
-const posicion =
-    document
-        .getElementById(
+        ).value.trim(),
+    posicion:
+        document.getElementById(
             'movPosicion'
-        )
-        .value
-        .trim();
-if (!estante &&
-    !balda &&
-    !posicion) {
-    mensaje.innerHTML =
+        ).value.trim(),
+    usuario:
+        sesion.idUsuario,
+    ...credenciales()
+};
+if (
+    !datos.estante &&
+    !datos.balda &&
+    !datos.posicion
+) {
+    msj.innerHTML =
         '<div class="aviso">' +
-        'Indique al menos un dato de ubicación.' +
+        'Indica al menos un dato de ubicación nuevo.' +
         '</div>';
     return;
 }
-const respuesta =
+mostrarCargando(
+    msj,
+    'Registrando movimiento...'
+);
+const r =
     await llamarBackend(
         'registrarMovimiento',
-        Object.assign(
-            {
-                codigoTomo:
-                    tomoActual,
-                estante:
-                    estante,
-                balda:
-                    balda,
-                posicion:
-                    posicion,
-                usuario:
-                    sesion.idUsuario
-            },
-            credenciales()
-        )
+        datos
     );
-if (!respuesta.ok) {
-    mensaje.innerHTML =
-        '<div class="error">' +
-        escaparHTML(
-            respuesta.error?.mensaje ||
-            'No se pudo registrar el movimiento.'
+if (r.ok) {
+    msj.innerHTML =
+        '<div class="ok">' +
+        '✓ Ubicación actualizada: ' +
+        escapeHtml(
+            r.datos.ubicacionNueva
         ) +
         '</div>';
-    return;
+    await consultarTomo(
+        tomoActual
+    );
+} else {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        escapeHtml(
+            r.error?.mensaje ||
+            'No fue posible registrar el movimiento.'
+        ) +
+        '</div>';
 }
-mensaje.innerHTML =
-    '<div class="ok">' +
-    'Ubicación actualizada correctamente.' +
-    '</div>';
-document
-    .getElementById(
-        'movEstante'
-    )
-    .value = '';
-document
-    .getElementById(
-        'movBalda'
-    )
-    .value = '';
-document
-    .getElementById(
-        'movPosicion'
-    )
-    .value = '';
-await consultarTomo(
-    tomoActual
-);
 }
 /* =========================================================
-GENERAR QR
+GENERACIÓN QR
 ========================================================= */
 function generarQR() {
 const codigo =
-    document
-        .getElementById(
-            'qrCodigoTomo'
-        )
-        .value
-        .trim();
+    document.getElementById(
+        'qrCodigoTomo'
+    )
+    .value
+    .trim();
 if (!codigo) {
+    alert(
+        'Ingresa el código del tomo.'
+    );
     return;
 }
 const contenedor =
     document.getElementById(
         'qrContenedor'
     );
-contenedor.innerHTML = '';
+contenedor.innerHTML =
+    '';
 /*
- * El QR apunta al frontend de GitHub,
- * no al backend.
- *
- * window.location.href permite que el código
- * funcione también si el index se mueve a otro
- * dominio o repositorio.
+ * El QR apunta a esta misma página
+ * utilizando ?tomo=CODIGO.
  */
 const enlace =
-    window.location.origin +
-    window.location.pathname +
+    window.location.href
+        .split('?')[0] +
     '?tomo=' +
-    encodeURIComponent(codigo);
+    encodeURIComponent(
+        codigo
+    );
 qrGenerado =
     new QRCode(
         contenedor,
         {
             text: enlace,
-            width: 220,
-            height: 220,
-            colorDark: '#242732',
-            colorLight: '#FFFFFF',
+            width: 200,
+            height: 200,
             correctLevel:
                 QRCode.CorrectLevel.H
         }
     );
-const texto =
+const p =
     document.createElement(
         'div'
     );
-texto.className =
-    'qr-enlace';
-texto.innerText =
+p.className =
+    'qr-url';
+p.innerText =
     enlace;
 contenedor.appendChild(
-    texto
+    p
 );
 document
     .getElementById(
         'btnDescargarQR'
     )
-    .classList.remove(
-        'oculto'
-    );
+    .classList
+    .remove('oculto');
 }
 /* =========================================================
 DESCARGAR QR
@@ -1969,15 +1872,11 @@ const enlace =
         'a'
     );
 enlace.download =
-    (
-        document
-            .getElementById(
-                'qrCodigoTomo'
-            )
-            .value
-            .trim() ||
-        'tomo'
-    ) +
+    document.getElementById(
+        'qrCodigoTomo'
+    )
+    .value
+    .trim() +
     '_QR.png';
 if (canvas) {
     enlace.href =
@@ -1988,6 +1887,9 @@ if (canvas) {
     enlace.href =
         imagen.src;
 } else {
+    alert(
+        'Primero genera el código QR.'
+    );
     return;
 }
 enlace.click();
@@ -1996,39 +1898,57 @@ enlace.click();
 CREAR DIRECCIÓN
 ========================================================= */
 async function crearDireccion() {
-const mensaje =
+if (!esAdministrador()) return;
+const msj =
     document.getElementById(
         'mensajeAdmDireccion'
     );
-const respuesta =
+const sigla =
+    document.getElementById(
+        'admDireccionSigla'
+    ).value.trim();
+const denominacion =
+    document.getElementById(
+        'admDireccionDenom'
+    ).value.trim();
+if (!sigla || !denominacion) {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        'Completa la sigla y denominación.' +
+        '</div>';
+    return;
+}
+mostrarCargando(
+    msj,
+    'Creando dirección...'
+);
+const r =
     await llamarBackend(
         'crearDireccion',
-        Object.assign(
-            {
-                sigla:
-                    document
-                        .getElementById(
-                            'admDireccionSigla'
-                        )
-                        .value
-                        .trim(),
-                denominacion:
-                    document
-                        .getElementById(
-                            'admDireccionDenom'
-                        )
-                        .value
-                        .trim()
-            },
-            credenciales()
-        )
+        {
+            sigla:
+                sigla,
+            denominacion:
+                denominacion,
+            ...credenciales()
+        }
     );
-mostrarResultado(
-    mensaje,
-    respuesta,
-    'Dirección creada correctamente.'
-);
-if (respuesta.ok) {
+msj.innerHTML =
+    r.ok
+    ? '<div class="ok">' +
+      '✓ Dirección ' +
+      escapeHtml(
+          r.datos.sigla
+      ) +
+      ' creada correctamente.' +
+      '</div>'
+    : '<div class="aviso">' +
+      escapeHtml(
+          r.error?.mensaje ||
+          'No fue posible crear la dirección.'
+      ) +
+      '</div>';
+if (r.ok) {
     catalogos = null;
     await cargarCatalogos();
 }
@@ -2037,45 +1957,63 @@ if (respuesta.ok) {
 CREAR UNIDAD
 ========================================================= */
 async function crearUnidad() {
-const mensaje =
+if (!esAdministrador()) return;
+const msj =
     document.getElementById(
         'mensajeAdmUnidad'
     );
-const respuesta =
+const direccion =
+    document.getElementById(
+        'admUnidadDireccion'
+    ).value;
+const sigla =
+    document.getElementById(
+        'admUnidadSigla'
+    ).value.trim();
+const denominacion =
+    document.getElementById(
+        'admUnidadDenom'
+    ).value.trim();
+if (
+    !direccion ||
+    !sigla ||
+    !denominacion
+) {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        'Completa todos los datos de la unidad.' +
+        '</div>';
+    return;
+}
+mostrarCargando(
+    msj,
+    'Creando unidad...'
+);
+const r =
     await llamarBackend(
         'crearUnidad',
-        Object.assign(
-            {
-                direccion:
-                    document
-                        .getElementById(
-                            'admUnidadDireccion'
-                        )
-                        .value,
-                sigla:
-                    document
-                        .getElementById(
-                            'admUnidadSigla'
-                        )
-                        .value
-                        .trim(),
-                denominacion:
-                    document
-                        .getElementById(
-                            'admUnidadDenom'
-                        )
-                        .value
-                        .trim()
-            },
-            credenciales()
-        )
+        {
+            direccion:
+                direccion,
+            sigla:
+                sigla,
+            denominacion:
+                denominacion,
+            ...credenciales()
+        }
     );
-mostrarResultado(
-    mensaje,
-    respuesta,
-    'Unidad creada correctamente.'
-);
-if (respuesta.ok) {
+msj.innerHTML =
+    r.ok
+    ? '<div class="ok">' +
+      '✓ Unidad creada correctamente.' +
+      '</div>'
+    : '<div class="aviso">' +
+      escapeHtml(
+          r.error?.mensaje ||
+          'No fue posible crear la unidad.'
+      ) +
+      '</div>';
+if (r.ok) {
     catalogos = null;
     await cargarCatalogos();
 }
@@ -2084,60 +2022,59 @@ if (respuesta.ok) {
 CREAR TIPO DOCUMENTAL
 ========================================================= */
 async function crearTipoDocumental() {
-const mensaje =
+if (!esAdministrador()) return;
+const msj =
     document.getElementById(
         'mensajeAdmTipo'
     );
-const respuesta =
+const datos = {
+    codigo:
+        document.getElementById(
+            'admTipoCodigo'
+        ).value.trim(),
+    tipo:
+        document.getElementById(
+            'admTipoNombre'
+        ).value.trim(),
+    naturaleza:
+        document.getElementById(
+            'admTipoNaturaleza'
+        ).value.trim(),
+    uso:
+        document.getElementById(
+            'admTipoUso'
+        ).value.trim(),
+    ...credenciales()
+};
+if (!datos.codigo ||
+    !datos.tipo) {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        'Código y tipo documental son obligatorios.' +
+        '</div>';
+    return;
+}
+mostrarCargando(
+    msj,
+    'Creando tipo documental...'
+);
+const r =
     await llamarBackend(
         'crearTipoDocumental',
-        Object.assign(
-            {
-                codigo:
-                    document
-                        .getElementById(
-                            'admTipoCodigo'
-                        )
-                        .value
-                        .trim(),
-                tipo:
-                    document
-                        .getElementById(
-                            'admTipoNombre'
-                        )
-                        .value
-                        .trim(),
-                naturaleza:
-                    document
-                        .getElementById(
-                            'admTipoNaturaleza'
-                        )
-                        .value
-                        .trim(),
-                uso:
-                    document
-                        .getElementById(
-                            'admTipoUso'
-                        )
-                        .value
-                        .trim(),
-                ordenacion:
-                    document
-                        .getElementById(
-                            'admTipoOrdenacion'
-                        )
-                        .value
-                        .trim()
-            },
-            credenciales()
-        )
+        datos
     );
-mostrarResultado(
-    mensaje,
-    respuesta,
-    'Tipo documental creado correctamente.'
-);
-if (respuesta.ok) {
+msj.innerHTML =
+    r.ok
+    ? '<div class="ok">' +
+      '✓ Tipo documental creado correctamente.' +
+      '</div>'
+    : '<div class="aviso">' +
+      escapeHtml(
+          r.error?.mensaje ||
+          'No fue posible crear el tipo documental.'
+      ) +
+      '</div>';
+if (r.ok) {
     catalogos = null;
     await cargarCatalogos();
 }
@@ -2146,249 +2083,366 @@ if (respuesta.ok) {
 CREAR TOMO
 ========================================================= */
 async function crearTomo() {
-const mensaje =
+if (!esAdministrador()) return;
+const msj =
     document.getElementById(
         'mensajeAdmTomo'
     );
-const respuesta =
+const datos = {
+    gestion:
+        document.getElementById(
+            'admTomoGestion'
+        ).value.trim(),
+    tipoDocumental:
+        document.getElementById(
+            'admTomoTipo'
+        ).value,
+    numeroTomo:
+        document.getElementById(
+            'admTomoNumero'
+        ).value.trim(),
+    estante:
+        document.getElementById(
+            'admTomoEstante'
+        ).value.trim(),
+    balda:
+        document.getElementById(
+            'admTomoBalda'
+        ).value.trim(),
+    posicion:
+        document.getElementById(
+            'admTomoPosicion'
+        ).value.trim(),
+    ...credenciales()
+};
+if (
+    !datos.gestion ||
+    !datos.tipoDocumental ||
+    !datos.numeroTomo
+) {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        'Gestión, tipo documental y número de tomo son obligatorios.' +
+        '</div>';
+    return;
+}
+mostrarCargando(
+    msj,
+    'Creando tomo...'
+);
+const r =
     await llamarBackend(
         'crearTomo',
-        Object.assign(
-            {
-                gestion:
-                    document
-                        .getElementById(
-                            'admTomoGestion'
-                        )
-                        .value
-                        .trim(),
-                tipoDocumental:
-                    document
-                        .getElementById(
-                            'admTomoTipo'
-                        )
-                        .value,
-                numeroTomo:
-                    document
-                        .getElementById(
-                            'admTomoNumero'
-                        )
-                        .value
-                        .trim(),
-                estante:
-                    document
-                        .getElementById(
-                            'admTomoEstante'
-                        )
-                        .value
-                        .trim(),
-                balda:
-                    document
-                        .getElementById(
-                            'admTomoBalda'
-                        )
-                        .value
-                        .trim(),
-                posicion:
-                    document
-                        .getElementById(
-                            'admTomoPosicion'
-                        )
-                        .value
-                        .trim()
-            },
-            credenciales()
-        )
+        datos
     );
-mostrarResultado(
-    mensaje,
-    respuesta,
-    'Tomo creado correctamente.'
-);
+if (r.ok) {
+    msj.innerHTML =
+        '<div class="ok">' +
+        '✓ Tomo creado: ' +
+        escapeHtml(
+            r.datos.codigoTomo
+        ) +
+        '</div>';
+} else {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        escapeHtml(
+            r.error?.mensaje ||
+            'No fue posible crear el tomo.'
+        ) +
+        '</div>';
+}
 }
 /* =========================================================
 CREAR USUARIO
 ========================================================= */
 async function crearUsuario() {
-const mensaje =
+if (!esAdministrador()) return;
+const msj =
     document.getElementById(
         'mensajeAdmUsuario'
     );
-const nombreUsuario =
-    document
-        .getElementById(
-            'admUsuarioNombreUsuario'
-        )
-        .value
-        .trim();
 const nombreCompleto =
-    document
-        .getElementById(
-            'admUsuarioNombre'
-        )
-        .value
-        .trim();
+    document.getElementById(
+        'admUsuarioNombre'
+    ).value.trim();
+const nombreUsuario =
+    document.getElementById(
+        'admUsuarioId'
+    ).value.trim();
 const clave =
-    document
-        .getElementById(
-            'admUsuarioClave'
-        )
-        .value;
-const rol =
-    document
-        .getElementById(
-            'admUsuarioRol'
-        )
-        .value;
-if (!nombreUsuario ||
+    document.getElementById(
+        'admUsuarioClave'
+    ).value;
+const rolPermiso =
+    document.getElementById(
+        'admUsuarioRol'
+    ).value;
+if (
     !nombreCompleto ||
-    !clave) {
-    mensaje.innerHTML =
+    !nombreUsuario ||
+    !clave
+) {
+    msj.innerHTML =
         '<div class="aviso">' +
-        'Complete nombre de usuario, nombre completo y contraseña.' +
+        'Completa nombre completo, nombre de usuario y contraseña.' +
         '</div>';
     return;
 }
+if (clave.length < 8) {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        'La contraseña debe tener al menos 8 caracteres.' +
+        '</div>';
+    return;
+}
+/*
+ * El frontend calcula SHA-256.
+ * El backend genera automáticamente U001,
+ * U002, U003...
+ */
 const claveHash =
     await sha256(
         clave
     );
-const respuesta =
+mostrarCargando(
+    msj,
+    'Creando usuario...'
+);
+const r =
     await llamarBackend(
         'crearUsuario',
-        Object.assign(
-            {
-                /*
-                 * NO se envía ID_Usuario.
-                 * El backend lo genera:
-                 * U001, U002, U003...
-                 */
-                nombreUsuario:
-                    nombreUsuario,
-                nombreCompleto:
-                    nombreCompleto,
-                claveHash:
-                    claveHash,
-                rolPermiso:
-                    rol
-            },
-            credenciales()
-        )
+        {
+            nombreCompleto:
+                nombreCompleto,
+            nombreUsuario:
+                nombreUsuario,
+            claveHash:
+                claveHash,
+            rolPermiso:
+                rolPermiso,
+            ...credenciales()
+        }
     );
-if (!respuesta.ok) {
-    mensaje.innerHTML =
-        '<div class="error">' +
-        escaparHTML(
-            respuesta.error?.mensaje ||
-            'No se pudo crear el usuario.'
+if (r.ok) {
+    msj.innerHTML =
+        '<div class="ok">' +
+        '✓ Usuario creado correctamente. ' +
+        'El sistema asignó el ID interno ' +
+        '<strong>' +
+        escapeHtml(
+            r.datos.idUsuario ||
+            ''
+        ) +
+        '</strong>.' +
+        '</div>';
+    document.getElementById(
+        'admUsuarioNombre'
+    ).value = '';
+    document.getElementById(
+        'admUsuarioId'
+    ).value = '';
+    document.getElementById(
+        'admUsuarioClave'
+    ).value = '';
+    await cargarListaUsuarios();
+} else {
+    msj.innerHTML =
+        '<div class="aviso">' +
+        escapeHtml(
+            r.error?.mensaje ||
+            'No fue posible crear el usuario.'
         ) +
         '</div>';
-    return;
 }
-mensaje.innerHTML =
-    '<div class="ok">' +
-    'Usuario creado correctamente.' +
-    '</div>';
-document
-    .getElementById(
-        'admUsuarioNombreUsuario'
-    )
-    .value = '';
-document
-    .getElementById(
-        'admUsuarioNombre'
-    )
-    .value = '';
-document
-    .getElementById(
-        'admUsuarioClave'
-    )
-    .value = '';
-await cargarListaUsuarios();
 }
 /* =========================================================
 LISTAR USUARIOS
 ========================================================= */
 async function cargarListaUsuarios() {
-const respuesta =
-    await llamarBackend(
-        'listarUsuarios',
-        Object.assign(
-            {},
-            credenciales()
-        )
-    );
-if (!respuesta.ok) {
-    return;
-}
-const usuarios =
-    respuesta.datos.usuarios || [];
+if (!esAdministrador()) return;
 const cuerpo =
     document.getElementById(
         'cuerpoUsuarios'
     );
-/*
- * ID_Usuario NO se muestra.
- * Es un identificador interno de trazabilidad.
- */
+cuerpo.innerHTML =
+    '<tr><td colspan="4" class="vacio">' +
+    'Cargando usuarios...' +
+    '</td></tr>';
+const r =
+    await llamarBackend(
+        'listarUsuarios',
+        {
+            ...credenciales()
+        }
+    );
+if (!r.ok) {
+    cuerpo.innerHTML =
+        '<tr><td colspan="4" class="vacio">' +
+        escapeHtml(
+            r.error?.mensaje ||
+            'No fue posible cargar usuarios.'
+        ) +
+        '</td></tr>';
+    return;
+}
+const usuarios =
+    r.datos.usuarios || [];
+if (!usuarios.length) {
+    cuerpo.innerHTML =
+        '<tr><td colspan="4" class="vacio">' +
+        'No existen usuarios registrados.' +
+        '</td></tr>';
+    return;
+}
 cuerpo.innerHTML =
     usuarios
-        .map(u => {
+    .map(
+        u =>
+            `<tr>
+                <td>
+                    ${escapeHtml(
+                        u.Nombre_Usuario || ''
+                    )}
+                </td>
+                <td>
+                    ${escapeHtml(
+                        u.Nombre_Completo || ''
+                    )}
+                </td>
+                <td>
+                    ${escapeHtml(
+                        u.Rol_Permiso || ''
+                    )}
+                </td>
+                <td>
+                    ${escapeHtml(
+                        u.Estado || ''
+                    )}
+                </td>
+            </tr>`
+    )
+    .join('');
+}
+/* =========================================================
+ACTUALIZAR ÍNDICE
+========================================================= */
+async function actualizarVistaIndice() {
+if (!tomoActual) return;
+const cuerpo =
+    document.getElementById(
+        'cuerpoIndice'
+    );
+cuerpo.innerHTML =
+    '<tr>' +
+    '<td colspan="4" class="vacio">' +
+    'Consultando índice...' +
+    '</td>' +
+    '</tr>';
+const r =
+    await llamarBackend(
+        'obtenerIndiceTomo',
+        Object.assign(
+            {
+                codigoTomo:
+                    tomoActual
+            },
+            credenciales()
+        )
+    );
+if (!r.ok) {
+    cuerpo.innerHTML =
+        '<tr>' +
+        '<td colspan="4" class="vacio">' +
+        escapeHtml(
+            r.error?.mensaje ||
+            'No fue posible obtener el índice.'
+        ) +
+        '</td>' +
+        '</tr>';
+    return;
+}
+const documentos =
+    r.datos.documentos || [];
+if (!documentos.length) {
+    cuerpo.innerHTML =
+        '<tr>' +
+        '<td colspan="4" class="vacio">' +
+        'Este tomo todavía no tiene documentos registrados.' +
+        '</td>' +
+        '</tr>';
+    return;
+}
+cuerpo.innerHTML =
+    documentos
+    .map(
+        d => {
+            let archivo =
+                '<td>🔒</td>';
+            /*
+             * Solamente usuarios autenticados
+             * reciben el enlace al PDF.
+             */
+            if (
+                sesion &&
+                d.URL_Archivo_PDF
+            ) {
+                archivo =
+                    `<td>
+                        <a
+                            href="${escapeAttribute(
+                                d.URL_Archivo_PDF
+                            )}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            📄 Ver PDF
+                        </a>
+                    </td>`;
+            }
             return `
                 <tr>
                     <td>
-                        ${escaparHTML(
-                            String(
-                                u.Nombre_Usuario ||
-                                ''
-                            )
+                        ${escapeHtml(
+                            d.Cite || ''
                         )}
                     </td>
                     <td>
-                        ${escaparHTML(
-                            String(
-                                u.Nombre_Completo ||
-                                ''
-                            )
+                        ${escapeHtml(
+                            d.Asunto || ''
                         )}
                     </td>
                     <td>
-                        ${escaparHTML(
-                            String(
-                                u.Rol_Permiso ||
-                                ''
-                            )
+                        ${escapeHtml(
+                            (d.Folio_Inicio ?? '') +
+                            '-' +
+                            (d.Folio_Fin ?? '')
                         )}
                     </td>
-                    <td>
-                        ${escaparHTML(
-                            String(
-                                u.Estado ||
-                                ''
-                            )
-                        )}
-                    </td>
+                    ${archivo}
                 </tr>
             `;
-        })
-        .join('');
+        }
+    )
+    .join('');
 }
 /* =========================================================
-REGISTRAR DOCUMENTO
+LEER ARCHIVO BASE64
 ========================================================= */
 function leerArchivoComoBase64(
 archivo
 ) {
 return new Promise(
-    (resolve, reject) => {
+    (
+        resolve,
+        reject
+    ) => {
         const lector =
             new FileReader();
         lector.onload =
             () => {
-                const resultado =
-                    lector.result || '';
                 resolve(
-                    resultado
+                    lector.result
                         .split(',')[1]
                 );
             };
@@ -2400,35 +2454,31 @@ return new Promise(
     }
 );
 }
+/* =========================================================
+REGISTRAR DOCUMENTO
+========================================================= */
 async function registrarDocumento() {
-const mensaje =
+if (!esAdministrador()) return;
+const msj =
     document.getElementById(
         'mensajeRegistro'
     );
-if (!sesion) {
-    mensaje.innerHTML =
-        '<div class="error">' +
-        'Debe iniciar sesión.' +
-        '</div>';
-    return;
-}
 if (!tomoActual) {
-    mensaje.innerHTML =
+    msj.innerHTML =
         '<div class="aviso">' +
-        'Primero consulte un tomo.' +
+        'Primero consulta un tomo.' +
         '</div>';
     return;
 }
 const archivo =
-    document
-        .getElementById(
-            'regPdf'
-        )
-        .files[0];
+    document.getElementById(
+        'regPdf'
+    )
+    .files[0];
 if (!archivo) {
-    mensaje.innerHTML =
+    msj.innerHTML =
         '<div class="aviso">' +
-        'Seleccione un archivo PDF.' +
+        'Selecciona un archivo PDF.' +
         '</div>';
     return;
 }
@@ -2436,322 +2486,224 @@ if (
     archivo.type !==
     'application/pdf'
 ) {
-    mensaje.innerHTML =
-        '<div class="error">' +
+    msj.innerHTML =
+        '<div class="aviso">' +
         'El archivo seleccionado no es un PDF.' +
         '</div>';
     return;
 }
+mostrarCargando(
+    msj,
+    'Preparando archivo PDF...'
+);
 try {
-    mensaje.innerHTML =
-        '<div class="info">' +
-        'Preparando archivo PDF...' +
-        '</div>';
     const pdfBase64 =
         await leerArchivoComoBase64(
             archivo
         );
-    mensaje.innerHTML =
-        '<div class="info">' +
-        'Registrando documento...' +
-        '</div>';
     const datos = {
         codigoTomo:
             tomoActual,
         direccion:
-            document
-                .getElementById(
-                    'regDireccion'
-                )
-                .value,
+            document.getElementById(
+                'regDireccion'
+            ).value,
         unidad:
-            document
-                .getElementById(
-                    'regUnidad'
-                )
-                .value,
+            document.getElementById(
+                'regUnidad'
+            ).value,
         numeroCite:
-            document
-                .getElementById(
-                    'regNumeroCite'
-                )
-                .value
-                .trim(),
+            document.getElementById(
+                'regNumeroCite'
+            ).value.trim(),
         fechaDocumento:
-            document
-                .getElementById(
-                    'regFecha'
-                )
-                .value,
+            document.getElementById(
+                'regFecha'
+            ).value,
         remitente:
-            document
-                .getElementById(
-                    'regRemitente'
-                )
-                .value
-                .trim(),
+            document.getElementById(
+                'regRemitente'
+            ).value.trim(),
         destinatario:
-            document
-                .getElementById(
-                    'regDestinatario'
-                )
-                .value
-                .trim(),
+            document.getElementById(
+                'regDestinatario'
+            ).value.trim(),
         asunto:
-            document
-                .getElementById(
-                    'regAsunto'
-                )
-                .value
-                .trim(),
+            document.getElementById(
+                'regAsunto'
+            ).value.trim(),
         folioInicio:
-            document
-                .getElementById(
-                    'regFolioInicio'
-                )
-                .value,
+            document.getElementById(
+                'regFolioInicio'
+            ).value,
         folioFin:
-            document
-                .getElementById(
-                    'regFolioFin'
-                )
-                .value,
+            document.getElementById(
+                'regFolioFin'
+            ).value,
         observaciones:
-            document
-                .getElementById(
-                    'regObservaciones'
-                )
-                .value
-                .trim(),
+            document.getElementById(
+                'regObservaciones'
+            ).value.trim(),
         usuario:
             sesion.idUsuario,
         pdfBase64:
-            pdfBase64
+            pdfBase64,
+        ...credenciales()
     };
-    const respuesta =
+    mostrarCargando(
+        msj,
+        'Subiendo PDF y registrando documento...'
+    );
+    const r =
         await llamarBackend(
             'registrarDocumento',
-            Object.assign(
-                datos,
-                credenciales()
-            )
+            datos
         );
-    if (!respuesta.ok) {
-        mensaje.innerHTML =
-            '<div class="error">' +
-            escaparHTML(
-                respuesta.error?.mensaje ||
-                'No se pudo registrar el documento.'
+    if (r.ok) {
+        msj.innerHTML =
+            '<div class="ok">' +
+            '✓ Documento registrado correctamente. ' +
+            'ID: ' +
+            escapeHtml(
+                r.datos.codigoDocumento ||
+                ''
+            ) +
+            ' · Cite: ' +
+            escapeHtml(
+                r.datos.cite ||
+                ''
             ) +
             '</div>';
-        return;
-    }
-    mensaje.innerHTML =
-        '<div class="ok">' +
-        'Documento registrado correctamente.' +
-        '</div>';
-    document
-        .getElementById(
+        await actualizarVistaIndice();
+        document.getElementById(
             'regPdf'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regNumeroCite'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regRemitente'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regDestinatario'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regAsunto'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regFolioInicio'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regFolioFin'
-        )
-        .value = '';
-    document
-        .getElementById(
-            'regObservaciones'
-        )
-        .value = '';
-    await actualizarVistaIndice();
+        ).value = '';
+    } else {
+        msj.innerHTML =
+            '<div class="aviso">' +
+            escapeHtml(
+                r.error?.mensaje ||
+                'No fue posible registrar el documento.'
+            ) +
+            '</div>';
+    }
 } catch (error) {
-    mensaje.innerHTML =
-        '<div class="error">' +
-        'Error al procesar el PDF: ' +
-        escaparHTML(
-            error.message
+    msj.innerHTML =
+        '<div class="aviso">' +
+        escapeHtml(
+            error.message ||
+            'Error al procesar el archivo.'
         ) +
         '</div>';
 }
 }
 /* =========================================================
-RESULTADOS
+COMPROBAR ADMINISTRADOR
 ========================================================= */
-function mostrarResultado(
-elemento,
-respuesta,
-mensajeExito
+function esAdministrador() {
+if (
+    !sesion ||
+    sesion.rol !==
+    'Administrador'
 ) {
-if (respuesta.ok) {
-    elemento.innerHTML =
-        '<div class="ok">' +
-        escaparHTML(
-            mensajeExito
-        ) +
-        '</div>';
-} else {
-    elemento.innerHTML =
-        '<div class="error">' +
-        escaparHTML(
-            respuesta.error?.mensaje ||
-            'Operación no completada.'
-        ) +
-        '</div>';
+    alert(
+        'Esta operación requiere permisos de Administrador.'
+    );
+    return false;
 }
+return true;
 }
 /* =========================================================
-SEGURIDAD DE SALIDA HTML
+ESCAPAR HTML
 ========================================================= */
-function escaparHTML(valor) {
-return String(valor ?? '')
-    .replace(
-        /&/g,
-        '&amp;'
-    )
-    .replace(
-        /</g,
-        '&lt;'
-    )
-    .replace(
-        />/g,
-        '&gt;'
-    )
-    .replace(
-        /"/g,
-        '&quot;'
-    )
-    .replace(
-        /'/g,
-        '&#039;'
-    );
+function escapeHtml(valor) {
+return String(
+    valor ?? ''
+)
+.replace(
+    /&/g,
+    '&amp;'
+)
+.replace(
+    /</g,
+    '&lt;'
+)
+.replace(
+    />/g,
+    '&gt;'
+)
+.replace(
+    /"/g,
+    '&quot;'
+)
+.replace(
+    /'/g,
+    '&#039;'
+);
 }
-function escaparAtributo(valor) {
-return escaparHTML(
+/* =========================================================
+ESCAPAR ATRIBUTO HTML
+========================================================= */
+function escapeAttribute(valor) {
+return escapeHtml(
     valor
 );
 }
 /* =========================================================
-INICIALIZACIÓN DEL ESCÁNER
+PING DEL BACKEND
 ========================================================= */
-function inicializarEscaner() {
-if (
-    typeof Html5QrcodeScanner ===
-    'undefined'
-) {
-    console.warn(
-        'La librería QR no está disponible.'
+async function comprobarBackend() {
+const punto =
+    document.getElementById(
+        'puntoBackend'
     );
-    return;
+const estado =
+    document.getElementById(
+        'estadoBackend'
+    );
+const r =
+    await llamarBackend(
+        'ping',
+        {}
+    );
+if (r.ok) {
+    punto.className =
+        'punto ok';
+    estado.innerText =
+        'Servidor conectado';
+} else {
+    punto.className =
+        'punto error';
+    estado.innerText =
+        'Servidor no disponible';
 }
-const lector =
-    new Html5QrcodeScanner(
-        'lector',
-        {
-            fps: 10,
-            qrbox: {
-                width: 220,
-                height: 220
-            },
-            rememberLastUsedCamera: true
-        },
-        false
-    );
-lector.render(
-    onEscaneoExitoso,
-    function(error) {
-        /*
-         * Los errores normales de lectura QR
-         * se ignoran para no saturar la consola.
-         */
-    }
-);
 }
 /* =========================================================
-CARGA INICIAL
+URL ?tomo=...
+========================================================= */
+function consultarTomoDesdeURL() {
+const parametros =
+    new URLSearchParams(
+        window.location.search
+    );
+const codigo =
+    parametros.get(
+        'tomo'
+    );
+if (codigo) {
+    consultarTomo(
+        codigo
+    );
+}
+}
+/* =========================================================
+INICIALIZACIÓN
 ========================================================= */
 window.addEventListener(
 'load',
 async function() {
-    inicializarEscaner();
-    /*
-     * Intentamos cargar catálogos inicialmente.
-     * Las funciones administrativas continuarán
-     * protegidas por el backend.
-     */
-    await cargarCatalogos();
-    /*
-     * Si el frontend fue abierto desde un QR:
-     *
-     * https://.../index.html?tomo=2026-IN-T03
-     *
-     * se consulta automáticamente.
-     */
-    const parametros =
-        new URLSearchParams(
-            window.location.search
-        );
-    const codigoQR =
-        parametros.get(
-            'tomo'
-        );
-    if (codigoQR) {
-        document
-            .getElementById(
-                'codigoManual'
-            )
-            .value =
-            codigoQR;
-        await consultarTomo(
-            codigoQR
-        );
-    }
-}
-);
-/* =========================================================
-ENTER EN LOGIN
-========================================================= */
-document.addEventListener(
-'keydown',
-function(event) {
-    if (
-        event.key === 'Enter' &&
-        document.activeElement &&
-        (
-            document.activeElement.id ===
-                'usuario' ||
-            document.activeElement.id ===
-                'clave'
-        )
-    ) {
-        iniciarSesion();
-    }
+    comprobarBackend();
+    consultarTomoDesdeURL();
 }
 );
 </script> </body> </html> 
