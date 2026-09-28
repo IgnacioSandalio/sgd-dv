@@ -3,521 +3,4109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SGD-DV · Sistema de Gestión Documental</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
-  :root{
-    --blanco:#FFFFFF; --dorado:#B5993A; --gris:#585857; --azul:#242732;
-    --rojo:#E30613; --amarillo:#FFED00; --verde:#008739;
-    --fondo:#F4F4F3; --gris-claro:#E7E7E5; --gris-borde:#D4D4D1;
-    --rojo-error:#C62828;
-  }
-  *{box-sizing:border-box; font-family: system-ui, Arial, sans-serif;}
-  body{margin:0; background:var(--fondo); color:var(--azul);}
-  header{background:var(--azul); color:var(--blanco); padding:14px 20px; display:flex; justify-content:space-between; align-items:center;}
-  header h1{font-size:16px; margin:0; letter-spacing:.03em;}
-  .tricolor{height:3px; background:linear-gradient(to right, var(--rojo) 33%, var(--amarillo) 33% 66%, var(--verde) 66%);}
-  main{max-width:960px; margin:0 auto; padding:16px; display:grid; gap:16px; grid-template-columns: 1fr 1.4fr;}
-  @media (max-width:800px){ main{grid-template-columns:1fr;} }
-  .card{background:var(--blanco); border:1px solid var(--gris-borde); border-radius:10px; padding:16px;}
-  .card h2{font-size:14px; text-transform:uppercase; letter-spacing:.05em; color:var(--gris); margin:0 0 10px;}
-  input, select, textarea, button{width:100%; padding:8px; margin-bottom:8px; border:1px solid var(--gris-borde); border-radius:6px; font-size:14px;}
-  button{background:var(--dorado); color:var(--azul); font-weight:600; border:none; cursor:pointer;}
-  button:hover{opacity:.9;}
-  #lector{border-radius:8px; overflow:hidden; border:1px solid var(--gris-borde);}
-  table{width:100%; border-collapse:collapse; font-size:13px;}
-  th,td{border-bottom:1px solid var(--gris-claro); padding:6px; text-align:left;}
-  .oculto{display:none;}
-  .aviso{background:#FDECEC; border-left:4px solid var(--rojo-error); padding:10px; font-size:13px; border-radius:4px;}
-  .ok{background:#EAF7EE; border-left:4px solid var(--verde); padding:10px; font-size:13px; border-radius:4px;}
-  .ubicacion{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; text-align:center;}
-  .ubicacion div{background:var(--gris-claro); border-radius:8px; padding:10px;}
-  .ubicacion span{display:block; font-size:22px; font-weight:800; color:var(--azul);}
-  footer{height:1.5px; background:linear-gradient(to right, var(--rojo) 33%, var(--amarillo) 33% 66%, var(--verde) 66%); margin-top:20px;}
+
+/* =========================================================
+   VARIABLES INSTITUCIONALES
+   ========================================================= */
+
+:root {
+    --blanco: #FFFFFF;
+
+    --dorado: #B5993A;
+    --dorado-oscuro: #9E842D;
+
+    --gris-institucional: #585857;
+    --azul-institucional: #242732;
+
+    --rojo-bolivia: #E30613;
+    --amarillo-bolivia: #FFED00;
+    --verde-bolivia: #008739;
+
+    --fondo: #F4F4F3;
+    --gris-claro: #E7E7E5;
+    --gris-borde: #D4D4D1;
+    --gris-medio: #8A8A87;
+
+    --verde-ok: #008739;
+    --rojo-error: #C62828;
+    --amarillo-alerta: #F0C928;
+
+    --azul-hover: #303441;
+
+    --sombra-suave:
+        0 2px 8px rgba(36, 39, 50, 0.07);
+
+    --sombra-media:
+        0 5px 18px rgba(36, 39, 50, 0.10);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--fondo);
+    color: var(--azul-institucional);
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+header {
+    background: var(--azul-institucional);
+    color: var(--blanco);
+
+    padding: 14px 22px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow: var(--sombra-media);
+}
+
+.header-marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-icono {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 9px;
+
+    background: var(--dorado);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.header-titulo {
+    margin: 0;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    letter-spacing: .02em;
+}
+
+.header-subtitulo {
+    margin-top: 2px;
+
+    color: #D8D8D6;
+
+    font-size: 11px;
+}
+
+#estadoSesion {
+    font-size: 12px;
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.09);
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   FRANJA BOLIVIA
+   ========================================================= */
+
+.tricolor {
+    height: 4px;
+
+    background:
+        linear-gradient(
+            to right,
+            var(--rojo-bolivia) 33.33%,
+            var(--amarillo-bolivia) 33.33% 66.66%,
+            var(--verde-bolivia) 66.66%
+        );
+}
+
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+main {
+    width: min(1180px, calc(100% - 28px));
+
+    margin: 20px auto;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(280px, .85fr)
+        minmax(400px, 1.5fr);
+
+    gap: 18px;
+}
+
+.columna {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+.card {
+    background: var(--blanco);
+
+    border: 1px solid var(--gris-borde);
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    box-shadow: var(--sombra-suave);
+}
+
+.card h2 {
+    margin: 0 0 13px;
+
+    color: var(--gris-institucional);
+
+    font-size: 14px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .045em;
+}
+
+.card h3 {
+    margin: 15px 0 8px;
+
+    font-size: 13px;
+
+    color: var(--azul-institucional);
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+label {
+    display: block;
+
+    margin: 7px 0 4px;
+
+    color: var(--gris-institucional);
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 10px 11px;
+
+    margin: 0 0 8px;
+
+    border: 1px solid var(--gris-borde);
+
+    border-radius: 7px;
+
+    background: var(--blanco);
+
+    color: var(--azul-institucional);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color .15s,
+        box-shadow .15s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--dorado);
+
+    box-shadow:
+        0 0 0 3px rgba(181,153,58,.13);
+}
+
+textarea {
+    min-height: 80px;
+
+    resize: vertical;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+button {
+    width: 100%;
+
+    padding: 10px 13px;
+
+    margin: 4px 0 7px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: var(--dorado);
+
+    color: var(--azul-institucional);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background .15s,
+        transform .08s,
+        box-shadow .15s;
+}
+
+button:hover {
+    background: var(--dorado-oscuro);
+
+    color: var(--blanco);
+
+    box-shadow: var(--sombra-suave);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button.secundario {
+    background: var(--azul-institucional);
+
+    color: var(--blanco);
+}
+
+button.secundario:hover {
+    background: var(--azul-hover);
+}
+
+button.peligro {
+    background: var(--rojo-error);
+
+    color: var(--blanco);
+}
+
+
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+
+.oculto {
+    display: none !important;
+}
+
+.texto-ayuda {
+    margin: 3px 0 10px;
+
+    color: var(--gris-medio);
+
+    font-size: 11px;
+}
+
+.separador {
+    height: 1px;
+
+    margin: 14px 0;
+
+    background: var(--gris-claro);
+}
+
+.grid-2 {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.grid-3 {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 9px;
+}
+
+
+/* =========================================================
+   MENSAJES
+   ========================================================= */
+
+.mensaje {
+    margin-top: 6px;
+
+    font-size: 12px;
+}
+
+.ok {
+    padding: 10px 11px;
+
+    background: #EAF7EE;
+
+    border-left: 4px solid var(--verde-ok);
+
+    border-radius: 5px;
+
+    color: #155B2D;
+}
+
+.aviso {
+    padding: 10px 11px;
+
+    background: #FFF8DB;
+
+    border-left: 4px solid var(--amarillo-alerta);
+
+    border-radius: 5px;
+
+    color: #665400;
+}
+
+.error {
+    padding: 10px 11px;
+
+    background: #FDECEC;
+
+    border-left: 4px solid var(--rojo-error);
+
+    border-radius: 5px;
+
+    color: #8B1A1A;
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login-marca {
+    text-align: center;
+
+    padding: 8px 0 14px;
+}
+
+.login-marca .icono {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 8px;
+
+    border-radius: 12px;
+
+    background: var(--azul-institucional);
+
+    color: var(--dorado);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+}
+
+.login-marca strong {
+    display: block;
+
+    font-size: 15px;
+}
+
+.login-marca span {
+    color: var(--gris-medio);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   UBICACIÓN
+   ========================================================= */
+
+.ubicacion {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 9px;
+}
+
+.ubicacion-item {
+    background: var(--gris-claro);
+
+    border-radius: 9px;
+
+    padding: 12px 8px;
+
+    text-align: center;
+}
+
+.ubicacion-item small {
+    display: block;
+
+    color: var(--gris-institucional);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    font-weight: 700;
+}
+
+.ubicacion-item span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--azul-institucional);
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   QR
+   ========================================================= */
+
+#lector {
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid var(--gris-borde);
+
+    border-radius: 9px;
+
+    background: #FAFAF9;
+}
+
+#lector video {
+    border-radius: 8px;
+}
+
+#qrContenedor {
+    min-height: 20px;
+
+    text-align: center;
+}
+
+#qrContenedor img,
+#qrContenedor canvas {
+    max-width: 200px;
+
+    margin: 8px auto;
+}
+
+
+/* =========================================================
+   TABLAS
+   ========================================================= */
+
+.tabla-contenedor {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border: 1px solid var(--gris-borde);
+
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 12px;
+}
+
+th,
+td {
+    padding: 8px;
+
+    border-bottom: 1px solid var(--gris-claro);
+
+    text-align: left;
+
+    vertical-align: middle;
+}
+
+th {
+    background: var(--azul-institucional);
+
+    color: var(--blanco);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #FAFAF8;
+}
+
+.estado-activo {
+    color: var(--verde-ok);
+
+    font-weight: 700;
+}
+
+.estado-inactivo {
+    color: var(--rojo-error);
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ENLACES
+   ========================================================= */
+
+a {
+    color: var(--dorado-oscuro);
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   ADMINISTRACIÓN
+   ========================================================= */
+
+#panelAdmin {
+    width: min(1180px, calc(100% - 28px));
+
+    margin: 0 auto 20px;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.admin-titulo {
+    grid-column: 1 / -1;
+
+    background: var(--azul-institucional);
+
+    color: var(--blanco);
+
+    border-radius: 10px;
+
+    padding: 13px 16px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    box-shadow: var(--sombra-suave);
+}
+
+.admin-ancho {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   PIE
+   ========================================================= */
+
+footer {
+    width: 100%;
+
+    margin-top: 25px;
+
+    background: var(--azul-institucional);
+
+    color: #DADAD8;
+
+    padding: 16px;
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+.footer-tricolor {
+    height: 3px;
+
+    background:
+        linear-gradient(
+            to right,
+            var(--rojo-bolivia) 33.33%,
+            var(--amarillo-bolivia) 33.33% 66.66%,
+            var(--verde-bolivia) 66.66%
+        );
+}
+
+
+/* =========================================================
+   CARGANDO
+   ========================================================= */
+
+.cargando {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--gris-institucional);
+
+    font-size: 12px;
+}
+
+.punto {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--dorado);
+
+    animation: pulso 1s infinite alternate;
+}
+
+@keyframes pulso {
+    from {
+        opacity: .3;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    #panelAdmin {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-ancho,
+    .admin-titulo {
+        grid-column: auto;
+    }
+
+    header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    #estadoSesion {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 550px) {
+
+    main,
+    #panelAdmin {
+        width: min(100% - 18px, 1180px);
+
+        margin-top: 10px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .ubicacion {
+        grid-template-columns: 1fr;
+    }
+
+    .header-titulo {
+        font-size: 14px;
+    }
+}
+
 </style>
 </head>
+
+
 <body>
 
 <header>
-  <h1>📦 SGD-DV · Gestión Documental y Trazabilidad</h1>
-  <div id="estadoSesion">👤 Invitado (no validado)</div>
+
+    <div class="header-marca">
+
+        <div class="header-icono">
+            📦
+        </div>
+
+        <div>
+            <h1 class="header-titulo">
+                SGD-DV · Gestión Documental
+            </h1>
+
+            <div class="header-subtitulo">
+                Sistema de Gestión Documental y Trazabilidad
+            </div>
+        </div>
+
+    </div>
+
+    <div id="estadoSesion">
+        👤 Invitado · No autenticado
+    </div>
+
 </header>
+
 <div class="tricolor"></div>
 
+
 <main>
-  <!-- COLUMNA IZQUIERDA -->
-  <div style="display:flex; flex-direction:column; gap:16px;">
 
-    <div class="card" id="cardLogin">
-      <h2>🔑 Acceso Autorizado</h2>
-      <input type="text" id="usuario" placeholder="Usuario institucional">
-      <input type="password" id="clave" placeholder="Contraseña">
-      <button onclick="iniciarSesion()">Iniciar sesión</button>
-      <div id="mensajeLogin"></div>
+    <!-- =====================================================
+         COLUMNA IZQUIERDA
+         ===================================================== -->
+
+    <div class="columna">
+
+        <!-- LOGIN -->
+
+        <section class="card" id="cardLogin">
+
+            <div class="login-marca">
+
+                <div class="icono">
+                    🔐
+                </div>
+
+                <strong>Acceso al sistema</strong>
+
+                <span>
+                    Ingrese con su usuario institucional
+                </span>
+
+            </div>
+
+            <label for="usuario">
+                Nombre de usuario
+            </label>
+
+            <input
+                type="text"
+                id="usuario"
+                placeholder="Ej. JoseMMendez"
+                autocomplete="username"
+            >
+
+            <label for="clave">
+                Contraseña
+            </label>
+
+            <input
+                type="password"
+                id="clave"
+                placeholder="Contraseña"
+                autocomplete="current-password"
+            >
+
+            <button onclick="iniciarSesion()">
+                🔑 Iniciar sesión
+            </button>
+
+            <div
+                id="mensajeLogin"
+                class="mensaje"
+            ></div>
+
+        </section>
+
+
+        <!-- ESCÁNER -->
+
+        <section class="card">
+
+            <h2>
+                📷 Consulta mediante QR
+            </h2>
+
+            <p class="texto-ayuda">
+                Escanee el código QR colocado en el tomo
+                o introduzca manualmente su código.
+            </p>
+
+            <div id="lector"></div>
+
+            <div class="separador"></div>
+
+            <label for="codigoManual">
+                Código del tomo
+            </label>
+
+            <input
+                type="text"
+                id="codigoManual"
+                placeholder="Ej. 2026-IN-T03"
+            >
+
+            <button
+                class="secundario"
+                onclick="consultarTomo(
+                    document.getElementById('codigoManual').value.trim()
+                )"
+            >
+                🔎 Consultar tomo
+            </button>
+
+        </section>
+
+
+        <!-- QR -->
+
+        <section class="card">
+
+            <h2>
+                🏷️ Generar código QR
+            </h2>
+
+            <p class="texto-ayuda">
+                El QR contiene el enlace de consulta del tomo.
+            </p>
+
+            <label for="qrCodigoTomo">
+                Código del tomo
+            </label>
+
+            <input
+                type="text"
+                id="qrCodigoTomo"
+                placeholder="Ej. 2026-IN-T03"
+            >
+
+            <button onclick="generarQR()">
+                ▣ Generar QR
+            </button>
+
+            <div id="qrContenedor"></div>
+
+            <button
+                id="btnDescargarQR"
+                class="secundario oculto"
+                onclick="descargarQR()"
+            >
+                ⬇ Descargar QR PNG
+            </button>
+
+        </section>
+
     </div>
 
-    <div class="card">
-      <h2>📷 Escáner QR</h2>
-      <div id="lector"></div>
-      <p style="font-size:12px; color:var(--gris)">O ingresa el código manualmente:</p>
-      <input type="text" id="codigoManual" placeholder="Ej. 2026-IN-T03">
-      <button onclick="consultarTomo(document.getElementById('codigoManual').value.trim())">Consultar</button>
+
+    <!-- =====================================================
+         COLUMNA DERECHA
+         ===================================================== -->
+
+    <div class="columna">
+
+        <!-- UBICACIÓN -->
+
+        <section
+            class="card oculto"
+            id="cardUbicacion"
+        >
+
+            <h2>
+                📍 Ubicación física del tomo
+            </h2>
+
+            <div class="ubicacion">
+
+                <div class="ubicacion-item">
+
+                    <small>Estante</small>
+
+                    <span id="ubEstante">-</span>
+
+                </div>
+
+                <div class="ubicacion-item">
+
+                    <small>Balda</small>
+
+                    <span id="ubBalda">-</span>
+
+                </div>
+
+                <div class="ubicacion-item">
+
+                    <small>Posición</small>
+
+                    <span id="ubPosicion">-</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMACIÓN DEL TOMO -->
+
+        <section
+            class="card oculto"
+            id="cardInfoTomo"
+        >
+
+            <h2>
+                📚 Información del tomo
+            </h2>
+
+            <div class="grid-2">
+
+                <div>
+                    <label>Código</label>
+                    <input id="infoCodigoTomo" readonly>
+                </div>
+
+                <div>
+                    <label>Gestión</label>
+                    <input id="infoGestion" readonly>
+                </div>
+
+                <div>
+                    <label>Tipo documental</label>
+                    <input id="infoTipoDocumental" readonly>
+                </div>
+
+                <div>
+                    <label>Número de tomo</label>
+                    <input id="infoNumeroTomo" readonly>
+                </div>
+
+                <div>
+                    <label>Rango de numeración</label>
+                    <input id="infoRangoNumeracion" readonly>
+                </div>
+
+                <div>
+                    <label>Estado</label>
+                    <input id="infoEstado" readonly>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ÍNDICE -->
+
+        <section
+            class="card oculto"
+            id="cardIndice"
+        >
+
+            <h2>
+                📑 Contenido documental
+            </h2>
+
+            <p
+                id="resumenIndice"
+                class="texto-ayuda"
+            ></p>
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Cite</th>
+                            <th>Fecha</th>
+                            <th>Asunto</th>
+                            <th>Folios</th>
+                            <th>Archivo</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="cuerpoIndice"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- MOVIMIENTO -->
+
+        <section
+            class="card oculto"
+            id="cardMovimiento"
+        >
+
+            <h2>
+                🔀 Actualizar ubicación
+            </h2>
+
+            <p class="texto-ayuda">
+                Esta operación requiere permisos de Administrador.
+            </p>
+
+            <strong id="movCodigoTomo">
+                -
+            </strong>
+
+            <div class="grid-3">
+
+                <div>
+
+                    <label>
+                        Estante
+                    </label>
+
+                    <input
+                        type="text"
+                        id="movEstante"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Balda
+                    </label>
+
+                    <input
+                        type="text"
+                        id="movBalda"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Posición
+                    </label>
+
+                    <input
+                        type="text"
+                        id="movPosicion"
+                    >
+
+                </div>
+
+            </div>
+
+            <button onclick="registrarMovimiento()">
+                💾 Registrar movimiento
+            </button>
+
+            <div
+                id="mensajeMovimiento"
+                class="mensaje"
+            ></div>
+
+        </section>
+
+
+        <!-- REGISTRO DOCUMENTAL -->
+
+        <section
+            class="card oculto"
+            id="cardRegistro"
+        >
+
+            <h2>
+                📝 Registrar documento
+            </h2>
+
+            <p class="texto-ayuda">
+                Registro de un nuevo documento dentro del tomo actualmente consultado.
+            </p>
+
+            <div class="grid-2">
+
+                <div>
+
+                    <label>
+                        Dirección
+                    </label>
+
+                    <select
+                        id="regDireccion"
+                        onchange="cargarUnidades()"
+                    ></select>
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Unidad
+                    </label>
+
+                    <select id="regUnidad"></select>
+
+                </div>
+
+            </div>
+
+            <label>
+                Número de Cite
+            </label>
+
+            <input
+                type="text"
+                id="regNumeroCite"
+                placeholder="Ej. 3"
+            >
+
+            <label>
+                Fecha del documento
+            </label>
+
+            <input
+                type="date"
+                id="regFecha"
+            >
+
+            <div class="grid-2">
+
+                <div>
+
+                    <label>
+                        Remitente
+                    </label>
+
+                    <input
+                        type="text"
+                        id="regRemitente"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Destinatario
+                    </label>
+
+                    <input
+                        type="text"
+                        id="regDestinatario"
+                    >
+
+                </div>
+
+            </div>
+
+            <label>
+                Asunto
+            </label>
+
+            <textarea
+                id="regAsunto"
+                placeholder="Descripción del asunto"
+            ></textarea>
+
+            <div class="grid-2">
+
+                <div>
+
+                    <label>
+                        Folio inicio
+                    </label>
+
+                    <input
+                        type="number"
+                        id="regFolioInicio"
+                        min="1"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Folio fin
+                    </label>
+
+                    <input
+                        type="number"
+                        id="regFolioFin"
+                        min="1"
+                    >
+
+                </div>
+
+            </div>
+
+            <label>
+                Observaciones
+            </label>
+
+            <textarea
+                id="regObservaciones"
+            ></textarea>
+
+            <label>
+                Archivo PDF
+            </label>
+
+            <input
+                type="file"
+                id="regPdf"
+                accept="application/pdf"
+            >
+
+            <p class="texto-ayuda">
+                Formato permitido: PDF.
+            </p>
+
+            <button onclick="registrarDocumento()">
+                💾 Guardar documento
+            </button>
+
+            <div
+                id="mensajeRegistro"
+                class="mensaje"
+            ></div>
+
+        </section>
+
     </div>
 
-  </div>
-
-  <!-- COLUMNA DERECHA -->
-  <div style="display:flex; flex-direction:column; gap:16px;">
-
-    <div class="card oculto" id="cardUbicacion">
-      <h2>📍 Ubicación física del tomo</h2>
-      <div class="ubicacion">
-        <div>Estante<span id="ubEstante">-</span></div>
-        <div>Balda<span id="ubBalda">-</span></div>
-        <div>Posición<span id="ubPosicion">-</span></div>
-      </div>
-    </div>
-
-    <div class="card oculto" id="cardIndice">
-      <h2>📑 Contenido digital del tomo</h2>
-      <table>
-        <thead><tr><th>Cite</th><th>Asunto</th><th>Folios</th><th>Archivo</th></tr></thead>
-        <tbody id="cuerpoIndice"></tbody>
-      </table>
-    </div>
-
-    <div class="card oculto" id="cardMovimiento">
-      <h2>🔀 Actualizar movimiento del tomo</h2>
-      <p style="font-size:12px; color:var(--gris)">Tomo actual: <b id="movCodigoTomo">-</b></p>
-      <label>Nuevo estante</label>
-      <input type="text" id="movEstante">
-      <label>Nueva balda</label>
-      <input type="text" id="movBalda">
-      <label>Nueva posición</label>
-      <input type="text" id="movPosicion">
-      <button onclick="registrarMovimiento()">Registrar movimiento</button>
-      <div id="mensajeMovimiento"></div>
-    </div>
-
-    <div class="card">
-      <h2>🏷️ Generar código QR</h2>
-      <label>Código de tomo</label>
-      <input type="text" id="qrCodigoTomo" placeholder="Ej. 2026-IN-T03">
-      <button onclick="generarQR()">Generar QR</button>
-      <div id="qrContenedor" style="text-align:center; margin-top:10px;"></div>
-      <button class="oculto" id="btnDescargarQR" onclick="descargarQR()">Descargar PNG</button>
-    </div>
-
-    <div class="card oculto" id="cardRegistro">
-      <h2>📝 Registrar nuevo documento en este tomo</h2>
-      <label>Dirección</label>
-      <select id="regDireccion" onchange="cargarUnidades()"></select>
-      <label>Unidad</label>
-      <select id="regUnidad"></select>
-      <label>Número de Cite (solo el número, ej. 3)</label>
-      <input type="text" id="regNumeroCite">
-      <label>Fecha del documento</label>
-      <input type="date" id="regFecha">
-      <label>Remitente</label>
-      <input type="text" id="regRemitente">
-      <label>Destinatario</label>
-      <input type="text" id="regDestinatario">
-      <label>Asunto</label>
-      <input type="text" id="regAsunto">
-      <label>Folio inicio</label>
-      <input type="number" id="regFolioInicio">
-      <label>Folio fin</label>
-      <input type="number" id="regFolioFin">
-      <label>Observaciones</label>
-      <textarea id="regObservaciones"></textarea>
-      <label>Archivo PDF</label>
-      <input type="file" id="regPdf" accept="application/pdf">
-      <button onclick="registrarDocumento()">Guardar registro</button>
-      <div id="mensajeRegistro"></div>
-    </div>
-
-  </div>
 </main>
 
-<section id="panelAdmin" class="oculto" style="max-width:960px; margin:16px auto; padding:0 16px; display:grid; gap:16px; grid-template-columns:repeat(2,1fr);">
 
-  <div class="card">
-    <h2>🏢 Nueva Dirección</h2>
-    <input type="text" id="admDireccionSigla" placeholder="Sigla, ej. DGAC">
-    <input type="text" id="admDireccionDenom" placeholder="Denominación completa">
-    <button onclick="crearDireccion()">Crear dirección</button>
-    <div id="mensajeAdmDireccion"></div>
-  </div>
+<!-- =========================================================
+     PANEL ADMINISTRATIVO
+     ========================================================= -->
 
-  <div class="card">
-    <h2>🧩 Nueva Unidad</h2>
-    <select id="admUnidadDireccion"></select>
-    <input type="text" id="admUnidadSigla" placeholder="Sigla, ej. UGEC">
-    <input type="text" id="admUnidadDenom" placeholder="Denominación completa">
-    <button onclick="crearUnidad()">Crear unidad</button>
-    <div id="mensajeAdmUnidad"></div>
-  </div>
+<section
+    id="panelAdmin"
+    class="oculto"
+>
 
-  <div class="card">
-    <h2>📄 Nuevo Tipo Documental</h2>
-    <input type="text" id="admTipoCodigo" placeholder="Código, ej. Ni">
-    <input type="text" id="admTipoNombre" placeholder="Nombre, ej. Nota Interna">
-    <input type="text" id="admTipoNaturaleza" placeholder="Naturaleza (opcional)">
-    <input type="text" id="admTipoUso" placeholder="Uso (opcional)">
-    <button onclick="crearTipoDocumental()">Crear tipo documental</button>
-    <div id="mensajeAdmTipo"></div>
-  </div>
-
-  <div class="card">
-    <h2>📚 Nuevo Tomo</h2>
-    <input type="text" id="admTomoGestion" placeholder="Gestión, ej. 2026">
-    <select id="admTomoTipo"></select>
-    <input type="text" id="admTomoNumero" placeholder="Número de tomo, ej. T03">
-    <input type="text" id="admTomoEstante" placeholder="Estante inicial">
-    <input type="text" id="admTomoBalda" placeholder="Balda inicial">
-    <input type="text" id="admTomoPosicion" placeholder="Posición inicial">
-    <button onclick="crearTomo()">Crear tomo</button>
-    <div id="mensajeAdmTomo"></div>
-  </div>
-
-  <div class="card" style="grid-column: span 2;">
-    <h2>👤 Usuarios</h2>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-      <div>
-        <input type="text" id="admUsuarioId" placeholder="Usuario institucional">
-        <input type="text" id="admUsuarioNombre" placeholder="Nombre completo">
-        <input type="password" id="admUsuarioClave" placeholder="Contraseña inicial">
-        <select id="admUsuarioRol">
-          <option value="Lector">Lector</option>
-          <option value="Administrador">Administrador</option>
-        </select>
-        <button onclick="crearUsuario()">Crear usuario</button>
-        <div id="mensajeAdmUsuario"></div>
-      </div>
-      <div>
-        <table>
-          <thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th></tr></thead>
-          <tbody id="cuerpoUsuarios"></tbody>
-        </table>
-      </div>
+    <div class="admin-titulo">
+        ⚙️ Panel de Administración · Acceso restringido
     </div>
-  </div>
+
+
+    <!-- DIRECCIÓN -->
+
+    <section class="card">
+
+        <h2>
+            🏢 Nueva Dirección
+        </h2>
+
+        <label>
+            Sigla
+        </label>
+
+        <input
+            type="text"
+            id="admDireccionSigla"
+            placeholder="Ej. DGAC"
+        >
+
+        <label>
+            Denominación
+        </label>
+
+        <input
+            type="text"
+            id="admDireccionDenom"
+            placeholder="Denominación completa"
+        >
+
+        <button onclick="crearDireccion()">
+            + Crear dirección
+        </button>
+
+        <div
+            id="mensajeAdmDireccion"
+            class="mensaje"
+        ></div>
+
+    </section>
+
+
+    <!-- UNIDAD -->
+
+    <section class="card">
+
+        <h2>
+            🧩 Nueva Unidad
+        </h2>
+
+        <label>
+            Dirección de dependencia
+        </label>
+
+        <select id="admUnidadDireccion"></select>
+
+        <label>
+            Sigla
+        </label>
+
+        <input
+            type="text"
+            id="admUnidadSigla"
+            placeholder="Ej. UGEC"
+        >
+
+        <label>
+            Denominación
+        </label>
+
+        <input
+            type="text"
+            id="admUnidadDenom"
+            placeholder="Denominación completa"
+        >
+
+        <button onclick="crearUnidad()">
+            + Crear unidad
+        </button>
+
+        <div
+            id="mensajeAdmUnidad"
+            class="mensaje"
+        ></div>
+
+    </section>
+
+
+    <!-- TIPO DOCUMENTAL -->
+
+    <section class="card">
+
+        <h2>
+            📄 Nuevo Tipo Documental
+        </h2>
+
+        <label>
+            Código
+        </label>
+
+        <input
+            type="text"
+            id="admTipoCodigo"
+            placeholder="Ej. NI"
+        >
+
+        <label>
+            Tipo
+        </label>
+
+        <input
+            type="text"
+            id="admTipoNombre"
+            placeholder="Ej. Nota Interna"
+        >
+
+        <label>
+            Naturaleza
+        </label>
+
+        <input
+            type="text"
+            id="admTipoNaturaleza"
+            placeholder="Opcional"
+        >
+
+        <label>
+            Uso
+        </label>
+
+        <input
+            type="text"
+            id="admTipoUso"
+            placeholder="Opcional"
+        >
+
+        <button onclick="crearTipoDocumental()">
+            + Crear tipo documental
+        </button>
+
+        <div
+            id="mensajeAdmTipo"
+            class="mensaje"
+        ></div>
+
+    </section>
+
+
+    <!-- TOMO -->
+
+    <section class="card">
+
+        <h2>
+            📚 Nuevo Tomo
+        </h2>
+
+        <label>
+            Gestión
+        </label>
+
+        <input
+            type="text"
+            id="admTomoGestion"
+            placeholder="Ej. 2026"
+        >
+
+        <label>
+            Tipo documental
+        </label>
+
+        <select id="admTomoTipo"></select>
+
+        <label>
+            Número de tomo
+        </label>
+
+        <input
+            type="text"
+            id="admTomoNumero"
+            placeholder="Ej. T03"
+        >
+
+        <div class="grid-3">
+
+            <div>
+
+                <label>
+                    Estante
+                </label>
+
+                <input
+                    type="text"
+                    id="admTomoEstante"
+                >
+
+            </div>
+
+            <div>
+
+                <label>
+                    Balda
+                </label>
+
+                <input
+                    type="text"
+                    id="admTomoBalda"
+                >
+
+            </div>
+
+            <div>
+
+                <label>
+                    Posición
+                </label>
+
+                <input
+                    type="text"
+                    id="admTomoPosicion"
+                >
+
+            </div>
+
+        </div>
+
+        <button onclick="crearTomo()">
+            + Crear tomo
+        </button>
+
+        <div
+            id="mensajeAdmTomo"
+            class="mensaje"
+        ></div>
+
+    </section>
+
+
+    <!-- USUARIOS -->
+
+    <section
+        class="card admin-ancho"
+    >
+
+        <h2>
+            👤 Gestión de usuarios
+        </h2>
+
+        <div class="grid-2">
+
+            <div>
+
+                <label>
+                    ID de usuario
+                </label>
+
+                <input
+                    type="text"
+                    id="admUsuarioId"
+                    placeholder="Código interno"
+                >
+
+                <label>
+                    Nombre completo
+                </label>
+
+                <input
+                    type="text"
+                    id="admUsuarioNombre"
+                    placeholder="Ej. Juan Jose Mendez Mendez"
+                >
+
+                <label>
+                    Nombre de usuario
+                </label>
+
+                <input
+                    type="text"
+                    id="admUsuarioNombreUsuario"
+                    placeholder="Ej. JoseMMendez"
+                >
+
+                <label>
+                    Contraseña inicial
+                </label>
+
+                <input
+                    type="password"
+                    id="admUsuarioClave"
+                    placeholder="Contraseña"
+                >
+
+                <label>
+                    Rol
+                </label>
+
+                <select id="admUsuarioRol">
+
+                    <option value="Lector">
+                        Lector
+                    </option>
+
+                    <option value="Administrador">
+                        Administrador
+                    </option>
+
+                </select>
+
+                <button onclick="crearUsuario()">
+                    + Crear usuario
+                </button>
+
+                <div
+                    id="mensajeAdmUsuario"
+                    class="mensaje"
+                ></div>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Usuarios registrados
+                </h3>
+
+                <div class="tabla-contenedor">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre completo</th>
+                                <th>Usuario</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="cuerpoUsuarios"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </section>
 
-<footer></footer>
+
+<footer>
+
+    <div class="footer-tricolor"></div>
+
+    <div style="margin-top:10px;">
+        SGD-DV · Sistema de Gestión Documental y Trazabilidad
+    </div>
+
+    <div style="margin-top:3px;">
+        Gestión documental · Consulta · Trazabilidad · Control físico
+    </div>
+
+</footer>
+
 
 <script>
-// ============================================================
-// CONFIGURACIÓN — pega aquí la URL /exec de tu implementación
-// de Apps Script una vez desplegada.
-// ============================================================
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby9h49aVfDclhcbc9702IyJcYd18KO7qupyUSrYdKt3FXia2ntOk5wKykHEoWc7MOTO/exec";
 
-let sesion = null;         // {idUsuario, nombre, rol}
-let tomoActual = null;     // código del tomo actualmente consultado
-let catalogos = null;      // direcciones, unidades, tiposDocumentales
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
 
-// ---------- Utilidad: hash SHA-256 en el navegador ----------
-async function sha256(texto) {
-  const datos = new TextEncoder().encode(texto);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', datos);
-  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
+const WEB_APP_URL =
+    "https://script.google.com/macros/s/AKfycbxvYVzXQet1YK3DCcpvmqoL0GrkGL0CtCMnCzMnTAfeM85oMflkR6CMe8ddf_13WNc/exec";
 
-// ---------- Llamada genérica al backend ----------
-async function llamarBackend(accion, datos) {
-  const cuerpo = Object.assign({ accion }, datos);
-  const resp = await fetch(WEB_APP_URL, {
-    method: 'POST',
-    body: JSON.stringify(cuerpo)
-  });
-  return await resp.json();
-}
 
-// ---------- Credenciales que acompañan cada acción protegida ----------
-function credenciales() {
-  return sesion ? { idUsuarioSolicitante: sesion.idUsuario, claveHashSolicitante: sesion.claveHash } : {};
-}
+/* =========================================================
+   VARIABLES DE ESTADO
+   ========================================================= */
 
-// ---------- Login ----------
-async function iniciarSesion() {
-  const idUsuario = document.getElementById('usuario').value.trim();
-  const clave = document.getElementById('clave').value;
-  if (!idUsuario || !clave) return;
-  const claveHash = await sha256(clave);
-  const r = await llamarBackend('login', { idUsuario, claveHash });
-  const msj = document.getElementById('mensajeLogin');
-  if (r.ok) {
-    sesion = r.datos;
-    sesion.claveHash = claveHash;
-    document.getElementById('estadoSesion').innerText = '👤 ' + sesion.nombre + ' (' + sesion.rol + ')';
-    msj.innerHTML = '<div class="ok">Acceso concedido.</div>';
-    if (sesion.rol === 'Administrador') {
-      if (tomoActual) mostrarFormularioRegistro();
-      document.getElementById('panelAdmin').classList.remove('oculto');
-      if (!catalogos) await cargarCatalogos();
-      cargarListaUsuarios();
-    }
-    if (tomoActual) actualizarVistaIndice();
-  } else {
-    msj.innerHTML = '<div class="aviso">' + r.error.mensaje + '</div>';
-  }
-}
+let sesion = null;
 
-// ---------- Catálogos (se cargan una vez) ----------
-async function cargarCatalogos() {
-  const r = await llamarBackend('obtenerCatalogos', {});
-  if (r.ok) {
-    catalogos = r.datos;
-    const opcionesDir = catalogos.direcciones.map(d => `<option value="${d.Sigla}">${d.Sigla} - ${d.Denominacion}</option>`).join('');
-    document.getElementById('regDireccion').innerHTML = opcionesDir;
-    const selAdmUniDir = document.getElementById('admUnidadDireccion');
-    if (selAdmUniDir) selAdmUniDir.innerHTML = opcionesDir;
-    const selAdmTomoTipo = document.getElementById('admTomoTipo');
-    if (selAdmTomoTipo) selAdmTomoTipo.innerHTML = catalogos.tiposDocumentales.map(t => `<option value="${t.Codigo}">${t.Codigo} - ${t.Tipo}</option>`).join('');
-    cargarUnidades();
-  }
-}
-function cargarUnidades() {
-  const dirSel = document.getElementById('regDireccion').value;
-  const selUni = document.getElementById('regUnidad');
-  const filtradas = catalogos.unidades.filter(u => u.Dependencia === dirSel);
-  selUni.innerHTML = filtradas.map(u => `<option value="${u.Sigla}">${u.Sigla} - ${u.Denominacion}</option>`).join('');
-}
+let tomoActual = null;
 
-// ---------- Escáner QR ----------
-function onEscaneoExitoso(textoDecodificado) {
-  // El QR contiene la URL con parámetro ?tomo=CODIGO o solo el código
-  let codigo = textoDecodificado;
-  try {
-    const url = new URL(textoDecodificado);
-    codigo = url.searchParams.get('tomo') || textoDecodificado;
-  } catch (e) { /* no era una URL, se usa tal cual */ }
-  consultarTomo(codigo);
-}
-const lector = new Html5QrcodeScanner('lector', { fps: 10, qrbox: 220 });
-lector.render(onEscaneoExitoso);
+let catalogos = null;
 
-// ---------- Consultar tomo (QR del Lomo: ubicación SIEMPRE en vivo) ----------
-async function consultarTomo(codigo) {
-  if (!codigo) return;
-  tomoActual = codigo;
-  const r = await llamarBackend('obtenerTomo', { codigoTomo: codigo });
-  if (!r.ok) { alert(r.error.mensaje); return; }
-  document.getElementById('cardUbicacion').classList.remove('oculto');
-  document.getElementById('ubEstante').innerText = r.datos.Estante;
-  document.getElementById('ubBalda').innerText = r.datos.Balda;
-  document.getElementById('ubPosicion').innerText = r.datos.Posicion;
-
-  document.getElementById('cardIndice').classList.remove('oculto');
-  await actualizarVistaIndice();
-
-  if (sesion && sesion.rol === 'Administrador') mostrarFormularioRegistro();
-}
-
-// ---------- Movimiento de tomo ----------
-function mostrarFormularioRegistro() {
-  document.getElementById('cardRegistro').classList.remove('oculto');
-  document.getElementById('cardMovimiento').classList.remove('oculto');
-  document.getElementById('movCodigoTomo').innerText = tomoActual;
-  if (!catalogos) cargarCatalogos();
-}
-
-async function registrarMovimiento() {
-  const msj = document.getElementById('mensajeMovimiento');
-  if (!tomoActual) { msj.innerHTML = '<div class="aviso">Primero consulta un tomo.</div>'; return; }
-  const datos = {
-    codigoTomo: tomoActual,
-    estante: document.getElementById('movEstante').value.trim(),
-    balda: document.getElementById('movBalda').value.trim(),
-    posicion: document.getElementById('movPosicion').value.trim(),
-    usuario: sesion ? sesion.idUsuario : 'Desconocido',
-    ...credenciales()
-  };
-  if (!datos.estante && !datos.balda && !datos.posicion) {
-    msj.innerHTML = '<div class="aviso">Indica al menos un dato de ubicación nuevo.</div>'; return;
-  }
-  const r = await llamarBackend('registrarMovimiento', datos);
-  if (r.ok) {
-    msj.innerHTML = `<div class="ok">Ubicación actualizada: ${r.datos.ubicacionNueva}</div>`;
-    consultarTomo(tomoActual); // refresca el panel de ubicación con el dato en vivo
-  } else {
-    msj.innerHTML = `<div class="aviso">${r.error.mensaje}</div>`;
-  }
-}
-
-// ---------- Generación de QR (lomo y carátula apuntan al mismo enlace;
-// el sistema decide qué mostrar según si hay sesión o no) ----------
 let qrGenerado = null;
-function generarQR() {
-  const codigo = document.getElementById('qrCodigoTomo').value.trim();
-  if (!codigo) return;
-  const contenedor = document.getElementById('qrContenedor');
-  contenedor.innerHTML = '';
-  const enlace = window.location.href.split('?')[0] + '?tomo=' + encodeURIComponent(codigo);
-  qrGenerado = new QRCode(contenedor, { text: enlace, width: 200, height: 200 });
-  const p = document.createElement('p');
-  p.style.fontSize = '11px'; p.style.color = 'var(--gris)'; p.innerText = enlace;
-  contenedor.appendChild(p);
-  document.getElementById('btnDescargarQR').classList.remove('oculto');
-}
-function descargarQR() {
-  const contenedor = document.getElementById('qrContenedor');
-  const img = contenedor.querySelector('img') || contenedor.querySelector('canvas');
-  const enlace = document.createElement('a');
-  enlace.download = document.getElementById('qrCodigoTomo').value.trim() + '_QR.png';
-  enlace.href = img.tagName === 'CANVAS' ? img.toDataURL('image/png') : img.src;
-  enlace.click();
+
+
+/* =========================================================
+   ESCAPAR HTML
+   Evita insertar directamente contenido recibido
+   desde Google Sheets en HTML.
+   ========================================================= */
+
+function escaparHTML(valor) {
+
+    return String(valor ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
 }
 
-// Al cargar la página: si la URL trae ?tomo=CODIGO (venir de un QR real), consulta directo
-window.addEventListener('load', () => {
-  const params = new URLSearchParams(window.location.search);
-  const codigoDesdeQR = params.get('tomo');
-  if (codigoDesdeQR) consultarTomo(codigoDesdeQR);
-});
 
-// ---------- Administración: Direcciones / Unidades / Tipos / Tomos / Usuarios ----------
-async function crearDireccion() {
-  const msj = document.getElementById('mensajeAdmDireccion');
-  const r = await llamarBackend('crearDireccion', {
-    sigla: document.getElementById('admDireccionSigla').value.trim(),
-    denominacion: document.getElementById('admDireccionDenom').value.trim(),
-    ...credenciales()
-  });
-  msj.innerHTML = r.ok
-    ? `<div class="ok">Dirección ${r.datos.sigla} creada.</div>`
-    : `<div class="aviso">${r.error.mensaje}</div>`;
-  if (r.ok) { catalogos = null; await cargarCatalogos(); }
+/* =========================================================
+   SHA-256
+   ========================================================= */
+
+async function sha256(texto) {
+
+    const datos =
+        new TextEncoder().encode(texto);
+
+    const hashBuffer =
+        await crypto.subtle.digest(
+            'SHA-256',
+            datos
+        );
+
+    return Array
+        .from(new Uint8Array(hashBuffer))
+        .map(
+            b =>
+                b.toString(16).padStart(2, '0')
+        )
+        .join('');
+
 }
 
-async function crearUnidad() {
-  const msj = document.getElementById('mensajeAdmUnidad');
-  const r = await llamarBackend('crearUnidad', {
-    direccion: document.getElementById('admUnidadDireccion').value,
-    sigla: document.getElementById('admUnidadSigla').value.trim(),
-    denominacion: document.getElementById('admUnidadDenom').value.trim(),
-    ...credenciales()
-  });
-  msj.innerHTML = r.ok
-    ? `<div class="ok">Unidad ${r.datos.sigla} creada.</div>`
-    : `<div class="aviso">${r.error.mensaje}</div>`;
-  if (r.ok) { catalogos = null; await cargarCatalogos(); }
+
+/* =========================================================
+   LLAMADA AL BACKEND
+   ========================================================= */
+
+async function llamarBackend(accion, datos = {}) {
+
+    try {
+
+        const cuerpo =
+            Object.assign(
+                { accion: accion },
+                datos
+            );
+
+        const respuesta =
+            await fetch(
+                WEB_APP_URL,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'text/plain;charset=utf-8'
+                    },
+
+                    body:
+                        JSON.stringify(cuerpo)
+                }
+            );
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                'El servidor respondió con HTTP ' +
+                respuesta.status
+            );
+
+        }
+
+        return await respuesta.json();
+
+    } catch (error) {
+
+        console.error(
+            'Error backend:',
+            error
+        );
+
+        return {
+            ok: false,
+
+            datos: null,
+
+            error: {
+                codigo: 'ERROR_CONEXION',
+                mensaje:
+                    'No fue posible comunicarse con el servidor. ' +
+                    error.message
+            }
+        };
+
+    }
+
 }
 
-async function crearTipoDocumental() {
-  const msj = document.getElementById('mensajeAdmTipo');
-  const r = await llamarBackend('crearTipoDocumental', {
-    codigo: document.getElementById('admTipoCodigo').value.trim(),
-    tipo: document.getElementById('admTipoNombre').value.trim(),
-    naturaleza: document.getElementById('admTipoNaturaleza').value.trim(),
-    uso: document.getElementById('admTipoUso').value.trim(),
-    ...credenciales()
-  });
-  msj.innerHTML = r.ok
-    ? `<div class="ok">Tipo documental ${r.datos.codigo} creado.</div>`
-    : `<div class="aviso">${r.error.mensaje}</div>`;
-  if (r.ok) { catalogos = null; await cargarCatalogos(); }
+
+/* =========================================================
+   CREDENCIALES
+   ========================================================= */
+
+function credenciales() {
+
+    if (!sesion) {
+        return {};
+    }
+
+    return {
+
+        idUsuarioSolicitante:
+            sesion.idUsuario,
+
+        claveHashSolicitante:
+            sesion.claveHash
+
+    };
+
 }
 
-async function crearTomo() {
-  const msj = document.getElementById('mensajeAdmTomo');
-  const r = await llamarBackend('crearTomo', {
-    gestion: document.getElementById('admTomoGestion').value.trim(),
-    tipoDocumental: document.getElementById('admTomoTipo').value,
-    numeroTomo: document.getElementById('admTomoNumero').value.trim(),
-    estante: document.getElementById('admTomoEstante').value.trim(),
-    balda: document.getElementById('admTomoBalda').value.trim(),
-    posicion: document.getElementById('admTomoPosicion').value.trim(),
-    ...credenciales()
-  });
-  msj.innerHTML = r.ok
-    ? `<div class="ok">Tomo ${r.datos.codigoTomo} creado.</div>`
-    : `<div class="aviso">${r.error.mensaje}</div>`;
+
+/* =========================================================
+   MENSAJES
+   ========================================================= */
+
+function mostrarMensaje(id, tipo, texto) {
+
+    const elemento =
+        document.getElementById(id);
+
+    if (!elemento) {
+        return;
+    }
+
+    elemento.innerHTML =
+        `<div class="${tipo}">
+            ${escaparHTML(texto)}
+        </div>`;
+
 }
 
-async function crearUsuario() {
-  const msj = document.getElementById('mensajeAdmUsuario');
-  const clave = document.getElementById('admUsuarioClave').value;
-  if (!clave) { msj.innerHTML = '<div class="aviso">Ingresa una contraseña inicial.</div>'; return; }
-  const claveHash = await sha256(clave);
-  const r = await llamarBackend('crearUsuario', {
-    idUsuario: document.getElementById('admUsuarioId').value.trim(),
-    nombreCompleto: document.getElementById('admUsuarioNombre').value.trim(),
-    claveHash: claveHash,
-    rolPermiso: document.getElementById('admUsuarioRol').value,
-    ...credenciales()
-  });
-  msj.innerHTML = r.ok
-    ? `<div class="ok">Usuario ${r.datos.idUsuario} creado.</div>`
-    : `<div class="aviso">${r.error.mensaje}</div>`;
-  if (r.ok) cargarListaUsuarios();
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+async function iniciarSesion() {
+
+    const nombreUsuario =
+        document
+            .getElementById('usuario')
+            .value
+            .trim();
+
+    const clave =
+        document
+            .getElementById('clave')
+            .value;
+
+    if (!nombreUsuario || !clave) {
+
+        mostrarMensaje(
+            'mensajeLogin',
+            'aviso',
+            'Ingrese el nombre de usuario y la contraseña.'
+        );
+
+        return;
+    }
+
+
+    mostrarMensaje(
+        'mensajeLogin',
+        'aviso',
+        'Validando credenciales...'
+    );
+
+
+    try {
+
+        const claveHash =
+            await sha256(clave);
+
+
+        const r =
+            await llamarBackend(
+                'login',
+                {
+                    nombreUsuario:
+                        nombreUsuario,
+
+                    claveHash:
+                        claveHash
+                }
+            );
+
+
+        if (!r.ok) {
+
+            mostrarMensaje(
+                'mensajeLogin',
+                'error',
+                r.error?.mensaje ||
+                'Credenciales inválidas.'
+            );
+
+            return;
+        }
+
+
+        /*
+         * Guardamos la información de sesión.
+         * El backend devuelve el nombre completo
+         * y el nombre de usuario.
+         */
+
+        sesion = {
+
+            idUsuario:
+                r.datos.idUsuario,
+
+            nombre:
+                r.datos.nombre,
+
+            nombreUsuario:
+                r.datos.nombreUsuario,
+
+            rol:
+                r.datos.rol,
+
+            claveHash:
+                claveHash
+
+        };
+
+
+        document
+            .getElementById('estadoSesion')
+            .innerText =
+                '👤 ' +
+                sesion.nombre +
+                ' · ' +
+                sesion.nombreUsuario +
+                ' · ' +
+                sesion.rol;
+
+
+        mostrarMensaje(
+            'mensajeLogin',
+            'ok',
+            'Acceso concedido correctamente.'
+        );
+
+
+        /*
+         * Si es administrador:
+         * habilitar panel administrativo.
+         */
+
+        if (
+            sesion.rol ===
+            'Administrador'
+        ) {
+
+            document
+                .getElementById('panelAdmin')
+                .classList
+                .remove('oculto');
+
+
+            await cargarCatalogos();
+
+            await cargarListaUsuarios();
+
+            if (tomoActual) {
+
+                mostrarFormularioRegistro();
+
+            }
+
+        }
+
+
+        /*
+         * Actualizar índice si ya había
+         * un tomo consultado.
+         */
+
+        if (tomoActual) {
+
+            await actualizarVistaIndice();
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            'mensajeLogin',
+            'error',
+            'Ocurrió un error durante el inicio de sesión.'
+        );
+
+    }
+
 }
 
-async function cargarListaUsuarios() {
-  const r = await llamarBackend('listarUsuarios', { ...credenciales() });
-  if (!r.ok) return;
-  document.getElementById('cuerpoUsuarios').innerHTML = r.datos.usuarios.map(u =>
-    `<tr><td>${u.ID_Usuario}</td><td>${u.Nombre_Completo}</td><td>${u.Rol_Permiso}</td><td>${u.Estado}</td></tr>`
-  ).join('');
+
+/* =========================================================
+   CATÁLOGOS
+   ========================================================= */
+
+async function cargarCatalogos() {
+
+    const r =
+        await llamarBackend(
+            'obtenerCatalogos',
+            {}
+        );
+
+
+    if (!r.ok) {
+
+        console.error(
+            r.error
+        );
+
+        return;
+
+    }
+
+
+    catalogos =
+        r.datos;
+
+
+    const opcionesDireccion =
+        (catalogos.direcciones || [])
+            .map(
+                d =>
+                    `<option value="${escaparHTML(d.Sigla)}">
+                        ${escaparHTML(d.Sigla)}
+                        -
+                        ${escaparHTML(d.Denominacion)}
+                    </option>`
+            )
+            .join('');
+
+
+    const regDireccion =
+        document.getElementById(
+            'regDireccion'
+        );
+
+    if (regDireccion) {
+
+        regDireccion.innerHTML =
+            opcionesDireccion;
+
+    }
+
+
+    const admUnidadDireccion =
+        document.getElementById(
+            'admUnidadDireccion'
+        );
+
+    if (admUnidadDireccion) {
+
+        admUnidadDireccion.innerHTML =
+            opcionesDireccion;
+
+    }
+
+
+    const admTomoTipo =
+        document.getElementById(
+            'admTomoTipo'
+        );
+
+
+    if (admTomoTipo) {
+
+        admTomoTipo.innerHTML =
+            (catalogos.tiposDocumentales || [])
+                .map(
+                    t =>
+                        `<option value="${escaparHTML(t.Codigo)}">
+                            ${escaparHTML(t.Codigo)}
+                            -
+                            ${escaparHTML(t.Tipo)}
+                        </option>`
+                )
+                .join('');
+
+    }
+
+
+    cargarUnidades();
+
 }
+
+
+/* =========================================================
+   UNIDADES
+   ========================================================= */
+
+function cargarUnidades() {
+
+    if (!catalogos) {
+        return;
+    }
+
+
+    const direccion =
+        document
+            .getElementById('regDireccion')
+            ?.value;
+
+
+    const select =
+        document
+            .getElementById('regUnidad');
+
+
+    if (!select) {
+        return;
+    }
+
+
+    const unidades =
+        (catalogos.unidades || [])
+            .filter(
+                u =>
+                    String(u.Dependencia) ===
+                    String(direccion)
+            );
+
+
+    select.innerHTML =
+        unidades.length
+
+            ? unidades
+                .map(
+                    u =>
+                        `<option value="${escaparHTML(u.Sigla)}">
+                            ${escaparHTML(u.Sigla)}
+                            -
+                            ${escaparHTML(u.Denominacion)}
+                        </option>`
+                )
+                .join('')
+
+            : '<option value="">Sin unidades disponibles</option>';
+
+}
+
+
+/* =========================================================
+   QR
+   ========================================================= */
+
+function onEscaneoExitoso(
+    textoDecodificado
+) {
+
+    let codigo =
+        textoDecodificado;
+
+
+    try {
+
+        const url =
+            new URL(
+                textoDecodificado
+            );
+
+
+        codigo =
+            url.searchParams.get(
+                'tomo'
+            ) ||
+            textoDecodificado;
+
+    } catch (e) {
+
+        /*
+         * El contenido no era una URL.
+         * Se utiliza directamente.
+         */
+
+    }
+
+
+    codigo =
+        String(codigo).trim();
+
+
+    if (codigo) {
+
+        consultarTomo(codigo);
+
+    }
+
+}
+
+
+/* =========================================================
+   INICIALIZAR LECTOR
+   ========================================================= */
+
+function inicializarLectorQR() {
+
+    if (
+        typeof Html5QrcodeScanner ===
+        'undefined'
+    ) {
+
+        console.warn(
+            'Librería QR no disponible.'
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const lector =
+            new Html5QrcodeScanner(
+                'lector',
+                {
+                    fps: 10,
+                    qrbox: 220
+                },
+                false
+            );
+
+
+        lector.render(
+            onEscaneoExitoso,
+            function(error) {
+                /*
+                 * No mostrar continuamente
+                 * los errores normales del scanner.
+                 */
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            'No se pudo inicializar el lector QR:',
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CONSULTAR TOMO
+   ========================================================= */
+
+async function consultarTomo(
+    codigo
+) {
+
+    codigo =
+        String(codigo || '').trim();
+
+
+    if (!codigo) {
+
+        alert(
+            'Indique el código del tomo.'
+        );
+
+        return;
+
+    }
+
+
+    tomoActual =
+        codigo;
+
+
+    const r =
+        await llamarBackend(
+            'obtenerTomo',
+            {
+                codigoTomo:
+                    codigo
+            }
+        );
+
+
+    if (!r.ok) {
+
+        alert(
+            r.error?.mensaje ||
+            'No se encontró el tomo.'
+        );
+
+        return;
+
+    }
+
+
+    const tomo =
+        r.datos;
+
+
+    /*
+     * Ubicación en vivo.
+     */
+
+    document
+        .getElementById('cardUbicacion')
+        .classList
+        .remove('oculto');
+
+
+    document
+        .getElementById('ubEstante')
+        .innerText =
+            tomo.Estante || '-';
+
+
+    document
+        .getElementById('ubBalda')
+        .innerText =
+            tomo.Balda || '-';
+
+
+    document
+        .getElementById('ubPosicion')
+        .innerText =
+            tomo.Posicion || '-';
+
+
+    /*
+     * Información general.
+     */
+
+    document
+        .getElementById('cardInfoTomo')
+        .classList
+        .remove('oculto');
+
+
+    document
+        .getElementById('infoCodigoTomo')
+        .value =
+            tomo.Codigo_Tomo || '';
+
+
+    document
+        .getElementById('infoGestion')
+        .value =
+            tomo.Gestion || '';
+
+
+    document
+        .getElementById('infoTipoDocumental')
+        .value =
+            tomo.TipoDocumental || '';
+
+
+    document
+        .getElementById('infoNumeroTomo')
+        .value =
+            tomo.NumeroTomo || '';
+
+
+    document
+        .getElementById('infoRangoNumeracion')
+        .value =
+            tomo.RangoNumeracion || '';
+
+
+    document
+        .getElementById('infoEstado')
+        .value =
+            tomo.Estado || '';
+
+
+    /*
+     * Índice.
+     */
+
+    document
+        .getElementById('cardIndice')
+        .classList
+        .remove('oculto');
+
+
+    await actualizarVistaIndice();
+
+
+    /*
+     * Funciones administrativas.
+     */
+
+    if (
+        sesion &&
+        sesion.rol ===
+        'Administrador'
+    ) {
+
+        mostrarFormularioRegistro();
+
+    }
+
+}
+
+
+/* =========================================================
+   ÍNDICE DEL TOMO
+   ========================================================= */
 
 async function actualizarVistaIndice() {
-  const r = await llamarBackend('obtenerIndiceTomo', Object.assign({ codigoTomo: tomoActual }, credenciales()));
-  const cuerpo = document.getElementById('cuerpoIndice');
-  if (!r.ok) { cuerpo.innerHTML = ''; return; }
-  cuerpo.innerHTML = r.datos.documentos.map(d =>
-    `<tr><td>${d.Cite}</td><td>${d.Asunto}</td><td>${d.Folio_Inicio}-${d.Folio_Fin}</td>` +
-    (sesion ? `<td><a href="${d.URL_Archivo_PDF}" target="_blank">Ver PDF</a></td>` : `<td>🔒</td>`) +
-    `</tr>`
-  ).join('');
+
+    if (!tomoActual) {
+        return;
+    }
+
+
+    const r =
+        await llamarBackend(
+            'obtenerIndiceTomo',
+            Object.assign(
+                {
+                    codigoTomo:
+                        tomoActual
+                },
+                credenciales()
+            )
+        );
+
+
+    const cuerpo =
+        document.getElementById(
+            'cuerpoIndice'
+        );
+
+
+    const resumen =
+        document.getElementById(
+            'resumenIndice'
+        );
+
+
+    if (!r.ok) {
+
+        cuerpo.innerHTML = '';
+
+        resumen.innerText =
+            r.error?.mensaje ||
+            'No fue posible cargar el índice.';
+
+        return;
+
+    }
+
+
+    const documentos =
+        r.datos.documentos || [];
+
+
+    resumen.innerText =
+        documentos.length +
+        ' documento(s) registrado(s) en este tomo.';
+
+
+    if (!documentos.length) {
+
+        cuerpo.innerHTML =
+            `<tr>
+                <td colspan="5">
+                    No existen documentos registrados.
+                </td>
+            </tr>`;
+
+        return;
+
+    }
+
+
+    cuerpo.innerHTML =
+        documentos
+            .map(
+                d => {
+
+                    const archivo =
+                        sesion &&
+                        d.URL_Archivo_PDF
+
+                            ? `<a
+                                href="${escaparHTML(d.URL_Archivo_PDF)}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                📄 Ver PDF
+                              </a>`
+
+                            : '🔒 Protegido';
+
+
+                    return `
+                        <tr>
+
+                            <td>
+                                ${escaparHTML(d.Cite)}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    formatearFecha(
+                                        d.Fecha_Documento
+                                    )
+                                )}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(d.Asunto)}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    d.Folio_Inicio
+                                )}
+                                -
+                                ${escaparHTML(
+                                    d.Folio_Fin
+                                )}
+                            </td>
+
+                            <td>
+                                ${archivo}
+                            </td>
+
+                        </tr>
+                    `;
+
+                }
+            )
+            .join('');
+
 }
 
-// ---------- Registrar documento (con PDF) ----------
-function leerArchivoComoBase64(archivo) {
-  return new Promise((resolve, reject) => {
-    const lector = new FileReader();
-    lector.onload = () => resolve(lector.result.split(',')[1]);
-    lector.onerror = reject;
-    lector.readAsDataURL(archivo);
-  });
+
+/* =========================================================
+   FECHAS
+   ========================================================= */
+
+function formatearFecha(valor) {
+
+    if (!valor) {
+        return '';
+    }
+
+
+    const fecha =
+        new Date(valor);
+
+
+    if (
+        Number.isNaN(
+            fecha.getTime()
+        )
+    ) {
+
+        return String(valor);
+
+    }
+
+
+    return fecha.toLocaleDateString(
+        'es-BO'
+    );
+
 }
+
+
+/* =========================================================
+   MOVIMIENTO
+   ========================================================= */
+
+function mostrarFormularioRegistro() {
+
+    document
+        .getElementById('cardRegistro')
+        .classList
+        .remove('oculto');
+
+
+    document
+        .getElementById('cardMovimiento')
+        .classList
+        .remove('oculto');
+
+
+    document
+        .getElementById('movCodigoTomo')
+        .innerText =
+            tomoActual || '-';
+
+
+    if (!catalogos) {
+
+        cargarCatalogos();
+
+    }
+
+}
+
+
+async function registrarMovimiento() {
+
+    const msj =
+        document.getElementById(
+            'mensajeMovimiento'
+        );
+
+
+    if (!tomoActual) {
+
+        mostrarMensaje(
+            'mensajeMovimiento',
+            'aviso',
+            'Primero consulte un tomo.'
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !sesion ||
+        sesion.rol !==
+        'Administrador'
+    ) {
+
+        mostrarMensaje(
+            'mensajeMovimiento',
+            'error',
+            'Solo un Administrador puede registrar movimientos.'
+        );
+
+        return;
+
+    }
+
+
+    const estante =
+        document
+            .getElementById('movEstante')
+            .value
+            .trim();
+
+
+    const balda =
+        document
+            .getElementById('movBalda')
+            .value
+            .trim();
+
+
+    const posicion =
+        document
+            .getElementById('movPosicion')
+            .value
+            .trim();
+
+
+    if (
+        !estante &&
+        !balda &&
+        !posicion
+    ) {
+
+        mostrarMensaje(
+            'mensajeMovimiento',
+            'aviso',
+            'Indique al menos una nueva ubicación.'
+        );
+
+        return;
+
+    }
+
+
+    mostrarMensaje(
+        'mensajeMovimiento',
+        'aviso',
+        'Guardando movimiento...'
+    );
+
+
+    const r =
+        await llamarBackend(
+            'registrarMovimiento',
+            Object.assign(
+                {
+                    codigoTomo:
+                        tomoActual,
+
+                    estante:
+                        estante,
+
+                    balda:
+                        balda,
+
+                    posicion:
+                        posicion,
+
+                    usuario:
+                        sesion.idUsuario
+                },
+                credenciales()
+            )
+        );
+
+
+    if (!r.ok) {
+
+        mostrarMensaje(
+            'mensajeMovimiento',
+            'error',
+            r.error?.mensaje ||
+            'No fue posible registrar el movimiento.'
+        );
+
+        return;
+
+    }
+
+
+    mostrarMensaje(
+        'mensajeMovimiento',
+        'ok',
+        'Ubicación actualizada correctamente: ' +
+        r.datos.ubicacionNueva
+    );
+
+
+    document
+        .getElementById('movEstante')
+        .value = '';
+
+    document
+        .getElementById('movBalda')
+        .value = '';
+
+    document
+        .getElementById('movPosicion')
+        .value = '';
+
+
+    await consultarTomo(
+        tomoActual
+    );
+
+}
+
+
+/* =========================================================
+   GENERAR QR
+   ========================================================= */
+
+function generarQR() {
+
+    const codigo =
+        document
+            .getElementById('qrCodigoTomo')
+            .value
+            .trim();
+
+
+    if (!codigo) {
+
+        alert(
+            'Ingrese el código del tomo.'
+        );
+
+        return;
+
+    }
+
+
+    const contenedor =
+        document.getElementById(
+            'qrContenedor'
+        );
+
+
+    contenedor.innerHTML = '';
+
+
+    /*
+     * Se utiliza la URL actual del frontend,
+     * no la URL del backend.
+     */
+
+    const base =
+        window.location.href
+            .split('?')[0]
+            .split('#')[0];
+
+
+    const enlace =
+        base +
+        '?tomo=' +
+        encodeURIComponent(
+            codigo
+        );
+
+
+    qrGenerado =
+        new QRCode(
+            contenedor,
+            {
+                text:
+                    enlace,
+
+                width:
+                    200,
+
+                height:
+                    200,
+
+                colorDark:
+                    '#242732',
+
+                colorLight:
+                    '#FFFFFF'
+            }
+        );
+
+
+    const texto =
+        document.createElement(
+            'p'
+        );
+
+
+    texto.style.fontSize =
+        '11px';
+
+    texto.style.color =
+        'var(--gris-medio)';
+
+    texto.style.wordBreak =
+        'break-all';
+
+    texto.innerText =
+        enlace;
+
+
+    contenedor.appendChild(
+        texto
+    );
+
+
+    document
+        .getElementById(
+            'btnDescargarQR'
+        )
+        .classList
+        .remove('oculto');
+
+}
+
+
+/* =========================================================
+   DESCARGAR QR
+   ========================================================= */
+
+function descargarQR() {
+
+    const contenedor =
+        document.getElementById(
+            'qrContenedor'
+        );
+
+
+    const imagen =
+        contenedor.querySelector(
+            'img'
+        );
+
+
+    const canvas =
+        contenedor.querySelector(
+            'canvas'
+        );
+
+
+    let enlaceImagen = '';
+
+
+    if (canvas) {
+
+        enlaceImagen =
+            canvas.toDataURL(
+                'image/png'
+            );
+
+    } else if (imagen) {
+
+        enlaceImagen =
+            imagen.src;
+
+    } else {
+
+        alert(
+            'Primero genere el código QR.'
+        );
+
+        return;
+
+    }
+
+
+    const enlace =
+        document.createElement(
+            'a'
+        );
+
+
+    enlace.download =
+        (
+            document
+                .getElementById(
+                    'qrCodigoTomo'
+                )
+                .value
+                .trim()
+            ||
+            'tomo'
+        ) +
+        '_QR.png';
+
+
+    enlace.href =
+        enlaceImagen;
+
+
+    enlace.click();
+
+}
+
+
+/* =========================================================
+   CREAR DIRECCIÓN
+   ========================================================= */
+
+async function crearDireccion() {
+
+    const r =
+        await llamarBackend(
+            'crearDireccion',
+            Object.assign(
+                {
+                    sigla:
+                        document
+                            .getElementById(
+                                'admDireccionSigla'
+                            )
+                            .value
+                            .trim(),
+
+                    denominacion:
+                        document
+                            .getElementById(
+                                'admDireccionDenom'
+                            )
+                            .value
+                            .trim()
+                },
+                credenciales()
+            )
+        );
+
+
+    if (r.ok) {
+
+        mostrarMensaje(
+            'mensajeAdmDireccion',
+            'ok',
+            'Dirección creada correctamente.'
+        );
+
+
+        document
+            .getElementById(
+                'admDireccionSigla'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admDireccionDenom'
+            )
+            .value = '';
+
+
+        catalogos = null;
+
+        await cargarCatalogos();
+
+    } else {
+
+        mostrarMensaje(
+            'mensajeAdmDireccion',
+            'error',
+            r.error?.mensaje ||
+            'No fue posible crear la dirección.'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CREAR UNIDAD
+   ========================================================= */
+
+async function crearUnidad() {
+
+    const r =
+        await llamarBackend(
+            'crearUnidad',
+            Object.assign(
+                {
+                    direccion:
+                        document
+                            .getElementById(
+                                'admUnidadDireccion'
+                            )
+                            .value,
+
+                    sigla:
+                        document
+                            .getElementById(
+                                'admUnidadSigla'
+                            )
+                            .value
+                            .trim(),
+
+                    denominacion:
+                        document
+                            .getElementById(
+                                'admUnidadDenom'
+                            )
+                            .value
+                            .trim()
+                },
+                credenciales()
+            )
+        );
+
+
+    if (r.ok) {
+
+        mostrarMensaje(
+            'mensajeAdmUnidad',
+            'ok',
+            'Unidad creada correctamente.'
+        );
+
+
+        document
+            .getElementById(
+                'admUnidadSigla'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admUnidadDenom'
+            )
+            .value = '';
+
+
+        catalogos = null;
+
+        await cargarCatalogos();
+
+    } else {
+
+        mostrarMensaje(
+            'mensajeAdmUnidad',
+            'error',
+            r.error?.mensaje ||
+            'No fue posible crear la unidad.'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CREAR TIPO DOCUMENTAL
+   ========================================================= */
+
+async function crearTipoDocumental() {
+
+    const r =
+        await llamarBackend(
+            'crearTipoDocumental',
+            Object.assign(
+                {
+                    codigo:
+                        document
+                            .getElementById(
+                                'admTipoCodigo'
+                            )
+                            .value
+                            .trim(),
+
+                    tipo:
+                        document
+                            .getElementById(
+                                'admTipoNombre'
+                            )
+                            .value
+                            .trim(),
+
+                    naturaleza:
+                        document
+                            .getElementById(
+                                'admTipoNaturaleza'
+                            )
+                            .value
+                            .trim(),
+
+                    uso:
+                        document
+                            .getElementById(
+                                'admTipoUso'
+                            )
+                            .value
+                            .trim()
+                },
+                credenciales()
+            )
+        );
+
+
+    if (r.ok) {
+
+        mostrarMensaje(
+            'mensajeAdmTipo',
+            'ok',
+            'Tipo documental creado correctamente.'
+        );
+
+
+        document
+            .getElementById(
+                'admTipoCodigo'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTipoNombre'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTipoNaturaleza'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTipoUso'
+            )
+            .value = '';
+
+
+        catalogos = null;
+
+        await cargarCatalogos();
+
+    } else {
+
+        mostrarMensaje(
+            'mensajeAdmTipo',
+            'error',
+            r.error?.mensaje ||
+            'No fue posible crear el tipo documental.'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CREAR TOMO
+   ========================================================= */
+
+async function crearTomo() {
+
+    const r =
+        await llamarBackend(
+            'crearTomo',
+            Object.assign(
+                {
+                    gestion:
+                        document
+                            .getElementById(
+                                'admTomoGestion'
+                            )
+                            .value
+                            .trim(),
+
+                    tipoDocumental:
+                        document
+                            .getElementById(
+                                'admTomoTipo'
+                            )
+                            .value,
+
+                    numeroTomo:
+                        document
+                            .getElementById(
+                                'admTomoNumero'
+                            )
+                            .value
+                            .trim(),
+
+                    estante:
+                        document
+                            .getElementById(
+                                'admTomoEstante'
+                            )
+                            .value
+                            .trim(),
+
+                    balda:
+                        document
+                            .getElementById(
+                                'admTomoBalda'
+                            )
+                            .value
+                            .trim(),
+
+                    posicion:
+                        document
+                            .getElementById(
+                                'admTomoPosicion'
+                            )
+                            .value
+                            .trim()
+                },
+                credenciales()
+            )
+        );
+
+
+    if (r.ok) {
+
+        mostrarMensaje(
+            'mensajeAdmTomo',
+            'ok',
+            'Tomo creado correctamente: ' +
+            r.datos.codigoTomo
+        );
+
+
+        document
+            .getElementById(
+                'admTomoGestion'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTomoNumero'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTomoEstante'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTomoBalda'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admTomoPosicion'
+            )
+            .value = '';
+
+    } else {
+
+        mostrarMensaje(
+            'mensajeAdmTomo',
+            'error',
+            r.error?.mensaje ||
+            'No fue posible crear el tomo.'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CREAR USUARIO
+   ========================================================= */
+
+async function crearUsuario() {
+
+    const idUsuario =
+        document
+            .getElementById(
+                'admUsuarioId'
+            )
+            .value
+            .trim();
+
+
+    const nombreCompleto =
+        document
+            .getElementById(
+                'admUsuarioNombre'
+            )
+            .value
+            .trim();
+
+
+    const nombreUsuario =
+        document
+            .getElementById(
+                'admUsuarioNombreUsuario'
+            )
+            .value
+            .trim();
+
+
+    const clave =
+        document
+            .getElementById(
+                'admUsuarioClave'
+            )
+            .value;
+
+
+    const rolPermiso =
+        document
+            .getElementById(
+                'admUsuarioRol'
+            )
+            .value;
+
+
+    if (
+        !idUsuario ||
+        !nombreCompleto ||
+        !nombreUsuario ||
+        !clave
+    ) {
+
+        mostrarMensaje(
+            'mensajeAdmUsuario',
+            'aviso',
+            'Complete todos los campos obligatorios del usuario.'
+        );
+
+        return;
+
+    }
+
+
+    if (clave.length < 6) {
+
+        mostrarMensaje(
+            'mensajeAdmUsuario',
+            'aviso',
+            'La contraseña debe tener al menos 6 caracteres.'
+        );
+
+        return;
+
+    }
+
+
+    const claveHash =
+        await sha256(
+            clave
+        );
+
+
+    const r =
+        await llamarBackend(
+            'crearUsuario',
+            Object.assign(
+                {
+                    idUsuario:
+                        idUsuario,
+
+                    nombreCompleto:
+                        nombreCompleto,
+
+                    nombreUsuario:
+                        nombreUsuario,
+
+                    claveHash:
+                        claveHash,
+
+                    rolPermiso:
+                        rolPermiso
+                },
+                credenciales()
+            )
+        );
+
+
+    if (r.ok) {
+
+        mostrarMensaje(
+            'mensajeAdmUsuario',
+            'ok',
+            'Usuario ' +
+            nombreUsuario +
+            ' creado correctamente.'
+        );
+
+
+        document
+            .getElementById(
+                'admUsuarioId'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admUsuarioNombre'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admUsuarioNombreUsuario'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'admUsuarioClave'
+            )
+            .value = '';
+
+
+        await cargarListaUsuarios();
+
+    } else {
+
+        mostrarMensaje(
+            'mensajeAdmUsuario',
+            'error',
+            r.error?.mensaje ||
+            'No fue posible crear el usuario.'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LISTAR USUARIOS
+   ========================================================= */
+
+async function cargarListaUsuarios() {
+
+    if (
+        !sesion ||
+        sesion.rol !==
+        'Administrador'
+    ) {
+
+        return;
+
+    }
+
+
+    const r =
+        await llamarBackend(
+            'listarUsuarios',
+            Object.assign(
+                {},
+                credenciales()
+            )
+        );
+
+
+    if (!r.ok) {
+
+        console.error(
+            r.error
+        );
+
+        return;
+
+    }
+
+
+    const usuarios =
+        r.datos.usuarios || [];
+
+
+    const cuerpo =
+        document.getElementById(
+            'cuerpoUsuarios'
+        );
+
+
+    cuerpo.innerHTML =
+        usuarios
+            .map(
+                u => {
+
+                    const claseEstado =
+                        String(u.Estado)
+                            .toLowerCase() ===
+                        'activo'
+
+                            ? 'estado-activo'
+
+                            : 'estado-inactivo';
+
+
+                    return `
+                        <tr>
+
+                            <td>
+                                ${escaparHTML(
+                                    u.ID_Usuario
+                                )}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    u.Nombre_Completo
+                                )}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    u.Nombre_Usuario
+                                )}
+                            </td>
+
+                            <td>
+                                ${escaparHTML(
+                                    u.Rol_Permiso
+                                )}
+                            </td>
+
+                            <td
+                                class="${claseEstado}"
+                            >
+                                ${escaparHTML(
+                                    u.Estado
+                                )}
+                            </td>
+
+                        </tr>
+                    `;
+
+                }
+            )
+            .join('');
+
+}
+
+
+/* =========================================================
+   REGISTRO DE DOCUMENTO
+   ========================================================= */
+
+function leerArchivoComoBase64(
+    archivo
+) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const lector =
+                new FileReader();
+
+
+            lector.onload =
+                () => {
+
+                    resolve(
+                        lector.result
+                            .split(',')[1]
+                    );
+
+                };
+
+
+            lector.onerror =
+                reject;
+
+
+            lector.readAsDataURL(
+                archivo
+            );
+
+        }
+    );
+
+}
+
 
 async function registrarDocumento() {
-  const msj = document.getElementById('mensajeRegistro');
-  const archivo = document.getElementById('regPdf').files[0];
-  if (!archivo) { msj.innerHTML = '<div class="aviso">Selecciona un archivo PDF.</div>'; return; }
 
-  msj.innerHTML = 'Subiendo y registrando…';
-  const pdfBase64 = await leerArchivoComoBase64(archivo);
+    const msj =
+        document.getElementById(
+            'mensajeRegistro'
+        );
 
-  const datos = {
-    codigoTomo: tomoActual,
-    direccion: document.getElementById('regDireccion').value,
-    unidad: document.getElementById('regUnidad').value,
-    numeroCite: document.getElementById('regNumeroCite').value,
-    fechaDocumento: document.getElementById('regFecha').value,
-    remitente: document.getElementById('regRemitente').value,
-    destinatario: document.getElementById('regDestinatario').value,
-    asunto: document.getElementById('regAsunto').value,
-    folioInicio: document.getElementById('regFolioInicio').value,
-    folioFin: document.getElementById('regFolioFin').value,
-    observaciones: document.getElementById('regObservaciones').value,
-    usuario: sesion ? sesion.idUsuario : 'Desconocido',
-    ...credenciales(),
-    pdfBase64: pdfBase64
-  };
 
-  const r = await llamarBackend('registrarDocumento', datos);
-  if (r.ok) {
-    msj.innerHTML = `<div class="ok">Registrado. ID: ${r.datos.codigoDocumento} · Cite: ${r.datos.cite}</div>`;
-    await actualizarVistaIndice();
-  } else {
-    msj.innerHTML = `<div class="aviso">${r.error.mensaje}</div>`;
-  }
+    if (
+        !sesion ||
+        sesion.rol !==
+        'Administrador'
+    ) {
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'error',
+            'Debe iniciar sesión como Administrador.'
+        );
+
+        return;
+
+    }
+
+
+    if (!tomoActual) {
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'aviso',
+            'Primero consulte un tomo.'
+        );
+
+        return;
+
+    }
+
+
+    const archivo =
+        document
+            .getElementById(
+                'regPdf'
+            )
+            .files[0];
+
+
+    if (!archivo) {
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'aviso',
+            'Seleccione un archivo PDF.'
+        );
+
+        return;
+
+    }
+
+
+    if (
+        archivo.type !==
+        'application/pdf'
+    ) {
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'error',
+            'El archivo seleccionado no es un PDF válido.'
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Límite preventivo del frontend.
+     * Apps Script tiene límites de ejecución/tamaño.
+     */
+
+    const maximo =
+        10 * 1024 * 1024;
+
+
+    if (
+        archivo.size >
+        maximo
+    ) {
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'aviso',
+            'El PDF supera el límite preventivo de 10 MB.'
+        );
+
+        return;
+
+    }
+
+
+    mostrarMensaje(
+        'mensajeRegistro',
+        'aviso',
+        'Preparando archivo PDF...'
+    );
+
+
+    try {
+
+        const pdfBase64 =
+            await leerArchivoComoBase64(
+                archivo
+            );
+
+
+        const datos = {
+
+            codigoTomo:
+                tomoActual,
+
+            direccion:
+                document
+                    .getElementById(
+                        'regDireccion'
+                    )
+                    .value,
+
+            unidad:
+                document
+                    .getElementById(
+                        'regUnidad'
+                    )
+                    .value,
+
+            numeroCite:
+                document
+                    .getElementById(
+                        'regNumeroCite'
+                    )
+                    .value
+                    .trim(),
+
+            fechaDocumento:
+                document
+                    .getElementById(
+                        'regFecha'
+                    )
+                    .value,
+
+            remitente:
+                document
+                    .getElementById(
+                        'regRemitente'
+                    )
+                    .value
+                    .trim(),
+
+            destinatario:
+                document
+                    .getElementById(
+                        'regDestinatario'
+                    )
+                    .value
+                    .trim(),
+
+            asunto:
+                document
+                    .getElementById(
+                        'regAsunto'
+                    )
+                    .value
+                    .trim(),
+
+            folioInicio:
+                document
+                    .getElementById(
+                        'regFolioInicio'
+                    )
+                    .value,
+
+            folioFin:
+                document
+                    .getElementById(
+                        'regFolioFin'
+                    )
+                    .value,
+
+            observaciones:
+                document
+                    .getElementById(
+                        'regObservaciones'
+                    )
+                    .value
+                    .trim(),
+
+            usuario:
+                sesion.idUsuario,
+
+            pdfBase64:
+                pdfBase64
+
+        };
+
+
+        const r =
+            await llamarBackend(
+                'registrarDocumento',
+                Object.assign(
+                    datos,
+                    credenciales()
+                )
+            );
+
+
+        if (!r.ok) {
+
+            mostrarMensaje(
+                'mensajeRegistro',
+                'error',
+                r.error?.mensaje ||
+                'No fue posible registrar el documento.'
+            );
+
+            return;
+
+        }
+
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'ok',
+            'Documento registrado correctamente. ID: ' +
+            (
+                r.datos.codigoDocumento ||
+                ''
+            ) +
+            ' · Cite: ' +
+            (
+                r.datos.cite ||
+                ''
+            )
+        );
+
+
+        /*
+         * Limpiar únicamente campos
+         * correspondientes al documento.
+         */
+
+        document
+            .getElementById(
+                'regNumeroCite'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regFecha'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regRemitente'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regDestinatario'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regAsunto'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regFolioInicio'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regFolioFin'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regObservaciones'
+            )
+            .value = '';
+
+        document
+            .getElementById(
+                'regPdf'
+            )
+            .value = '';
+
+
+        await actualizarVistaIndice();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        mostrarMensaje(
+            'mensajeRegistro',
+            'error',
+            'Ocurrió un error al procesar el PDF.'
+        );
+
+    }
+
 }
+
+
+/* =========================================================
+   CARGA INICIAL
+   ========================================================= */
+
+window.addEventListener(
+    'load',
+    async function() {
+
+        inicializarLectorQR();
+
+
+        /*
+         * Si se entra mediante:
+         *
+         * https://tu-frontend/?tomo=2026-IN-T03
+         *
+         * se consulta automáticamente.
+         */
+
+        const parametros =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const codigoDesdeQR =
+            parametros.get(
+                'tomo'
+            );
+
+
+        if (codigoDesdeQR) {
+
+            await consultarTomo(
+                codigoDesdeQR
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ENTER EN LOGIN
+   ========================================================= */
+
+document.addEventListener(
+    'keydown',
+    function(event) {
+
+        if (
+            event.key === 'Enter' &&
+            document.activeElement?.id ===
+            'clave'
+        ) {
+
+            iniciarSesion();
+
+        }
+
+    }
+);
+
 </script>
 
 </body>
