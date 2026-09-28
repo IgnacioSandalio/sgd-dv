@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGD-DV · Sistema de Gestión Documental</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --blanco:#FFFFFF; --dorado:#B5993A; --gris:#585857; --azul:#242732;
+    --rojo:#E30613; --amarillo:#FFED00; --verde:#008739;
+    --fondo:#F4F4F3; --gris-claro:#E7E7E5; --gris-borde:#D4D4D1;
+    --rojo-error:#C62828;
+  }
+  *{box-sizing:border-box; font-family: system-ui, Arial, sans-serif;}
+  body{margin:0; background:var(--fondo); color:var(--azul);}
+  header{background:var(--azul); color:var(--blanco); padding:14px 20px; display:flex; justify-content:space-between; align-items:center;}
+  header h1{font-size:16px; margin:0; letter-spacing:.03em;}
+  .tricolor{height:3px; background:linear-gradient(to right, var(--rojo) 33%, var(--amarillo) 33% 66%, var(--verde) 66%);}
+  main{max-width:960px; margin:0 auto; padding:16px; display:grid; gap:16px; grid-template-columns: 1fr 1.4fr;}
+  @media (max-width:800px){ main{grid-template-columns:1fr;} }
+  .card{background:var(--blanco); border:1px solid var(--gris-borde); border-radius:10px; padding:16px;}
+  .card h2{font-size:14px; text-transform:uppercase; letter-spacing:.05em; color:var(--gris); margin:0 0 10px;}
+  input, select, textarea, button{width:100%; padding:8px; margin-bottom:8px; border:1px solid var(--gris-borde); border-radius:6px; font-size:14px;}
+  button{background:var(--dorado); color:var(--azul); font-weight:600; border:none; cursor:pointer;}
+  button:hover{opacity:.9;}
+  #lector{border-radius:8px; overflow:hidden; border:1px solid var(--gris-borde);}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th,td{border-bottom:1px solid var(--gris-claro); padding:6px; text-align:left;}
+  .oculto{display:none;}
+  .aviso{background:#FDECEC; border-left:4px solid var(--rojo-error); padding:10px; font-size:13px; border-radius:4px;}
+  .ok{background:#EAF7EE; border-left:4px solid var(--verde); padding:10px; font-size:13px; border-radius:4px;}
+  .ubicacion{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; text-align:center;}
+  .ubicacion div{background:var(--gris-claro); border-radius:8px; padding:10px;}
+  .ubicacion span{display:block; font-size:22px; font-weight:800; color:var(--azul);}
+  footer{height:1.5px; background:linear-gradient(to right, var(--rojo) 33%, var(--amarillo) 33% 66%, var(--verde) 66%); margin-top:20px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📦 SGD-DV · Gestión Documental y Trazabilidad</h1>
+  <div id="estadoSesion">👤 Invitado (no validado)</div>
+</header>
+<div class="tricolor"></div>
+
+<main>
+  <!-- COLUMNA IZQUIERDA -->
+  <div style="display:flex; flex-direction:column; gap:16px;">
+
+    <div class="card" id="cardLogin">
+      <h2>🔑 Acceso Autorizado</h2>
+      <input type="text" id="usuario" placeholder="Usuario institucional">
+      <input type="password" id="clave" placeholder="Contraseña">
+      <button onclick="iniciarSesion()">Iniciar sesión</button>
+      <div id="mensajeLogin"></div>
+    </div>
+
+    <div class="card">
+      <h2>📷 Escáner QR</h2>
+      <div id="lector"></div>
+      <p style="font-size:12px; color:var(--gris)">O ingresa el código manualmente:</p>
+      <input type="text" id="codigoManual" placeholder="Ej. 2026-IN-T03">
+      <button onclick="consultarTomo(document.getElementById('codigoManual').value.trim())">Consultar</button>
+    </div>
+
+  </div>
+
+  <!-- COLUMNA DERECHA -->
+  <div style="display:flex; flex-direction:column; gap:16px;">
+
+    <div class="card oculto" id="cardUbicacion">
+      <h2>📍 Ubicación física del tomo</h2>
+      <div class="ubicacion">
+        <div>Estante<span id="ubEstante">-</span></div>
+        <div>Balda<span id="ubBalda">-</span></div>
+        <div>Posición<span id="ubPosicion">-</span></div>
+      </div>
+    </div>
+
+    <div class="card oculto" id="cardIndice">
+      <h2>📑 Contenido digital del tomo</h2>
+      <table>
+        <thead><tr><th>Cite</th><th>Asunto</th><th>Folios</th><th>Archivo</th></tr></thead>
+        <tbody id="cuerpoIndice"></tbody>
+      </table>
+    </div>
+
+    <div class="card oculto" id="cardMovimiento">
+      <h2>🔀 Actualizar movimiento del tomo</h2>
+      <p style="font-size:12px; color:var(--gris)">Tomo actual: <b id="movCodigoTomo">-</b></p>
+      <label>Nuevo estante</label>
+      <input type="text" id="movEstante">
+      <label>Nueva balda</label>
+      <input type="text" id="movBalda">
+      <label>Nueva posición</label>
+      <input type="text" id="movPosicion">
+      <button onclick="registrarMovimiento()">Registrar movimiento</button>
+      <div id="mensajeMovimiento"></div>
+    </div>
+
+    <div class="card">
+      <h2>🏷️ Generar código QR</h2>
+      <label>Código de tomo</label>
+      <input type="text" id="qrCodigoTomo" placeholder="Ej. 2026-IN-T03">
+      <button onclick="generarQR()">Generar QR</button>
+      <div id="qrContenedor" style="text-align:center; margin-top:10px;"></div>
+      <button class="oculto" id="btnDescargarQR" onclick="descargarQR()">Descargar PNG</button>
+    </div>
+
+    <div class="card oculto" id="cardRegistro">
+      <h2>📝 Registrar nuevo documento en este tomo</h2>
+      <label>Dirección</label>
+      <select id="regDireccion" onchange="cargarUnidades()"></select>
+      <label>Unidad</label>
+      <select id="regUnidad"></select>
+      <label>Número de Cite (solo el número, ej. 3)</label>
+      <input type="text" id="regNumeroCite">
+      <label>Fecha del documento</label>
+      <input type="date" id="regFecha">
+      <label>Remitente</label>
+      <input type="text" id="regRemitente">
+      <label>Destinatario</label>
+      <input type="text" id="regDestinatario">
+      <label>Asunto</label>
+      <input type="text" id="regAsunto">
+      <label>Folio inicio</label>
+      <input type="number" id="regFolioInicio">
+      <label>Folio fin</label>
+      <input type="number" id="regFolioFin">
+      <label>Observaciones</label>
+      <textarea id="regObservaciones"></textarea>
+      <label>Archivo PDF</label>
+      <input type="file" id="regPdf" accept="application/pdf">
+      <button onclick="registrarDocumento()">Guardar registro</button>
+      <div id="mensajeRegistro"></div>
+    </div>
+
+  </div>
+</main>
+
+<section id="panelAdmin" class="oculto" style="max-width:960px; margin:16px auto; padding:0 16px; display:grid; gap:16px; grid-template-columns:repeat(2,1fr);">
+
+  <div class="card">
+    <h2>🏢 Nueva Dirección</h2>
+    <input type="text" id="admDireccionSigla" placeholder="Sigla, ej. DGAC">
+    <input type="text" id="admDireccionDenom" placeholder="Denominación completa">
+    <button onclick="crearDireccion()">Crear dirección</button>
+    <div id="mensajeAdmDireccion"></div>
+  </div>
+
+  <div class="card">
+    <h2>🧩 Nueva Unidad</h2>
+    <select id="admUnidadDireccion"></select>
+    <input type="text" id="admUnidadSigla" placeholder="Sigla, ej. UGEC">
+    <input type="text" id="admUnidadDenom" placeholder="Denominación completa">
+    <button onclick="crearUnidad()">Crear unidad</button>
+    <div id="mensajeAdmUnidad"></div>
+  </div>
+
+  <div class="card">
+    <h2>📄 Nuevo Tipo Documental</h2>
+    <input type="text" id="admTipoCodigo" placeholder="Código, ej. Ni">
+    <input type="text" id="admTipoNombre" placeholder="Nombre, ej. Nota Interna">
+    <input type="text" id="admTipoNaturaleza" placeholder="Naturaleza (opcional)">
+    <input type="text" id="admTipoUso" placeholder="Uso (opcional)">
+    <button onclick="crearTipoDocumental()">Crear tipo documental</button>
+    <div id="mensajeAdmTipo"></div>
+  </div>
+
+  <div class="card">
+    <h2>📚 Nuevo Tomo</h2>
+    <input type="text" id="admTomoGestion" placeholder="Gestión, ej. 2026">
+    <select id="admTomoTipo"></select>
+    <input type="text" id="admTomoNumero" placeholder="Número de tomo, ej. T03">
+    <input type="text" id="admTomoEstante" placeholder="Estante inicial">
+    <input type="text" id="admTomoBalda" placeholder="Balda inicial">
+    <input type="text" id="admTomoPosicion" placeholder="Posición inicial">
+    <button onclick="crearTomo()">Crear tomo</button>
+    <div id="mensajeAdmTomo"></div>
+  </div>
+
+  <div class="card" style="grid-column: span 2;">
+    <h2>👤 Usuarios</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <div>
+        <input type="text" id="admUsuarioId" placeholder="Usuario institucional">
+        <input type="text" id="admUsuarioNombre" placeholder="Nombre completo">
+        <input type="password" id="admUsuarioClave" placeholder="Contraseña inicial">
+        <select id="admUsuarioRol">
+          <option value="Lector">Lector</option>
+          <option value="Administrador">Administrador</option>
+        </select>
+        <button onclick="crearUsuario()">Crear usuario</button>
+        <div id="mensajeAdmUsuario"></div>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th></tr></thead>
+          <tbody id="cuerpoUsuarios"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer></footer>
+
+<script>
+// ============================================================
+// CONFIGURACIÓN — pega aquí la URL /exec de tu implementación
+// de Apps Script una vez desplegada.
+// ============================================================
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_s8B7edtisG9VeZTkv3T5howwIKBC6DYYUPcIarxJJ4YwSXvqUsoUMZppi07w8WDY/exec";
+
+let sesion = null;         // {idUsuario, nombre, rol}
+let tomoActual = null;     // código del tomo actualmente consultado
+let catalogos = null;      // direcciones, unidades, tiposDocumentales
+
+// ---------- Utilidad: hash SHA-256 en el navegador ----------
+async function sha256(texto) {
+  const datos = new TextEncoder().encode(texto);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', datos);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// ---------- Llamada genérica al backend ----------
+async function llamarBackend(accion, datos) {
+  const cuerpo = Object.assign({ accion }, datos);
+  const resp = await fetch(WEB_APP_URL, {
+    method: 'POST',
+    body: JSON.stringify(cuerpo)
+  });
+  return await resp.json();
+}
+
+// ---------- Credenciales que acompañan cada acción protegida ----------
+function credenciales() {
+  return sesion ? { idUsuarioSolicitante: sesion.idUsuario, claveHashSolicitante: sesion.claveHash } : {};
+}
+
+// ---------- Login ----------
+async function iniciarSesion() {
+  const idUsuario = document.getElementById('usuario').value.trim();
+  const clave = document.getElementById('clave').value;
+  if (!idUsuario || !clave) return;
+  const claveHash = await sha256(clave);
+  const r = await llamarBackend('login', { idUsuario, claveHash });
+  const msj = document.getElementById('mensajeLogin');
+  if (r.ok) {
+    sesion = r.datos;
+    sesion.claveHash = claveHash;
+    document.getElementById('estadoSesion').innerText = '👤 ' + sesion.nombre + ' (' + sesion.rol + ')';
+    msj.innerHTML = '<div class="ok">Acceso concedido.</div>';
+    if (sesion.rol === 'Administrador') {
+      if (tomoActual) mostrarFormularioRegistro();
+      document.getElementById('panelAdmin').classList.remove('oculto');
+      if (!catalogos) await cargarCatalogos();
+      cargarListaUsuarios();
+    }
+    if (tomoActual) actualizarVistaIndice();
+  } else {
+    msj.innerHTML = '<div class="aviso">' + r.error.mensaje + '</div>';
+  }
+}
+
+// ---------- Catálogos (se cargan una vez) ----------
+async function cargarCatalogos() {
+  const r = await llamarBackend('obtenerCatalogos', {});
+  if (r.ok) {
+    catalogos = r.datos;
+    const opcionesDir = catalogos.direcciones.map(d => `<option value="${d.Sigla}">${d.Sigla} - ${d.Denominacion}</option>`).join('');
+    document.getElementById('regDireccion').innerHTML = opcionesDir;
+    const selAdmUniDir = document.getElementById('admUnidadDireccion');
+    if (selAdmUniDir) selAdmUniDir.innerHTML = opcionesDir;
+    const selAdmTomoTipo = document.getElementById('admTomoTipo');
+    if (selAdmTomoTipo) selAdmTomoTipo.innerHTML = catalogos.tiposDocumentales.map(t => `<option value="${t.Codigo}">${t.Codigo} - ${t.Tipo}</option>`).join('');
+    cargarUnidades();
+  }
+}
+function cargarUnidades() {
+  const dirSel = document.getElementById('regDireccion').value;
+  const selUni = document.getElementById('regUnidad');
+  const filtradas = catalogos.unidades.filter(u => u.Dependencia === dirSel);
+  selUni.innerHTML = filtradas.map(u => `<option value="${u.Sigla}">${u.Sigla} - ${u.Denominacion}</option>`).join('');
+}
+
+// ---------- Escáner QR ----------
+function onEscaneoExitoso(textoDecodificado) {
+  // El QR contiene la URL con parámetro ?tomo=CODIGO o solo el código
+  let codigo = textoDecodificado;
+  try {
+    const url = new URL(textoDecodificado);
+    codigo = url.searchParams.get('tomo') || textoDecodificado;
+  } catch (e) { /* no era una URL, se usa tal cual */ }
+  consultarTomo(codigo);
+}
+const lector = new Html5QrcodeScanner('lector', { fps: 10, qrbox: 220 });
+lector.render(onEscaneoExitoso);
+
+// ---------- Consultar tomo (QR del Lomo: ubicación SIEMPRE en vivo) ----------
+async function consultarTomo(codigo) {
+  if (!codigo) return;
+  tomoActual = codigo;
+  const r = await llamarBackend('obtenerTomo', { codigoTomo: codigo });
+  if (!r.ok) { alert(r.error.mensaje); return; }
+  document.getElementById('cardUbicacion').classList.remove('oculto');
+  document.getElementById('ubEstante').innerText = r.datos.Estante;
+  document.getElementById('ubBalda').innerText = r.datos.Balda;
+  document.getElementById('ubPosicion').innerText = r.datos.Posicion;
+
+  document.getElementById('cardIndice').classList.remove('oculto');
+  await actualizarVistaIndice();
+
+  if (sesion && sesion.rol === 'Administrador') mostrarFormularioRegistro();
+}
+
+// ---------- Movimiento de tomo ----------
+function mostrarFormularioRegistro() {
+  document.getElementById('cardRegistro').classList.remove('oculto');
+  document.getElementById('cardMovimiento').classList.remove('oculto');
+  document.getElementById('movCodigoTomo').innerText = tomoActual;
+  if (!catalogos) cargarCatalogos();
+}
+
+async function registrarMovimiento() {
+  const msj = document.getElementById('mensajeMovimiento');
+  if (!tomoActual) { msj.innerHTML = '<div class="aviso">Primero consulta un tomo.</div>'; return; }
+  const datos = {
+    codigoTomo: tomoActual,
+    estante: document.getElementById('movEstante').value.trim(),
+    balda: document.getElementById('movBalda').value.trim(),
+    posicion: document.getElementById('movPosicion').value.trim(),
+    usuario: sesion ? sesion.idUsuario : 'Desconocido',
+    ...credenciales()
+  };
+  if (!datos.estante && !datos.balda && !datos.posicion) {
+    msj.innerHTML = '<div class="aviso">Indica al menos un dato de ubicación nuevo.</div>'; return;
+  }
+  const r = await llamarBackend('registrarMovimiento', datos);
+  if (r.ok) {
+    msj.innerHTML = `<div class="ok">Ubicación actualizada: ${r.datos.ubicacionNueva}</div>`;
+    consultarTomo(tomoActual); // refresca el panel de ubicación con el dato en vivo
+  } else {
+    msj.innerHTML = `<div class="aviso">${r.error.mensaje}</div>`;
+  }
+}
+
+// ---------- Generación de QR (lomo y carátula apuntan al mismo enlace;
+// el sistema decide qué mostrar según si hay sesión o no) ----------
+let qrGenerado = null;
+function generarQR() {
+  const codigo = document.getElementById('qrCodigoTomo').value.trim();
+  if (!codigo) return;
+  const contenedor = document.getElementById('qrContenedor');
+  contenedor.innerHTML = '';
+  const enlace = window.location.href.split('?')[0] + '?tomo=' + encodeURIComponent(codigo);
+  qrGenerado = new QRCode(contenedor, { text: enlace, width: 200, height: 200 });
+  const p = document.createElement('p');
+  p.style.fontSize = '11px'; p.style.color = 'var(--gris)'; p.innerText = enlace;
+  contenedor.appendChild(p);
+  document.getElementById('btnDescargarQR').classList.remove('oculto');
+}
+function descargarQR() {
+  const contenedor = document.getElementById('qrContenedor');
+  const img = contenedor.querySelector('img') || contenedor.querySelector('canvas');
+  const enlace = document.createElement('a');
+  enlace.download = document.getElementById('qrCodigoTomo').value.trim() + '_QR.png';
+  enlace.href = img.tagName === 'CANVAS' ? img.toDataURL('image/png') : img.src;
+  enlace.click();
+}
+
+// Al cargar la página: si la URL trae ?tomo=CODIGO (venir de un QR real), consulta directo
+window.addEventListener('load', () => {
+  const params = new URLSearchParams(window.location.search);
+  const codigoDesdeQR = params.get('tomo');
+  if (codigoDesdeQR) consultarTomo(codigoDesdeQR);
+});
+
+// ---------- Administración: Direcciones / Unidades / Tipos / Tomos / Usuarios ----------
+async function crearDireccion() {
+  const msj = document.getElementById('mensajeAdmDireccion');
+  const r = await llamarBackend('crearDireccion', {
+    sigla: document.getElementById('admDireccionSigla').value.trim(),
+    denominacion: document.getElementById('admDireccionDenom').value.trim(),
+    ...credenciales()
+  });
+  msj.innerHTML = r.ok
+    ? `<div class="ok">Dirección ${r.datos.sigla} creada.</div>`
+    : `<div class="aviso">${r.error.mensaje}</div>`;
+  if (r.ok) { catalogos = null; await cargarCatalogos(); }
+}
+
+async function crearUnidad() {
+  const msj = document.getElementById('mensajeAdmUnidad');
+  const r = await llamarBackend('crearUnidad', {
+    direccion: document.getElementById('admUnidadDireccion').value,
+    sigla: document.getElementById('admUnidadSigla').value.trim(),
+    denominacion: document.getElementById('admUnidadDenom').value.trim(),
+    ...credenciales()
+  });
+  msj.innerHTML = r.ok
+    ? `<div class="ok">Unidad ${r.datos.sigla} creada.</div>`
+    : `<div class="aviso">${r.error.mensaje}</div>`;
+  if (r.ok) { catalogos = null; await cargarCatalogos(); }
+}
+
+async function crearTipoDocumental() {
+  const msj = document.getElementById('mensajeAdmTipo');
+  const r = await llamarBackend('crearTipoDocumental', {
+    codigo: document.getElementById('admTipoCodigo').value.trim(),
+    tipo: document.getElementById('admTipoNombre').value.trim(),
+    naturaleza: document.getElementById('admTipoNaturaleza').value.trim(),
+    uso: document.getElementById('admTipoUso').value.trim(),
+    ...credenciales()
+  });
+  msj.innerHTML = r.ok
+    ? `<div class="ok">Tipo documental ${r.datos.codigo} creado.</div>`
+    : `<div class="aviso">${r.error.mensaje}</div>`;
+  if (r.ok) { catalogos = null; await cargarCatalogos(); }
+}
+
+async function crearTomo() {
+  const msj = document.getElementById('mensajeAdmTomo');
+  const r = await llamarBackend('crearTomo', {
+    gestion: document.getElementById('admTomoGestion').value.trim(),
+    tipoDocumental: document.getElementById('admTomoTipo').value,
+    numeroTomo: document.getElementById('admTomoNumero').value.trim(),
+    estante: document.getElementById('admTomoEstante').value.trim(),
+    balda: document.getElementById('admTomoBalda').value.trim(),
+    posicion: document.getElementById('admTomoPosicion').value.trim(),
+    ...credenciales()
+  });
+  msj.innerHTML = r.ok
+    ? `<div class="ok">Tomo ${r.datos.codigoTomo} creado.</div>`
+    : `<div class="aviso">${r.error.mensaje}</div>`;
+}
+
+async function crearUsuario() {
+  const msj = document.getElementById('mensajeAdmUsuario');
+  const clave = document.getElementById('admUsuarioClave').value;
+  if (!clave) { msj.innerHTML = '<div class="aviso">Ingresa una contraseña inicial.</div>'; return; }
+  const claveHash = await sha256(clave);
+  const r = await llamarBackend('crearUsuario', {
+    idUsuario: document.getElementById('admUsuarioId').value.trim(),
+    nombreCompleto: document.getElementById('admUsuarioNombre').value.trim(),
+    claveHash: claveHash,
+    rolPermiso: document.getElementById('admUsuarioRol').value,
+    ...credenciales()
+  });
+  msj.innerHTML = r.ok
+    ? `<div class="ok">Usuario ${r.datos.idUsuario} creado.</div>`
+    : `<div class="aviso">${r.error.mensaje}</div>`;
+  if (r.ok) cargarListaUsuarios();
+}
+
+async function cargarListaUsuarios() {
+  const r = await llamarBackend('listarUsuarios', { ...credenciales() });
+  if (!r.ok) return;
+  document.getElementById('cuerpoUsuarios').innerHTML = r.datos.usuarios.map(u =>
+    `<tr><td>${u.ID_Usuario}</td><td>${u.Nombre_Completo}</td><td>${u.Rol_Permiso}</td><td>${u.Estado}</td></tr>`
+  ).join('');
+}
+
+async function actualizarVistaIndice() {
+  const r = await llamarBackend('obtenerIndiceTomo', Object.assign({ codigoTomo: tomoActual }, credenciales()));
+  const cuerpo = document.getElementById('cuerpoIndice');
+  if (!r.ok) { cuerpo.innerHTML = ''; return; }
+  cuerpo.innerHTML = r.datos.documentos.map(d =>
+    `<tr><td>${d.Cite}</td><td>${d.Asunto}</td><td>${d.Folio_Inicio}-${d.Folio_Fin}</td>` +
+    (sesion ? `<td><a href="${d.URL_Archivo_PDF}" target="_blank">Ver PDF</a></td>` : `<td>🔒</td>`) +
+    `</tr>`
+  ).join('');
+}
+
+// ---------- Registrar documento (con PDF) ----------
+function leerArchivoComoBase64(archivo) {
+  return new Promise((resolve, reject) => {
+    const lector = new FileReader();
+    lector.onload = () => resolve(lector.result.split(',')[1]);
+    lector.onerror = reject;
+    lector.readAsDataURL(archivo);
+  });
+}
+
+async function registrarDocumento() {
+  const msj = document.getElementById('mensajeRegistro');
+  const archivo = document.getElementById('regPdf').files[0];
+  if (!archivo) { msj.innerHTML = '<div class="aviso">Selecciona un archivo PDF.</div>'; return; }
+
+  msj.innerHTML = 'Subiendo y registrando…';
+  const pdfBase64 = await leerArchivoComoBase64(archivo);
+
+  const datos = {
+    codigoTomo: tomoActual,
+    direccion: document.getElementById('regDireccion').value,
+    unidad: document.getElementById('regUnidad').value,
+    numeroCite: document.getElementById('regNumeroCite').value,
+    fechaDocumento: document.getElementById('regFecha').value,
+    remitente: document.getElementById('regRemitente').value,
+    destinatario: document.getElementById('regDestinatario').value,
+    asunto: document.getElementById('regAsunto').value,
+    folioInicio: document.getElementById('regFolioInicio').value,
+    folioFin: document.getElementById('regFolioFin').value,
+    observaciones: document.getElementById('regObservaciones').value,
+    usuario: sesion ? sesion.idUsuario : 'Desconocido',
+    ...credenciales(),
+    pdfBase64: pdfBase64
+  };
+
+  const r = await llamarBackend('registrarDocumento', datos);
+  if (r.ok) {
+    msj.innerHTML = `<div class="ok">Registrado. ID: ${r.datos.codigoDocumento} · Cite: ${r.datos.cite}</div>`;
+    await actualizarVistaIndice();
+  } else {
+    msj.innerHTML = `<div class="aviso">${r.error.mensaje}</div>`;
+  }
+}
+</script>
+
+</body>
+</html>
