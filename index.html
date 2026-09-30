@@ -1,3688 +1,769 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SGD-DV · Gestión Documental</title>
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<title>
-  SGD-DV · Sistema de Gestión Documental
-</title>
-
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-
-:root {
-  --blanco:#fff;
-  --dorado:#B5993A;
-  --dorado-oscuro:#9E842D;
-  --gris-institucional:#585857;
-  --azul-institucional:#242732;
-  --rojo-bolivia:#E30613;
-  --amarillo-bolivia:#FFED00;
-  --verde-bolivia:#008739;
-  --fondo:#F4F4F3;
-  --gris-claro:#E7E7E5;
-  --gris-borde:#D4D4D1;
-  --gris-medio:#8A8A87;
-  --verde-ok:#008739;
-  --rojo-error:#C62828;
-  --sombra-suave:0 2px 8px rgba(36,39,50,.07);
-  --sombra-media:0 5px 18px rgba(36,39,50,.10);
-}
-
-*,
-*::before,
-*::after {
-  box-sizing:border-box;
-}
-
-html {
-  min-height:100%;
-  scroll-behavior:smooth;
-}
-
-body {
-  margin:0;
-  min-height:100vh;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--fondo);
-  color:var(--azul-institucional);
-  line-height:1.45;
-}
-
-header {
-  background:var(--azul-institucional);
-  color:var(--blanco);
-  padding:15px 22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  box-shadow:var(--sombra-media);
-}
-
-.marca {
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.marca-icono {
-  width:42px;
-  height:42px;
-  border-radius:8px;
-  background:var(--dorado);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-}
-
-.marca h1 {
-  font-size:17px;
-  margin:0;
-}
-
-.marca small {
-  display:block;
-  margin-top:2px;
-  color:#D9D9D7;
-  font-size:11px;
-}
-
-#estadoSesion {
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:20px;
-  padding:7px 12px;
-  font-size:12px;
-  white-space:nowrap;
-}
-
-.tricolor {
-  height:4px;
-  background:
-    linear-gradient(
-      to right,
-      var(--rojo-bolivia) 33.33%,
-      var(--amarillo-bolivia) 33.33% 66.66%,
-      var(--verde-bolivia) 66.66%
-    );
-}
-
-main {
-  max-width:1180px;
-  margin:0 auto;
-  padding:20px;
-  display:grid;
-  grid-template-columns:
-    minmax(280px,.85fr)
-    minmax(420px,1.5fr);
-  gap:18px;
-}
-
-.columna {
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-
-.card {
-  background:var(--blanco);
-  border:1px solid var(--gris-borde);
-  border-radius:11px;
-  padding:17px;
-  box-shadow:var(--sombra-suave);
-}
-
-.card h2 {
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  color:var(--gris-institucional);
-  margin:0 0 13px;
-}
-
-.card-subtitulo {
-  color:var(--gris-medio);
-  font-size:12px;
-  margin-top:-7px;
-  margin-bottom:12px;
-}
-
-label {
-  display:block;
-  margin:6px 0 4px;
-  font-size:12px;
-  font-weight:600;
-  color:var(--gris-institucional);
-}
-
-input,
-select,
-textarea {
-  width:100%;
-  padding:9px 10px;
-  margin-bottom:8px;
-  border:1px solid var(--gris-borde);
-  border-radius:7px;
-  background:var(--blanco);
-  color:var(--azul-institucional);
-  font-size:14px;
-  outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color:var(--dorado);
-  box-shadow:0 0 0 3px rgba(181,153,58,.13);
-}
-
-textarea {
-  min-height:80px;
-  resize:vertical;
-}
-
-button {
-  width:100%;
-  padding:10px 12px;
-  margin-top:3px;
-  margin-bottom:8px;
-  border:0;
-  border-radius:7px;
-  background:var(--dorado);
-  color:var(--azul-institucional);
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-button:hover {
-  background:var(--dorado-oscuro);
-  color:var(--blanco);
-}
-
-button:disabled {
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-button.secundario {
-  background:var(--azul-institucional);
-  color:var(--blanco);
-}
-
-button.peligro {
-  background:var(--rojo-error);
-  color:var(--blanco);
-}
-
-.aviso,
-.ok,
-.info {
-  padding:9px 11px;
-  border-radius:6px;
-  font-size:12px;
-  margin-top:7px;
-}
-
-.aviso {
-  background:#FDECEC;
-  border-left:4px solid var(--rojo-error);
-  color:#7B1E1E;
-}
-
-.ok {
-  background:#EAF7EE;
-  border-left:4px solid var(--verde-ok);
-  color:#155D2C;
-}
-
-.info {
-  background:#EEF2F8;
-  border-left:4px solid var(--azul-institucional);
-}
-
-.login-icono {
-  width:54px;
-  height:54px;
-  border-radius:50%;
-  background:rgba(181,153,58,.14);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:25px;
-  margin:0 auto 10px;
-}
-
-.login-titulo {
-  text-align:center;
-  font-size:15px;
-  font-weight:700;
-}
-
-.login-ayuda {
-  text-align:center;
-  color:var(--gris-medio);
-  font-size:11px;
-  margin-bottom:15px;
-}
-
-.estado-backend {
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:11px;
-  color:var(--gris-medio);
-}
-
-.punto {
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--gris-medio);
-}
-
-.punto.ok {
-  background:var(--verde-ok);
-}
-
-.punto.error {
-  background:var(--rojo-error);
-}
-
-#lector {
-  border:1px solid var(--gris-borde);
-  border-radius:8px;
-  overflow:hidden;
-  background:#FAFAF9;
-}
-
-.qr-contenedor {
-  text-align:center;
-  margin-top:12px;
-}
-
-.qr-contenedor img,
-.qr-contenedor canvas {
-  max-width:200px;
-  border:6px solid var(--blanco);
-  box-shadow:var(--sombra-suave);
-}
-
-.qr-url {
-  font-size:10px;
-  color:var(--gris-medio);
-  word-break:break-all;
-  margin-top:7px;
-}
-
-.ubicacion {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:9px;
-}
-
-.ubicacion div {
-  background:var(--gris-claro);
-  border-radius:8px;
-  padding:11px;
-  text-align:center;
-}
-
-.ubicacion label {
-  margin:0;
-  font-size:10px;
-  text-transform:uppercase;
-}
-
-.ubicacion span {
-  display:block;
-  margin-top:4px;
-  font-size:22px;
-  font-weight:800;
-}
-
-.tabla-contenedor {
-  width:100%;
-  overflow-x:auto;
-  border:1px solid var(--gris-borde);
-  border-radius:7px;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-}
-
-th,
-td {
-  border-bottom:1px solid var(--gris-claro);
-  padding:8px;
-  text-align:left;
-  vertical-align:top;
-}
-
-th {
-  background:var(--azul-institucional);
-  color:var(--blanco);
-  font-size:11px;
-  white-space:nowrap;
-}
-
-tr:last-child td {
-  border-bottom:0;
-}
-
-td a {
-  color:var(--dorado-oscuro);
-  font-weight:700;
-  text-decoration:none;
-}
-
-#panelAdmin {
-  max-width:1180px;
-  margin:0 auto 20px;
-  padding:0 20px;
-}
-
-.admin-grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:18px;
-}
-
-.admin-ancho {
-  grid-column:span 2;
-}
-
-.admin-cabecera {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:13px;
-}
-
-.badge {
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:20px;
-  font-size:10px;
-  font-weight:700;
-  background:rgba(181,153,58,.14);
-  color:var(--dorado-oscuro);
-}
-
-.usuario-nota {
-  background:#F7F7F5;
-  border:1px solid var(--gris-borde);
-  border-radius:7px;
-  padding:9px;
-  font-size:11px;
-  color:var(--gris-institucional);
-  margin-bottom:10px;
-}
-
-.oculto {
-  display:none !important;
-}
-
-.grid-2 {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.texto-pequeno {
-  font-size:11px;
-  color:var(--gris-medio);
-}
-
-.texto-centro {
-  text-align:center;
-}
-
-.vacio {
-  text-align:center;
-  padding:18px;
-  color:var(--gris-medio);
-  font-size:12px;
-}
-
-.cargando {
-  opacity:.65;
-  pointer-events:none;
-}
-
-footer {
-  margin-top:20px;
-  border-top:3px solid transparent;
-  border-image:
-    linear-gradient(
-      to right,
-      var(--rojo-bolivia) 33.33%,
-      var(--amarillo-bolivia) 33.33% 66.66%,
-      var(--verde-bolivia) 66.66%
-    ) 1;
-  padding:14px 20px;
-  text-align:center;
-  color:var(--gris-medio);
-  font-size:10px;
-}
-
-@media(max-width:850px) {
-
-  main {
-    grid-template-columns:1fr;
-    padding:12px;
-  }
-
-  #panelAdmin {
-    padding:0 12px;
-  }
-
-  .admin-grid {
-    grid-template-columns:1fr;
-  }
-
-  .admin-ancho {
-    grid-column:span 1;
-  }
-
-  header {
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  #estadoSesion {
-    width:100%;
-    text-align:center;
-  }
-}
-
-@media(max-width:520px) {
-
-  .grid-2 {
-    grid-template-columns:1fr;
-  }
-
-  .ubicacion {
-    grid-template-columns:1fr;
-  }
-
-  .marca h1 {
-    font-size:14px;
-  }
-}
-
+:root{
+  --blanco:#fff;--dorado:#B5993A;--dorado2:#9E842D;
+  --azul:#242732;--gris:#585857;--fondo:#F4F4F3;
+  --borde:#D4D4D1;--claro:#E7E7E5;--ok:#008739;--error:#C62828;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--fondo);color:var(--azul)}
+header{background:var(--azul);color:#fff;padding:15px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.marca{display:flex;gap:12px;align-items:center}.marca-icono{width:42px;height:42px;border-radius:8px;background:var(--dorado);display:grid;place-items:center;font-size:22px}.marca h1{font-size:17px;margin:0}.marca small{color:#ddd}
+#estadoSesion{font-size:12px;padding:7px 12px;border:1px solid #ffffff22;border-radius:20px}
+.tricolor{height:4px;background:linear-gradient(to right,#E30613 33.33%,#FFED00 33.33% 66.66%,#008739 66.66%)}
+main,#panelAdmin{max-width:1180px;margin:auto;padding:20px}
+main{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(420px,1.5fr);gap:18px}
+.columna{display:flex;flex-direction:column;gap:18px}.card{background:#fff;border:1px solid var(--borde);border-radius:11px;padding:17px;box-shadow:0 2px 8px #24273212}
+.card h2{font-size:14px;text-transform:uppercase;color:var(--gris);margin:0 0 12px}.card-subtitulo{color:#888;font-size:12px;margin:-5px 0 12px}
+label{display:block;margin:7px 0 4px;font-size:12px;font-weight:600;color:var(--gris)}
+input,select,textarea{width:100%;padding:9px 10px;margin-bottom:8px;border:1px solid var(--borde);border-radius:7px;font-size:14px}
+textarea{min-height:80px;resize:vertical}
+button{width:100%;padding:10px 12px;margin:3px 0 8px;border:0;border-radius:7px;background:var(--dorado);color:var(--azul);font-weight:700;cursor:pointer}
+button:hover{background:var(--dorado2);color:#fff}button:disabled{opacity:.55;cursor:not-allowed}.secundario{background:var(--azul);color:#fff}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.oculto{display:none!important}
+.aviso,.ok,.info{padding:9px 11px;border-radius:6px;font-size:12px;margin-top:7px}.aviso{background:#fdecec;border-left:4px solid var(--error);color:#7b1e1e}.ok{background:#eaf7ee;border-left:4px solid var(--ok);color:#155d2c}.info{background:#eef2f8;border-left:4px solid var(--azul)}
+.estado-backend{font-size:11px;color:#888}.punto{display:inline-block;width:8px;height:8px;border-radius:50%;background:#888;margin-right:5px}.punto.ok{background:var(--ok)}.punto.error{background:var(--error)}
+#lector{border:1px solid var(--borde);border-radius:8px;overflow:hidden}.qr-contenedor{text-align:center;margin-top:12px}.qr-contenedor img,.qr-contenedor canvas{max-width:200px;border:6px solid #fff}
+.ubicacion{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.ubicacion div{background:var(--claro);border-radius:8px;padding:11px;text-align:center}.ubicacion label{margin:0;font-size:10px;text-transform:uppercase}.ubicacion span{display:block;margin-top:4px;font-size:22px;font-weight:800}
+.tabla-contenedor{overflow-x:auto;border:1px solid var(--borde);border-radius:7px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px solid var(--claro);padding:8px;text-align:left;vertical-align:top}th{background:var(--azul);color:#fff;font-size:11px;white-space:nowrap}
+.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.admin-ancho{grid-column:span 2}.admin-cabecera{display:flex;justify-content:space-between;align-items:center}.badge{font-size:10px;padding:4px 8px;border-radius:20px;background:#b5993a22;color:var(--dorado2)}
+#googleLogin{display:flex;justify-content:center;margin:12px 0}.usuario-nota{background:#f7f7f5;border:1px solid var(--borde);border-radius:7px;padding:9px;font-size:11px}
+.vacio{text-align:center;padding:18px;color:#888;font-size:12px}
+footer{text-align:center;color:#888;font-size:10px;padding:18px;border-top:3px solid var(--dorado)}
+@media(max-width:850px){main{grid-template-columns:1fr;padding:12px}#panelAdmin{padding:12px}.admin-grid{grid-template-columns:1fr}.admin-ancho{grid-column:span 1}header{align-items:flex-start;flex-direction:column}}
+@media(max-width:520px){.grid-2,.ubicacion{grid-template-columns:1fr}}
 </style>
-
 </head>
 
 <body>
-
 <header>
-
   <div class="marca">
-
-    <div class="marca-icono">
-      📦
-    </div>
-
-    <div>
-
-      <h1>
-        SGD-DV · Gestión Documental
-      </h1>
-
-      <small>
-        Sistema de Gestión Documental y Trazabilidad
-      </small>
-
-    </div>
-
+    <div class="marca-icono">📦</div>
+    <div><h1>SGD-DV · Gestión Documental</h1><small>Sistema de Gestión Documental y Trazabilidad</small></div>
   </div>
-
-  <div id="estadoSesion">
-    👤 Invitado
-  </div>
-
+  <div id="estadoSesion">👤 Invitado</div>
 </header>
-
 <div class="tricolor"></div>
 
-
 <main>
-
   <div class="columna">
-
-    <!-- LOGIN -->
-
-    <div class="card" id="cardLogin">
-
-      <div class="login-icono">
-        🔐
+    <div class="card">
+      <h2>🔐 Acceso con Google</h2>
+      <div class="card-subtitulo">
+        Se utiliza tu cuenta personal @gmail.com. La autorización del rol se realiza en el backend.
       </div>
-
-      <div class="login-titulo">
-        Acceso al sistema
-      </div>
-
-      <div class="login-ayuda">
-        Utiliza tu nombre de usuario institucional.
-      </div>
-
-      <label for="usuario">
-        Nombre de usuario
-      </label>
-
-      <input
-        type="text"
-        id="usuario"
-        autocomplete="username"
-        placeholder="Ej. JoseMMendez"
-        onkeydown="if(event.key==='Enter') iniciarSesion()"
-      >
-
-      <label for="clave">
-        Contraseña
-      </label>
-
-      <input
-        type="password"
-        id="clave"
-        autocomplete="current-password"
-        placeholder="Contraseña"
-        onkeydown="if(event.key==='Enter') iniciarSesion()"
-      >
-
-      <button
-        id="btnLogin"
-        onclick="iniciarSesion()"
-      >
-        🔑 Iniciar sesión
-      </button>
-
+      <div id="googleLogin"></div>
       <div id="mensajeLogin"></div>
-
-      <div
-        class="estado-backend"
-        style="margin-top:10px;"
-      >
-
-        <span
-          id="puntoBackend"
-          class="punto"
-        ></span>
-
-        <span id="estadoBackend">
-          Comprobando conexión...
-        </span>
-
-      </div>
-
+      <div class="estado-backend"><span id="puntoBackend" class="punto"></span><span id="estadoBackend">Comprobando conexión...</span></div>
     </div>
 
-
-    <!-- ESCÁNER -->
-
     <div class="card">
-
-      <h2>
-        📷 Escáner QR
-      </h2>
-
-      <div class="card-subtitulo">
-        Escanea el código QR del tomo para consultar su ubicación.
-      </div>
-
+      <h2>📷 Escáner QR</h2>
+      <div class="card-subtitulo">Escanea el QR de un tomo para consultar su ubicación e índice.</div>
       <div id="lector"></div>
-
-      <p class="texto-pequeno">
-        También puedes ingresar manualmente el código del tomo.
-      </p>
-
-      <input
-        type="text"
-        id="codigoManual"
-        placeholder="Ej. 2026-NI-T03"
-        onkeydown="if(event.key==='Enter') consultarTomo(document.getElementById('codigoManual').value)"
-      >
-
-      <button
-        onclick="consultarTomo(document.getElementById('codigoManual').value)"
-      >
-        🔎 Consultar tomo
-      </button>
-
+      <label>Código de tomo</label>
+      <input id="codigoManual" placeholder="Ej. 2026-NI-T03" onkeydown="if(event.key==='Enter')consultarTomo(this.value)">
+      <button onclick="consultarTomo(document.getElementById('codigoManual').value)">🔎 Consultar tomo</button>
     </div>
-
-
-    <!-- QR -->
 
     <div class="card">
-
-      <h2>
-        🏷️ Generar código QR
-      </h2>
-
-      <div class="card-subtitulo">
-        Genera el QR correspondiente a un tomo registrado.
-      </div>
-
-      <label>
-        Código de tomo
-      </label>
-
-      <input
-        type="text"
-        id="qrCodigoTomo"
-        placeholder="Ej. 2026-NI-T03"
-      >
-
-      <button onclick="generarQR()">
-        ▣ Generar QR
-      </button>
-
-      <div
-        id="qrContenedor"
-        class="qr-contenedor"
-      ></div>
-
-      <button
-        id="btnDescargarQR"
-        class="oculto secundario"
-        onclick="descargarQR()"
-      >
-        ⬇ Descargar QR
-      </button>
-
+      <h2>🏷️ Generar QR</h2>
+      <label>Código de tomo</label>
+      <input id="qrCodigoTomo" placeholder="Ej. 2026-NI-T03">
+      <button onclick="generarQR()">▣ Generar QR</button>
+      <div id="qrContenedor" class="qr-contenedor"></div>
+      <button id="btnDescargarQR" class="oculto secundario" onclick="descargarQR()">⬇ Descargar QR</button>
     </div>
-
   </div>
-
 
   <div class="columna">
-
-    <!-- UBICACIÓN -->
-
-    <div
-      class="card oculto"
-      id="cardUbicacion"
-    >
-
-      <h2>
-        📍 Ubicación física del tomo
-      </h2>
-
-      <div class="card-subtitulo">
-        Ubicación consultada directamente desde el registro actual.
-      </div>
-
+    <div id="cardUbicacion" class="card oculto">
+      <h2>📍 Ubicación física del tomo</h2>
       <div class="ubicacion">
-
-        <div>
-          <label>
-            Estante
-          </label>
-
-          <span id="ubEstante">
-            -
-          </span>
-        </div>
-
-        <div>
-          <label>
-            Balda
-          </label>
-
-          <span id="ubBalda">
-            -
-          </span>
-        </div>
-
-        <div>
-          <label>
-            Posición
-          </label>
-
-          <span id="ubPosicion">
-            -
-          </span>
-        </div>
-
+        <div><label>Estante</label><span id="ubEstante">-</span></div>
+        <div><label>Balda</label><span id="ubBalda">-</span></div>
+        <div><label>Posición</label><span id="ubPosicion">-</span></div>
       </div>
-
-      <div
-        id="infoTomo"
-        class="info oculto"
-        style="margin-top:10px;"
-      ></div>
-
+      <div id="infoTomo" class="info oculto"></div>
     </div>
 
-
-    <!-- ÍNDICE -->
-
-    <div
-      class="card oculto"
-      id="cardIndice"
-    >
-
-      <h2>
-        📑 Contenido digital del tomo
-      </h2>
-
-      <div class="card-subtitulo">
-        Los archivos PDF requieren autenticación.
-      </div>
-
+    <div id="cardIndice" class="card oculto">
+      <h2>📑 Contenido digital del tomo</h2>
+      <div class="card-subtitulo">Los PDF se muestran únicamente después de autenticar una cuenta autorizada.</div>
       <div class="tabla-contenedor">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Cite</th>
-              <th>Asunto</th>
-              <th>Folios</th>
-              <th>Archivo</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="cuerpoIndice"></tbody>
-
-        </table>
-
+        <table><thead><tr><th>Cite</th><th>H.R.</th><th>Asunto</th><th>Folios</th><th>Archivo</th></tr></thead>
+        <tbody id="cuerpoIndice"></tbody></table>
       </div>
-
     </div>
 
-
-    <!-- MOVIMIENTO -->
-
-    <div
-      class="card oculto"
-      id="cardMovimiento"
-    >
-
-      <h2>
-        🔀 Actualizar movimiento del tomo
-      </h2>
-
-      <div class="card-subtitulo">
-        Esta operación requiere permisos de Administrador.
-      </div>
-
-      <p class="texto-pequeno">
-
-        Tomo actual:
-
-        <strong id="movCodigoTomo">
-          -
-        </strong>
-
-      </p>
-
+    <div id="cardMovimiento" class="card oculto">
+      <h2>🔀 Actualizar movimiento del tomo</h2>
+      <p><small>Tomo: <strong id="movCodigoTomo">-</strong></small></p>
       <div class="grid-2">
-
-        <div>
-
-          <label>
-            Nuevo estante
-          </label>
-
-          <input
-            type="text"
-            id="movEstante"
-          >
-
-        </div>
-
-        <div>
-
-          <label>
-            Nueva balda
-          </label>
-
-          <input
-            type="text"
-            id="movBalda"
-          >
-
-        </div>
-
+        <div><label>Nuevo estante</label><input id="movEstante"></div>
+        <div><label>Nueva balda</label><input id="movBalda"></div>
       </div>
-
-      <label>
-        Nueva posición
-      </label>
-
-      <input
-        type="text"
-        id="movPosicion"
-      >
-
-      <button onclick="registrarMovimiento()">
-        💾 Registrar movimiento
-      </button>
-
+      <label>Nueva posición</label><input id="movPosicion">
+      <button onclick="registrarMovimiento()">💾 Registrar movimiento</button>
       <div id="mensajeMovimiento"></div>
-
     </div>
 
-
-    <!-- REGISTRO DOCUMENTO -->
-
-    <div
-      class="card oculto"
-      id="cardRegistro"
-    >
-
-      <h2>
-        📝 Registrar documento
-      </h2>
-
-      <div class="card-subtitulo">
-        Registra un documento digital dentro del tomo actualmente seleccionado.
+    <div id="cardRegistro" class="card oculto">
+      <h2>📝 Registrar documento</h2>
+      <div class="card-subtitulo">El Cite se genera automáticamente con la configuración institucional.</div>
+      <div class="info">
+        <strong>Tomo:</strong> <span id="regTomo">-</span><br>
+        <strong>Cite:</strong> <span id="regCitePreview">se asignará automáticamente</span>
       </div>
 
-      <label>
-        Dirección
-      </label>
+      <label>Hoja de Ruta (opcional)</label>
+      <input id="regHojaRuta" placeholder="Ej. H.R. 41173.26">
 
-      <select
-        id="regDireccion"
-        onchange="cargarUnidades()"
-      ></select>
-
-      <label>
-        Unidad
-      </label>
-
-      <select id="regUnidad"></select>
-
-      <label>
-        Número de Cite
-      </label>
-
-      <input
-        type="text"
-        id="regNumeroCite"
-        placeholder="Ej. 3"
-      >
-
-      <label>
-        Fecha del documento
-      </label>
-
-      <input
-        type="date"
-        id="regFecha"
-      >
+      <label>Fecha del documento</label>
+      <input type="date" id="regFecha">
 
       <div class="grid-2">
-
-        <div>
-
-          <label>
-            Remitente
-          </label>
-
-          <input
-            type="text"
-            id="regRemitente"
-          >
-
-        </div>
-
-        <div>
-
-          <label>
-            Destinatario
-          </label>
-
-          <input
-            type="text"
-            id="regDestinatario"
-          >
-
-        </div>
-
+        <div><label>Remitente</label><input id="regRemitente"></div>
+        <div><label>Destinatario</label><input id="regDestinatario"></div>
       </div>
 
-      <label>
-        Asunto
-      </label>
-
-      <input
-        type="text"
-        id="regAsunto"
-      >
+      <label>Asunto</label><input id="regAsunto">
 
       <div class="grid-2">
-
-        <div>
-
-          <label>
-            Folio inicio
-          </label>
-
-          <input
-            type="number"
-            id="regFolioInicio"
-            min="1"
-            step="1"
-            inputmode="numeric"
-            oninput="validarFoliosFrontend()"
-          >
-
-        </div>
-
-        <div>
-
-          <label>
-            Folio fin
-          </label>
-
-          <input
-            type="number"
-            id="regFolioFin"
-            min="1"
-            step="1"
-            inputmode="numeric"
-            oninput="validarFoliosFrontend()"
-          >
-
-        </div>
-
+        <div><label>Folio inicio</label><input type="number" id="regFolioInicio" min="1" step="1" oninput="validarFoliosFrontend()"></div>
+        <div><label>Folio fin</label><input type="number" id="regFolioFin" min="1" step="1" oninput="validarFoliosFrontend()"></div>
       </div>
+      <div id="mensajeFolios"></div>
 
-      <div
-        id="mensajeFolios"
-        class="oculto"
-      ></div>
-
-      <label>
-        Observaciones
-      </label>
-
-      <textarea
-        id="regObservaciones"
-      ></textarea>
-
-      <label>
-        Archivo PDF
-      </label>
-
-      <input
-        type="file"
-        id="regPdf"
-        accept="application/pdf"
-      >
-
-      <button
-        id="btnRegistrarDocumento"
-        onclick="registrarDocumento()"
-      >
-        💾 Guardar documento
-      </button>
-
+      <label>Observaciones</label><textarea id="regObservaciones"></textarea>
+      <label>Archivo PDF</label><input type="file" id="regPdf" accept="application/pdf">
+      <button id="btnRegistrarDocumento" onclick="registrarDocumento()">💾 Guardar documento</button>
       <div id="mensajeRegistro"></div>
-
     </div>
-
   </div>
-
 </main>
 
-
-<!-- ADMIN -->
-
-<section
-  id="panelAdmin"
-  class="oculto"
->
-
+<section id="panelAdmin" class="oculto">
   <div class="admin-grid">
-
-
-    <!-- DIRECCIÓN -->
-
     <div class="card">
-
-      <div class="admin-cabecera">
-
-        <h2>
-          🏢 Nueva Dirección
-        </h2>
-
-        <span class="badge">
-          ADMIN
-        </span>
-
-      </div>
-
-      <input
-        type="text"
-        id="admDireccionSigla"
-        placeholder="Sigla, ej. DGAC"
-      >
-
-      <input
-        type="text"
-        id="admDireccionDenom"
-        placeholder="Denominación completa"
-      >
-
-      <button onclick="crearDireccion()">
-        + Crear dirección
-      </button>
-
-      <div id="mensajeAdmDireccion"></div>
-
-    </div>
-
-
-    <!-- UNIDAD -->
-
-    <div class="card">
-
-      <div class="admin-cabecera">
-
-        <h2>
-          🧩 Nueva Unidad
-        </h2>
-
-        <span class="badge">
-          ADMIN
-        </span>
-
-      </div>
-
-      <select id="admUnidadDireccion"></select>
-
-      <input
-        type="text"
-        id="admUnidadSigla"
-        placeholder="Sigla, ej. UGEC"
-      >
-
-      <input
-        type="text"
-        id="admUnidadDenom"
-        placeholder="Denominación completa"
-      >
-
-      <button onclick="crearUnidad()">
-        + Crear unidad
-      </button>
-
-      <div id="mensajeAdmUnidad"></div>
-
-    </div>
-
-
-    <!-- TIPO DOCUMENTAL -->
-
-    <div class="card">
-
-      <div class="admin-cabecera">
-
-        <h2>
-          📄 Nuevo Tipo Documental
-        </h2>
-
-        <span class="badge">
-          ADMIN
-        </span>
-
-      </div>
-
-      <input
-        type="text"
-        id="admTipoCodigo"
-        placeholder="Código, ej. NI"
-      >
-
-      <input
-        type="text"
-        id="admTipoNombre"
-        placeholder="Nombre, ej. Nota Interna"
-      >
-
-      <input
-        type="text"
-        id="admTipoNaturaleza"
-        placeholder="Naturaleza"
-      >
-
-      <input
-        type="text"
-        id="admTipoUso"
-        placeholder="Uso"
-      >
-
-      <button onclick="crearTipoDocumental()">
-        + Crear tipo documental
-      </button>
-
+      <div class="admin-cabecera"><h2>📄 Nuevo tipo documental</h2><span class="badge">ADMIN</span></div>
+      <input id="admTipoCodigo" placeholder="Código, ej. NI">
+      <input id="admTipoNombre" placeholder="Nombre, ej. Nota Interna">
+      <input id="admTipoNaturaleza" placeholder="Naturaleza">
+      <input id="admTipoUso" placeholder="Uso">
+      <input id="admTipoOrdenacion" placeholder="Ordenación">
+      <button onclick="crearTipoDocumental()">+ Crear tipo documental</button>
       <div id="mensajeAdmTipo"></div>
-
     </div>
-
-
-    <!-- TOMO -->
 
     <div class="card">
-
-      <div class="admin-cabecera">
-
-        <h2>
-          📚 Nuevo Tomo
-        </h2>
-
-        <span class="badge">
-          ADMIN
-        </span>
-
-      </div>
-
-      <input
-        type="text"
-        id="admTomoGestion"
-        placeholder="Gestión, ej. 2026"
-        inputmode="numeric"
-      >
-
+      <div class="admin-cabecera"><h2>📚 Nuevo tomo</h2><span class="badge">ADMIN</span></div>
+      <input id="admTomoGestion" placeholder="Gestión, ej. 2026" inputmode="numeric">
       <select id="admTomoTipo"></select>
-
-      <input
-        type="text"
-        id="admTomoNumero"
-        placeholder="Número de tomo, ej. T03"
-      >
-
-      <div class="grid-2">
-
-        <input
-          type="text"
-          id="admTomoEstante"
-          placeholder="Estante inicial"
-        >
-
-        <input
-          type="text"
-          id="admTomoBalda"
-          placeholder="Balda inicial"
-        >
-
-      </div>
-
-      <input
-        type="text"
-        id="admTomoPosicion"
-        placeholder="Posición inicial"
-      >
-
-      <button onclick="crearTomo()">
-        + Crear tomo
-      </button>
-
+      <input id="admTomoNumero" placeholder="Número de tomo, ej. T03">
+      <div class="grid-2"><input id="admTomoEstante" placeholder="Estante"><input id="admTomoBalda" placeholder="Balda"></div>
+      <input id="admTomoPosicion" placeholder="Posición">
+      <button onclick="crearTomo()">+ Crear tomo</button>
       <div id="mensajeAdmTomo"></div>
-
     </div>
-
-
-    <!-- USUARIOS -->
 
     <div class="card admin-ancho">
-
-      <div class="admin-cabecera">
-
-        <h2>
-          👤 Administración de usuarios
-        </h2>
-
-        <span class="badge">
-          ADMIN
-        </span>
-
-      </div>
-
+      <div class="admin-cabecera"><h2>👤 Usuarios autorizados</h2><span class="badge">ADMIN</span></div>
       <div class="usuario-nota">
-
-        El sistema genera automáticamente el
-        <strong>ID_Usuario</strong>,
-        por ejemplo
-        <strong>U001</strong>,
-        <strong>U002</strong>,
-        <strong>U003</strong>.
-
-        <br><br>
-
-        El usuario inicia sesión mediante
-        <strong>Nombre_Usuario</strong>.
-
-        <br><br>
-
-        El ID interno no se utiliza para iniciar sesión.
-
+        No se almacenan contraseñas. El administrador registra el Gmail y asigna el rol.
+        Los únicos roles son <strong>Administrador</strong> y <strong>Lector</strong>.
       </div>
-
       <div class="grid-2">
-
         <div>
-
-          <label>
-            Nombre completo
-          </label>
-
-          <input
-            type="text"
-            id="admUsuarioNombre"
-            placeholder="Ej. Juan Jose Mendez Mendez"
-          >
-
-          <label>
-            Nombre de usuario
-          </label>
-
-          <input
-            type="text"
-            id="admUsuarioId"
-            placeholder="Ej. JoseMMendez"
-          >
-
-          <label>
-            Contraseña inicial
-          </label>
-
-          <input
-            type="password"
-            id="admUsuarioClave"
-            placeholder="Contraseña"
-          >
-
-          <label>
-            Gmail
-          </label>
-
-          <input
-            type="email"
-            id="admUsuarioCorreo"
-            placeholder="usuario@gmail.com"
-          >
-
-          <label>
-            Rol
-          </label>
-
-          <select id="admUsuarioRol">
-
-            <option value="Lector">
-              Lector
-            </option>
-
-            <option value="Administrador">
-              Administrador
-            </option>
-
-          </select>
-
-          <button onclick="crearUsuario()">
-            + Crear usuario
-          </button>
-
+          <label>Nombre completo</label><input id="admUsuarioNombre">
+          <label>Cuenta Gmail</label><input id="admUsuarioCorreo" type="email" placeholder="usuario@gmail.com">
+          <label>Rol</label>
+          <select id="admUsuarioRol"><option>Lector</option><option>Administrador</option></select>
+          <button onclick="crearUsuario()">+ Autorizar usuario</button>
           <div id="mensajeAdmUsuario"></div>
-
         </div>
-
-        <div>
-
-          <div class="texto-pequeno">
-            Usuarios registrados
-          </div>
-
-          <div
-            class="tabla-contenedor"
-            style="margin-top:7px;"
-          >
-
-            <table>
-
-              <thead>
-
-                <tr>
-                  <th>Usuario</th>
-                  <th>Nombre</th>
-                  <th>Rol</th>
-                  <th>Estado</th>
-                </tr>
-
-              </thead>
-
-              <tbody id="cuerpoUsuarios"></tbody>
-
-            </table>
-
-          </div>
-
+        <div class="tabla-contenedor">
+          <table><thead><tr><th>Usuario</th><th>Gmail</th><th>Rol</th><th>Estado</th></tr></thead>
+          <tbody id="cuerpoUsuarios"></tbody></table>
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </section>
 
-
-<footer>
-  SGD-DV · Sistema de Gestión Documental y Trazabilidad
-  · America/La_Paz
-</footer>
-
+<footer>SGD-DV · Sistema de Gestión Documental y Trazabilidad · America/La_Paz</footer>
 
 <script>
-
 /* ============================================================
    CONFIGURACIÓN
    ============================================================ */
+const WEB_APP_URL = 'PEGAR_AQUI_URL_WEB_APP_APPS_SCRIPT';
 
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbzipWBjNWJcEc1CoyUyIIVpkNPKWtXYcMqDVSvlGaPJOK3drwbjMgfXwXcle56JG4yB/exec";
-
-
-/* ============================================================
-   ESTADO
-   ============================================================ */
+/*
+ * El Client ID NO es secreto. Debe coincidir con:
+ * Apps Script > Propiedades del proyecto > GOOGLE_CLIENT_ID
+ */
+let GOOGLE_CLIENT_ID = '';
 
 let sesion = null;
+let tokenGoogle = '';
 let tomoActual = null;
 let catalogos = null;
-let qrGenerado = null;
 let lectorQR = null;
 let operacionEnCurso = false;
-
-
-/* ============================================================
-   SHA-256
-   ============================================================ */
-
-async function sha256(texto) {
-
-  const datos =
-    new TextEncoder().encode(texto);
-
-  const hashBuffer =
-    await crypto.subtle.digest(
-      'SHA-256',
-      datos
-    );
-
-  return Array
-    .from(
-      new Uint8Array(hashBuffer)
-    )
-    .map(
-      b =>
-        b
-          .toString(16)
-          .padStart(2,'0')
-    )
-    .join('');
-}
-
 
 /* ============================================================
    BACKEND
    ============================================================ */
-
-async function llamarBackend(
-  accion,
-  datos = {}
-) {
-
+async function llamarBackend(accion, datos={}) {
   try {
-
-    const cuerpo = {
-      accion,
-      ...datos
-    };
-
-    const respuesta =
-      await fetch(
-        WEB_APP_URL,
-        {
-          method:'POST',
-          headers:{
-            'Content-Type':
-              'text/plain;charset=utf-8'
-          },
-          body:
-            JSON.stringify(cuerpo)
-        }
-      );
-
-    if (!respuesta.ok) {
-
-      throw new Error(
-        'HTTP ' +
-        respuesta.status
-      );
-    }
-
+    const respuesta = await fetch(WEB_APP_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({accion,...datos})
+    });
+    if(!respuesta.ok) throw new Error('HTTP '+respuesta.status);
     return await respuesta.json();
-
-  } catch(error) {
-
-    return {
-      ok:false,
-      datos:null,
-      error:{
-        codigo:'ERROR_CONEXION',
-        mensaje:
-          error.message ||
-          'No fue posible conectar con el servidor.'
-      }
-    };
+  } catch(e) {
+    return {ok:false,datos:null,error:{codigo:'ERROR_CONEXION',mensaje:e.message}};
   }
 }
 
-
-/* ============================================================
-   CREDENCIALES
-   ============================================================ */
-
-function credenciales() {
-
-  if (!sesion) {
-    return {};
-  }
-
-  return {
-
-    idUsuarioSolicitante:
-      sesion.idUsuario,
-
-    claveHashSolicitante:
-      sesion.claveHash
-  };
+function datosAuth(){
+  return tokenGoogle ? {token:tokenGoogle} : {};
 }
 
-
 /* ============================================================
-   MENSAJES
+   GOOGLE LOGIN
    ============================================================ */
-
-function mostrarCargando(
-  elemento,
-  texto='Procesando...'
-) {
-
-  if (!elemento) return;
-
-  elemento.innerHTML =
-    '<div class="info">⏳ ' +
-    escapeHtml(texto) +
-    '</div>';
-}
-
-
-/* ============================================================
-   LOGIN
-   ============================================================ */
-
-async function iniciarSesion() {
-
-  const boton =
-    document.getElementById(
-      'btnLogin'
-    );
-
-  const msj =
-    document.getElementById(
-      'mensajeLogin'
-    );
-
-  const nombreUsuario =
-    document
-      .getElementById('usuario')
-      .value
-      .trim();
-
-  const clave =
-    document
-      .getElementById('clave')
-      .value;
-
-  if (
-    !nombreUsuario ||
-    !clave
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Ingresa usuario y contraseña.' +
-      '</div>';
-
+function inicializarGoogle() {
+  if(!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.indexOf('apps.googleusercontent.com') === -1) {
+    document.getElementById('mensajeLogin').innerHTML =
+      '<div class="aviso">Configura GOOGLE_CLIENT_ID en el backend y en este index.html.</div>';
     return;
   }
 
-  boton.disabled = true;
-  boton.innerText =
-    '⏳ Verificando...';
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: recibirTokenGoogle,
+    auto_select:false,
+    cancel_on_tap_outside:true
+  });
 
-  try {
+  google.accounts.id.renderButton(
+    document.getElementById('googleLogin'),
+    {theme:'outline',size:'large',text:'signin_with',shape:'rectangular',width:280}
+  );
+}
 
-    const claveHash =
-      await sha256(clave);
+async function recibirTokenGoogle(response) {
+  const msj=document.getElementById('mensajeLogin');
+  msj.innerHTML='<div class="info">⏳ Autenticando y verificando autorización...</div>';
 
-    const r =
-      await llamarBackend(
-        'login',
-        {
-          nombreUsuario,
-          claveHash
-        }
-      );
+  const r=await llamarBackend('validarGoogle',{token:response.credential});
 
-    if (!r.ok) {
+  if(!r.ok) {
+    tokenGoogle='';
+    sesion=null;
+    document.getElementById('estadoSesion').innerText='👤 Invitado';
+    msj.innerHTML='<div class="aviso">'+escapeHtml(r.error?.mensaje||'Acceso no autorizado.')+'</div>';
+    ocultarFuncionesPrivadas();
+    return;
+  }
 
-      msj.innerHTML =
-        '<div class="aviso">' +
-        escapeHtml(
-          r.error?.mensaje ||
-          'No fue posible iniciar sesión.'
-        ) +
-        '</div>';
+  tokenGoogle=response.credential;
+  sesion=r.datos;
 
-      return;
-    }
+  document.getElementById('estadoSesion').innerText =
+    '👤 '+sesion.nombre+' · '+sesion.rol;
 
-    sesion =
-      r.datos;
+  msj.innerHTML='<div class="ok">✓ Cuenta autenticada y autorizada.</div>';
 
-    sesion.claveHash =
-      claveHash;
+  await cargarCatalogos();
 
-    document
-      .getElementById(
-        'estadoSesion'
-      )
-      .innerText =
-        '👤 ' +
-        sesion.nombre +
-        ' · ' +
-        sesion.rol;
+  if(sesion.rol==='Administrador') {
+    document.getElementById('panelAdmin').classList.remove('oculto');
+    document.getElementById('cardMovimiento').classList.remove('oculto');
+    await cargarListaUsuarios();
+  }
 
-    msj.innerHTML =
-      '<div class="ok">' +
-      '✓ Acceso concedido.' +
-      '</div>';
-
-    document
-      .getElementById(
-        'clave'
-      )
-      .value = '';
-
-    if (
-      sesion.rol ===
-      'Administrador'
-    ) {
-
-      document
-        .getElementById(
-          'panelAdmin'
-        )
-        .classList
-        .remove('oculto');
-
-      await cargarCatalogos();
-      await cargarListaUsuarios();
-
-      if (tomoActual) {
-        mostrarFormularioRegistro();
-      }
-    }
-
-    if (tomoActual) {
-      await actualizarVistaIndice();
-    }
-
-  } finally {
-
-    boton.disabled = false;
-    boton.innerText =
-      '🔑 Iniciar sesión';
+  if(tomoActual) {
+    mostrarFormularioRegistro();
+    await actualizarVistaIndice();
   }
 }
 
+function ocultarFuncionesPrivadas() {
+  document.getElementById('panelAdmin').classList.add('oculto');
+  document.getElementById('cardMovimiento').classList.add('oculto');
+  document.getElementById('cardRegistro').classList.add('oculto');
+}
 
 /* ============================================================
    CATÁLOGOS
    ============================================================ */
-
 async function cargarCatalogos() {
+  const r=await llamarBackend('obtenerCatalogos',datosAuth());
+  if(!r.ok) return;
 
-  const r =
-    await llamarBackend(
-      'obtenerCatalogos'
-    );
+  catalogos=r.datos;
 
-  if (!r.ok) {
-
-    console.error(
-      r.error
-    );
-
-    return;
-  }
-
-  catalogos =
-    r.datos;
-
-  const opcionesDir =
-    (catalogos.direcciones || [])
-      .map(
-        d =>
-          `<option value="${escapeAttribute(d.Sigla)}">
-            ${escapeHtml(d.Sigla)}
-            -
-            ${escapeHtml(d.Denominacion)}
-          </option>`
-      )
-      .join('');
-
-  const regDireccion =
-    document.getElementById(
-      'regDireccion'
-    );
-
-  if (regDireccion) {
-
-    regDireccion.innerHTML =
-      opcionesDir;
-  }
-
-  const admUnidadDireccion =
-    document.getElementById(
-      'admUnidadDireccion'
-    );
-
-  if (admUnidadDireccion) {
-
-    admUnidadDireccion.innerHTML =
-      opcionesDir;
-  }
-
-  const admTomoTipo =
-    document.getElementById(
-      'admTomoTipo'
-    );
-
-  if (admTomoTipo) {
-
-    admTomoTipo.innerHTML =
-      (catalogos.tiposDocumentales || [])
-        .map(
-          t =>
-            `<option value="${escapeAttribute(t.Codigo)}">
-              ${escapeHtml(t.Codigo)}
-              -
-              ${escapeHtml(t.Tipo)}
-            </option>`
-        )
-        .join('');
-  }
-
-  cargarUnidades();
+  const tipo=document.getElementById('admTomoTipo');
+  tipo.innerHTML=(catalogos.tiposDocumentales||[]).map(t =>
+    `<option value="${escapeAttribute(t.Codigo)}">${escapeHtml(t.Codigo)} - ${escapeHtml(t.Tipo)}</option>`
+  ).join('');
 }
 
-
-/* ============================================================
-   UNIDADES
-   ============================================================ */
-
-function cargarUnidades() {
-
-  if (!catalogos) {
-    return;
-  }
-
-  const direccion =
-    document
-      .getElementById(
-        'regDireccion'
-      )
-      ?.value;
-
-  const select =
-    document.getElementById(
-      'regUnidad'
-    );
-
-  if (!select) {
-    return;
-  }
-
-  const filtradas =
-    (catalogos.unidades || [])
-      .filter(
-        u =>
-          String(
-            u.Dependencia
-          ) ===
-          String(
-            direccion
-          )
-      );
-
-  select.innerHTML =
-    filtradas
-      .map(
-        u =>
-          `<option value="${escapeAttribute(u.Sigla)}">
-            ${escapeHtml(u.Sigla)}
-            -
-            ${escapeHtml(u.Denominacion)}
-          </option>`
-      )
-      .join('');
+function tipoDelTomo() {
+  if(!tomoActual || !catalogos) return '';
+  const t=(catalogos.tomos||[]).find(x =>
+    String(x.Codigo_Tomo).trim().toLowerCase()===String(tomoActual).trim().toLowerCase()
+  );
+  return t ? String(t.TipoDocumental||'') : '';
 }
-
 
 /* ============================================================
    TOMO
    ============================================================ */
+async function consultarTomo(codigo) {
+  codigo=String(codigo||'').trim();
+  if(!codigo){alert('Ingresa o escanea un código de tomo.');return;}
 
-async function consultarTomo(
-  codigo
-) {
-
-  codigo =
-    String(
-      codigo || ''
-    ).trim();
-
-  if (!codigo) {
-
-    alert(
-      'Ingresa o escanea un código de tomo.'
-    );
-
+  const r=await llamarBackend('obtenerTomo',{codigoTomo:codigo});
+  if(!r.ok){
+    document.getElementById('cardUbicacion').classList.add('oculto');
+    alert(r.error?.mensaje||'No se encontró el tomo.');
     return;
   }
 
-  const r =
-    await llamarBackend(
-      'obtenerTomo',
-      {
-        codigoTomo:
-          codigo
-      }
-    );
+  tomoActual=r.datos.Codigo_Tomo;
+  document.getElementById('codigoManual').value=tomoActual;
+  document.getElementById('cardUbicacion').classList.remove('oculto');
 
-  if (!r.ok) {
+  document.getElementById('ubEstante').innerText=r.datos.Estante||'-';
+  document.getElementById('ubBalda').innerText=r.datos.Balda||'-';
+  document.getElementById('ubPosicion').innerText=r.datos.Posicion||'-';
 
-    document
-      .getElementById(
-        'cardUbicacion'
-      )
-      .classList
-      .add('oculto');
+  const info=document.getElementById('infoTomo');
+  info.classList.remove('oculto');
+  info.innerHTML='<strong>Tomo:</strong> '+escapeHtml(r.datos.Codigo_Tomo)+
+    ' · <strong>Gestión:</strong> '+escapeHtml(r.datos.Gestion)+
+    ' · <strong>Tipo:</strong> '+escapeHtml(r.datos.TipoDocumental);
 
-    alert(
-      r.error?.mensaje ||
-      'No se encontró el tomo.'
-    );
+  document.getElementById('cardIndice').classList.remove('oculto');
 
-    return;
-  }
-
-  tomoActual =
-    codigo;
-
-  document
-    .getElementById(
-      'codigoManual'
-    )
-    .value =
-      codigo;
-
-  document
-    .getElementById(
-      'cardUbicacion'
-    )
-    .classList
-    .remove('oculto');
-
-  document
-    .getElementById(
-      'ubEstante'
-    )
-    .innerText =
-      r.datos.Estante || '-';
-
-  document
-    .getElementById(
-      'ubBalda'
-    )
-    .innerText =
-      r.datos.Balda || '-';
-
-  document
-    .getElementById(
-      'ubPosicion'
-    )
-    .innerText =
-      r.datos.Posicion || '-';
-
-  const info =
-    document.getElementById(
-      'infoTomo'
-    );
-
-  info.classList.remove(
-    'oculto'
-  );
-
-  info.innerHTML =
-    '<strong>Tomo:</strong> ' +
-    escapeHtml(
-      r.datos.Codigo_Tomo
-    ) +
-    ' · <strong>Gestión:</strong> ' +
-    escapeHtml(
-      r.datos.Gestion
-    ) +
-    ' · <strong>Tipo:</strong> ' +
-    escapeHtml(
-      r.datos.Tipo_Documental
-    );
-
-  document
-    .getElementById(
-      'cardIndice'
-    )
-    .classList
-    .remove('oculto');
-
-  await actualizarVistaIndice();
-
-  if (
-    sesion &&
-    sesion.rol ===
-    'Administrador'
-  ) {
-
+  if(sesion) {
+    if(sesion.rol==='Administrador') {
+      document.getElementById('cardMovimiento').classList.remove('oculto');
+    }
     mostrarFormularioRegistro();
   }
+
+  await actualizarVistaIndice();
 }
-
-
-/* ============================================================
-   FORMULARIOS ADMIN
-   ============================================================ */
 
 function mostrarFormularioRegistro() {
+  if(!sesion || sesion.rol!=='Administrador' || !tomoActual) return;
 
-  document
-    .getElementById(
-      'cardRegistro'
-    )
-    .classList
-    .remove('oculto');
+  document.getElementById('cardRegistro').classList.remove('oculto');
+  document.getElementById('regTomo').innerText=tomoActual;
 
-  document
-    .getElementById(
-      'cardMovimiento'
-    )
-    .classList
-    .remove('oculto');
+  const tipo=tipoDelTomo();
+  const cfg=catalogos?.configuracion;
+  document.getElementById('regCitePreview').innerText =
+    cfg && tipo ? `${cfg.instancia}-${tipo}-[correlativo]/${cfg.gestion}` : 'se asignará automáticamente';
 
-  document
-    .getElementById(
-      'movCodigoTomo'
-    )
-    .innerText =
-      tomoActual || '-';
-
-  if (!catalogos) {
-    cargarCatalogos();
-  }
+  document.getElementById('movCodigoTomo').innerText=tomoActual;
 }
-
-
-/* ============================================================
-   MOVIMIENTO
-   ============================================================ */
-
-async function registrarMovimiento() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  if (operacionEnCurso) {
-    return;
-  }
-
-  const msj =
-    document.getElementById(
-      'mensajeMovimiento'
-    );
-
-  if (!tomoActual) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Primero consulta un tomo.' +
-      '</div>';
-
-    return;
-  }
-
-  const estante =
-    document
-      .getElementById(
-        'movEstante'
-      )
-      .value
-      .trim();
-
-  const balda =
-    document
-      .getElementById(
-        'movBalda'
-      )
-      .value
-      .trim();
-
-  const posicion =
-    document
-      .getElementById(
-        'movPosicion'
-      )
-      .value
-      .trim();
-
-  if (
-    !estante &&
-    !balda &&
-    !posicion
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Indica al menos un dato de ubicación nuevo.' +
-      '</div>';
-
-    return;
-  }
-
-  operacionEnCurso = true;
-
-  mostrarCargando(
-    msj,
-    'Registrando movimiento...'
-  );
-
-  try {
-
-    const r =
-      await llamarBackend(
-        'registrarMovimiento',
-        {
-          codigoTomo:
-            tomoActual,
-
-          estante,
-          balda,
-          posicion,
-
-          ...credenciales()
-        }
-      );
-
-    if (r.ok) {
-
-      msj.innerHTML =
-        '<div class="ok">' +
-        '✓ Ubicación actualizada: ' +
-        escapeHtml(
-          r.datos.ubicacionNueva
-        ) +
-        '</div>';
-
-      await consultarTomo(
-        tomoActual
-      );
-
-    } else {
-
-      msj.innerHTML =
-        '<div class="aviso">' +
-        escapeHtml(
-          r.error?.mensaje ||
-          'No fue posible registrar el movimiento.'
-        ) +
-        '</div>';
-    }
-
-  } finally {
-
-    operacionEnCurso = false;
-  }
-}
-
-
-/* ============================================================
-   FOLIOS - VALIDACIÓN FRONTEND
-   ============================================================ */
-
-function validarFoliosFrontend() {
-
-  const inicio =
-    document.getElementById(
-      'regFolioInicio'
-    ).value;
-
-  const fin =
-    document.getElementById(
-      'regFolioFin'
-    ).value;
-
-  const mensaje =
-    document.getElementById(
-      'mensajeFolios'
-    );
-
-  if (
-    inicio === '' &&
-    fin === ''
-  ) {
-
-    mensaje.classList.add(
-      'oculto'
-    );
-
-    return false;
-  }
-
-  if (
-    !/^\d+$/.test(inicio) ||
-    !/^\d+$/.test(fin)
-  ) {
-
-    mensaje.classList.remove(
-      'oculto'
-    );
-
-    mensaje.innerHTML =
-      '<div class="aviso">' +
-      'Los folios solamente aceptan números enteros.' +
-      '</div>';
-
-    return false;
-  }
-
-  const nInicio =
-    Number(inicio);
-
-  const nFin =
-    Number(fin);
-
-  if (
-    nInicio < 1 ||
-    nFin < 1
-  ) {
-
-    mensaje.classList.remove(
-      'oculto'
-    );
-
-    mensaje.innerHTML =
-      '<div class="aviso">' +
-      'Los folios deben ser mayores o iguales a 1.' +
-      '</div>';
-
-    return false;
-  }
-
-  if (
-    nInicio >= nFin
-  ) {
-
-    mensaje.classList.remove(
-      'oculto'
-    );
-
-    mensaje.innerHTML =
-      '<div class="aviso">' +
-      'El folio de inicio debe ser menor que el folio de fin.' +
-      '</div>';
-
-    return false;
-  }
-
-  mensaje.classList.remove(
-    'oculto'
-  );
-
-  mensaje.innerHTML =
-    '<div class="ok">' +
-    '✓ Rango de folios válido: ' +
-    nInicio +
-    ' - ' +
-    nFin +
-    '</div>';
-
-  return true;
-}
-
-
-/* ============================================================
-   CREAR DIRECCIÓN
-   ============================================================ */
-
-async function crearDireccion() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  const msj =
-    document.getElementById(
-      'mensajeAdmDireccion'
-    );
-
-  const sigla =
-    document
-      .getElementById(
-        'admDireccionSigla'
-      )
-      .value
-      .trim();
-
-  const denominacion =
-    document
-      .getElementById(
-        'admDireccionDenom'
-      )
-      .value
-      .trim();
-
-  if (
-    !sigla ||
-    !denominacion
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Completa sigla y denominación.' +
-      '</div>';
-
-    return;
-  }
-
-  mostrarCargando(
-    msj,
-    'Creando dirección...'
-  );
-
-  const r =
-    await llamarBackend(
-      'crearDireccion',
-      {
-        sigla,
-        denominacion,
-        ...credenciales()
-      }
-    );
-
-  if (r.ok) {
-
-    msj.innerHTML =
-      '<div class="ok">' +
-      '✓ Dirección creada correctamente.' +
-      '</div>';
-
-    document
-      .getElementById(
-        'admDireccionSigla'
-      )
-      .value = '';
-
-    document
-      .getElementById(
-        'admDireccionDenom'
-      )
-      .value = '';
-
-    await cargarCatalogos();
-
-  } else {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible crear la dirección.'
-      ) +
-      '</div>';
-  }
-}
-
-
-/* ============================================================
-   CREAR UNIDAD
-   ============================================================ */
-
-async function crearUnidad() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  const msj =
-    document.getElementById(
-      'mensajeAdmUnidad'
-    );
-
-  const direccion =
-    document
-      .getElementById(
-        'admUnidadDireccion'
-      )
-      .value;
-
-  const sigla =
-    document
-      .getElementById(
-        'admUnidadSigla'
-      )
-      .value
-      .trim();
-
-  const denominacion =
-    document
-      .getElementById(
-        'admUnidadDenom'
-      )
-      .value
-      .trim();
-
-  if (
-    !direccion ||
-    !sigla ||
-    !denominacion
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Completa todos los datos.' +
-      '</div>';
-
-    return;
-  }
-
-  mostrarCargando(
-    msj,
-    'Creando unidad...'
-  );
-
-  const r =
-    await llamarBackend(
-      'crearUnidad',
-      {
-        direccion,
-        sigla,
-        denominacion,
-        ...credenciales()
-      }
-    );
-
-  if (r.ok) {
-
-    msj.innerHTML =
-      '<div class="ok">' +
-      '✓ Unidad creada correctamente.' +
-      '</div>';
-
-    document
-      .getElementById(
-        'admUnidadSigla'
-      )
-      .value = '';
-
-    document
-      .getElementById(
-        'admUnidadDenom'
-      )
-      .value = '';
-
-    await cargarCatalogos();
-
-  } else {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible crear la unidad.'
-      ) +
-      '</div>';
-  }
-}
-
-
-/* ============================================================
-   TIPO DOCUMENTAL
-   ============================================================ */
-
-async function crearTipoDocumental() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  const msj =
-    document.getElementById(
-      'mensajeAdmTipo'
-    );
-
-  const datos = {
-
-    codigo:
-      document
-        .getElementById(
-          'admTipoCodigo'
-        )
-        .value
-        .trim(),
-
-    tipo:
-      document
-        .getElementById(
-          'admTipoNombre'
-        )
-        .value
-        .trim(),
-
-    naturaleza:
-      document
-        .getElementById(
-          'admTipoNaturaleza'
-        )
-        .value
-        .trim(),
-
-    uso:
-      document
-        .getElementById(
-          'admTipoUso'
-        )
-        .value
-        .trim(),
-
-    ...credenciales()
-  };
-
-  if (
-    !datos.codigo ||
-    !datos.tipo
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Código y tipo documental son obligatorios.' +
-      '</div>';
-
-    return;
-  }
-
-  mostrarCargando(
-    msj,
-    'Creando tipo documental...'
-  );
-
-  const r =
-    await llamarBackend(
-      'crearTipoDocumental',
-      datos
-    );
-
-  if (r.ok) {
-
-    msj.innerHTML =
-      '<div class="ok">' +
-      '✓ Tipo documental creado correctamente.' +
-      '</div>';
-
-    [
-      'admTipoCodigo',
-      'admTipoNombre',
-      'admTipoNaturaleza',
-      'admTipoUso'
-    ]
-      .forEach(
-        id =>
-          document.getElementById(
-            id
-          ).value = ''
-      );
-
-    await cargarCatalogos();
-
-  } else {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible crear el tipo documental.'
-      ) +
-      '</div>';
-  }
-}
-
-
-/* ============================================================
-   CREAR TOMO
-   ============================================================ */
-
-async function crearTomo() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  const msj =
-    document.getElementById(
-      'mensajeAdmTomo'
-    );
-
-  const datos = {
-
-    gestion:
-      document
-        .getElementById(
-          'admTomoGestion'
-        )
-        .value
-        .trim(),
-
-    tipoDocumental:
-      document
-        .getElementById(
-          'admTomoTipo'
-        )
-        .value,
-
-    numeroTomo:
-      document
-        .getElementById(
-          'admTomoNumero'
-        )
-        .value
-        .trim(),
-
-    estante:
-      document
-        .getElementById(
-          'admTomoEstante'
-        )
-        .value
-        .trim(),
-
-    balda:
-      document
-        .getElementById(
-          'admTomoBalda'
-        )
-        .value
-        .trim(),
-
-    posicion:
-      document
-        .getElementById(
-          'admTomoPosicion'
-        )
-        .value
-        .trim(),
-
-    ...credenciales()
-  };
-
-  if (
-    !datos.gestion ||
-    !datos.tipoDocumental ||
-    !datos.numeroTomo
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Gestión, tipo documental y número de tomo son obligatorios.' +
-      '</div>';
-
-    return;
-  }
-
-  mostrarCargando(
-    msj,
-    'Creando tomo...'
-  );
-
-  const r =
-    await llamarBackend(
-      'crearTomo',
-      datos
-    );
-
-  if (r.ok) {
-
-    msj.innerHTML =
-      '<div class="ok">' +
-      '✓ Tomo creado: ' +
-      escapeHtml(
-        r.datos.codigoTomo
-      ) +
-      '</div>';
-
-    document
-      .getElementById(
-        'admTomoNumero'
-      )
-      .value = '';
-
-  } else {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible crear el tomo.'
-      ) +
-      '</div>';
-  }
-}
-
-
-/* ============================================================
-   CREAR USUARIO
-   ============================================================ */
-
-async function crearUsuario() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  const msj =
-    document.getElementById(
-      'mensajeAdmUsuario'
-    );
-
-  const nombreCompleto =
-    document
-      .getElementById(
-        'admUsuarioNombre'
-      )
-      .value
-      .trim();
-
-  const nombreUsuario =
-    document
-      .getElementById(
-        'admUsuarioId'
-      )
-      .value
-      .trim();
-
-  const clave =
-    document
-      .getElementById(
-        'admUsuarioClave'
-      )
-      .value;
-
-  const correoGmail =
-    document
-      .getElementById(
-        'admUsuarioCorreo'
-      )
-      .value
-      .trim()
-      .toLowerCase();
-
-  const rolPermiso =
-    document
-      .getElementById(
-        'admUsuarioRol'
-      )
-      .value;
-
-  if (
-    !nombreCompleto ||
-    !nombreUsuario ||
-    !clave
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Completa nombre, usuario y contraseña.' +
-      '</div>';
-
-    return;
-  }
-
-  if (
-    clave.length < 8
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'La contraseña debe tener al menos 8 caracteres.' +
-      '</div>';
-
-    return;
-  }
-
-  if (
-    correoGmail &&
-    !correoGmail.endsWith(
-      '@gmail.com'
-    )
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'El correo debe ser una cuenta Gmail.' +
-      '</div>';
-
-    return;
-  }
-
-  const claveHash =
-    await sha256(clave);
-
-  mostrarCargando(
-    msj,
-    'Creando usuario...'
-  );
-
-  const r =
-    await llamarBackend(
-      'crearUsuario',
-      {
-        nombreCompleto,
-        nombreUsuario,
-        claveHash,
-        rolPermiso,
-        correoGmail,
-        ...credenciales()
-      }
-    );
-
-  if (r.ok) {
-
-    msj.innerHTML =
-      '<div class="ok">' +
-      '✓ Usuario creado correctamente. ' +
-      'ID interno: <strong>' +
-      escapeHtml(
-        r.datos.idUsuario
-      ) +
-      '</strong>' +
-      '</div>';
-
-    [
-      'admUsuarioNombre',
-      'admUsuarioId',
-      'admUsuarioClave',
-      'admUsuarioCorreo'
-    ]
-      .forEach(
-        id =>
-          document.getElementById(
-            id
-          ).value = ''
-      );
-
-    await cargarListaUsuarios();
-
-  } else {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible crear el usuario.'
-      ) +
-      '</div>';
-  }
-}
-
-
-/* ============================================================
-   LISTAR USUARIOS
-   ============================================================ */
-
-async function cargarListaUsuarios() {
-
-  if (!esAdministrador()) {
-    return;
-  }
-
-  const cuerpo =
-    document.getElementById(
-      'cuerpoUsuarios'
-    );
-
-  cuerpo.innerHTML =
-    '<tr>' +
-    '<td colspan="4" class="vacio">' +
-    'Cargando usuarios...' +
-    '</td>' +
-    '</tr>';
-
-  const r =
-    await llamarBackend(
-      'listarUsuarios',
-      credenciales()
-    );
-
-  if (!r.ok) {
-
-    cuerpo.innerHTML =
-      '<tr>' +
-      '<td colspan="4" class="vacio">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible cargar usuarios.'
-      ) +
-      '</td>' +
-      '</tr>';
-
-    return;
-  }
-
-  const usuarios =
-    r.datos.usuarios || [];
-
-  if (!usuarios.length) {
-
-    cuerpo.innerHTML =
-      '<tr>' +
-      '<td colspan="4" class="vacio">' +
-      'No existen usuarios registrados.' +
-      '</td>' +
-      '</tr>';
-
-    return;
-  }
-
-  cuerpo.innerHTML =
-    usuarios
-      .map(
-        u =>
-          `<tr>
-            <td>
-              ${escapeHtml(
-                u.Nombre_Usuario || ''
-              )}
-            </td>
-
-            <td>
-              ${escapeHtml(
-                u.Nombre_Completo || ''
-              )}
-            </td>
-
-            <td>
-              ${escapeHtml(
-                u.Rol_Permiso || ''
-              )}
-            </td>
-
-            <td>
-              ${escapeHtml(
-                u.Estado || ''
-              )}
-            </td>
-          </tr>`
-      )
-      .join('');
-}
-
 
 /* ============================================================
    ÍNDICE
    ============================================================ */
-
 async function actualizarVistaIndice() {
+  if(!tomoActual) return;
 
-  if (!tomoActual) {
+  const cuerpo=document.getElementById('cuerpoIndice');
+  cuerpo.innerHTML='<tr><td colspan="5" class="vacio">Consultando índice...</td></tr>';
+
+  const r=await llamarBackend('obtenerIndiceTomo',{
+    codigoTomo:tomoActual,...datosAuth()
+  });
+
+  if(!r.ok){
+    cuerpo.innerHTML='<tr><td colspan="5" class="vacio">'+escapeHtml(r.error?.mensaje||'No fue posible consultar.')+'</td></tr>';
     return;
   }
 
-  const cuerpo =
-    document.getElementById(
-      'cuerpoIndice'
-    );
-
-  cuerpo.innerHTML =
-    '<tr>' +
-    '<td colspan="4" class="vacio">' +
-    'Consultando índice...' +
-    '</td>' +
-    '</tr>';
-
-  const r =
-    await llamarBackend(
-      'obtenerIndiceTomo',
-      {
-        codigoTomo:
-          tomoActual,
-
-        ...credenciales()
-      }
-    );
-
-  if (!r.ok) {
-
-    cuerpo.innerHTML =
-      '<tr>' +
-      '<td colspan="4" class="vacio">' +
-      escapeHtml(
-        r.error?.mensaje ||
-        'No fue posible obtener el índice.'
-      ) +
-      '</td>' +
-      '</tr>';
-
+  const docs=r.datos.documentos||[];
+  if(!docs.length){
+    cuerpo.innerHTML='<tr><td colspan="5" class="vacio">Este tomo todavía no tiene documentos registrados.</td></tr>';
     return;
   }
 
-  const documentos =
-    r.datos.documentos || [];
-
-  if (!documentos.length) {
-
-    cuerpo.innerHTML =
-      '<tr>' +
-      '<td colspan="4" class="vacio">' +
-      'Este tomo todavía no tiene documentos registrados.' +
-      '</td>' +
-      '</tr>';
-
-    return;
-  }
-
-  cuerpo.innerHTML =
-    documentos
-      .map(
-        d => {
-
-          let archivo =
-            '<td>🔒</td>';
-
-          if (
-            sesion &&
-            d.URL_Archivo_PDF
-          ) {
-
-            archivo =
-              `<td>
-                <a
-                  href="${escapeAttribute(
-                    d.URL_Archivo_PDF
-                  )}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  📄 Ver PDF
-                </a>
-              </td>`;
-          }
-
-          return `
-            <tr>
-
-              <td>
-                ${escapeHtml(
-                  d.Cite || ''
-                )}
-              </td>
-
-              <td>
-                ${escapeHtml(
-                  d.Asunto || ''
-                )}
-              </td>
-
-              <td>
-                ${escapeHtml(
-                  (d.Folio_Inicio ?? '') +
-                  '-' +
-                  (d.Folio_Fin ?? '')
-                )}
-              </td>
-
-              ${archivo}
-
-            </tr>
-          `;
-        }
-      )
-      .join('');
+  cuerpo.innerHTML=docs.map(d=>{
+    const archivo=d.URL_Archivo_PDF
+      ? `<a href="${escapeAttribute(d.URL_Archivo_PDF)}" target="_blank" rel="noopener">📄 Ver PDF</a>`
+      : '🔒';
+    return `<tr>
+      <td>${escapeHtml(d.Cite||'')}</td>
+      <td>${escapeHtml(d.Hoja_Ruta||'')}</td>
+      <td>${escapeHtml(d.Asunto||'')}</td>
+      <td>${escapeHtml((d.Folio_Inicio??'')+'-'+(d.Folio_Fin??''))}</td>
+      <td>${archivo}</td>
+    </tr>`;
+  }).join('');
 }
 
-
 /* ============================================================
-   ARCHIVO BASE64
+   DOCUMENTO
    ============================================================ */
+function validarFoliosFrontend() {
+  const a=document.getElementById('regFolioInicio').value;
+  const b=document.getElementById('regFolioFin').value;
+  const m=document.getElementById('mensajeFolios');
 
-function leerArchivoComoBase64(
-  archivo
-) {
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-
-      const lector =
-        new FileReader();
-
-      lector.onload =
-        () => {
-
-          const resultado =
-            String(
-              lector.result || ''
-            );
-
-          const partes =
-            resultado.split(',');
-
-          resolve(
-            partes.length > 1
-              ? partes[1]
-              : partes[0]
-          );
-        };
-
-      lector.onerror =
-        reject;
-
-      lector.readAsDataURL(
-        archivo
-      );
-    }
-  );
+  if(!a&&!b){m.innerHTML='';return false;}
+  if(!/^\d+$/.test(a)||!/^\d+$/.test(b)){
+    m.innerHTML='<div class="aviso">Los folios solamente aceptan números enteros.</div>';
+    return false;
+  }
+  if(Number(a)<1||Number(b)<1||Number(a)>=Number(b)){
+    m.innerHTML='<div class="aviso">El folio de inicio debe ser menor que el folio de fin.</div>';
+    return false;
+  }
+  m.innerHTML='<div class="ok">✓ Rango de folios válido.</div>';
+  return true;
 }
 
-
-/* ============================================================
-   REGISTRAR DOCUMENTO
-   ============================================================ */
+function leerArchivoBase64(archivo) {
+  return new Promise((resolve,reject)=>{
+    const fr=new FileReader();
+    fr.onload=()=>{
+      const s=String(fr.result||'');
+      resolve(s.includes(',')?s.split(',')[1]:s);
+    };
+    fr.onerror=reject;
+    fr.readAsDataURL(archivo);
+  });
+}
 
 async function registrarDocumento() {
-
-  if (!esAdministrador()) {
+  if(!sesion||sesion.rol!=='Administrador'){
+    alert('Esta operación requiere permisos de Administrador.');
     return;
   }
+  if(operacionEnCurso) return;
 
-  if (operacionEnCurso) {
-    return;
-  }
+  const msj=document.getElementById('mensajeRegistro');
+  if(!tomoActual){msj.innerHTML='<div class="aviso">Primero consulta un tomo.</div>';return;}
+  if(!validarFoliosFrontend()) return;
 
-  const msj =
-    document.getElementById(
-      'mensajeRegistro'
-    );
+  const archivo=document.getElementById('regPdf').files[0];
+  if(!archivo){msj.innerHTML='<div class="aviso">Selecciona un PDF.</div>';return;}
+  if(archivo.type!=='application/pdf'){msj.innerHTML='<div class="aviso">El archivo debe ser PDF.</div>';return;}
+  if(archivo.size>20*1024*1024){msj.innerHTML='<div class="aviso">El PDF supera 20 MB.</div>';return;}
 
-  if (!tomoActual) {
+  operacionEnCurso=true;
+  const boton=document.getElementById('btnRegistrarDocumento');
+  boton.disabled=true;
 
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Primero consulta un tomo.' +
-      '</div>';
+  try{
+    msj.innerHTML='<div class="info">⏳ Preparando PDF y registro...</div>';
+    const pdfBase64=await leerArchivoBase64(archivo);
 
-    return;
-  }
-
-  if (
-    !validarFoliosFrontend()
-  ) {
-
-    return;
-  }
-
-  const archivo =
-    document
-      .getElementById(
-        'regPdf'
-      )
-      .files[0];
-
-  if (!archivo) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'Selecciona un archivo PDF.' +
-      '</div>';
-
-    return;
-  }
-
-  if (
-    archivo.type !==
-    'application/pdf'
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'El archivo seleccionado no es un PDF.' +
-      '</div>';
-
-    return;
-  }
-
-  if (
-    archivo.size >
-    20 * 1024 * 1024
-  ) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      'El PDF supera el límite de 20 MB.' +
-      '</div>';
-
-    return;
-  }
-
-  operacionEnCurso = true;
-
-  const boton =
-    document.getElementById(
-      'btnRegistrarDocumento'
-    );
-
-  boton.disabled = true;
-
-  try {
-
-    mostrarCargando(
-      msj,
-      'Preparando archivo PDF...'
-    );
-
-    const pdfBase64 =
-      await leerArchivoComoBase64(
-        archivo
-      );
-
-    const datos = {
-
-      codigoTomo:
-        tomoActual,
-
-      direccion:
-        document
-          .getElementById(
-            'regDireccion'
-          )
-          .value,
-
-      unidad:
-        document
-          .getElementById(
-            'regUnidad'
-          )
-          .value,
-
-      numeroCite:
-        document
-          .getElementById(
-            'regNumeroCite'
-          )
-          .value
-          .trim(),
-
-      fechaDocumento:
-        document
-          .getElementById(
-            'regFecha'
-          )
-          .value,
-
-      remitente:
-        document
-          .getElementById(
-            'regRemitente'
-          )
-          .value
-          .trim(),
-
-      destinatario:
-        document
-          .getElementById(
-            'regDestinatario'
-          )
-          .value
-          .trim(),
-
-      asunto:
-        document
-          .getElementById(
-            'regAsunto'
-          )
-          .value
-          .trim(),
-
-      folioInicio:
-        document
-          .getElementById(
-            'regFolioInicio'
-          )
-          .value,
-
-      folioFin:
-        document
-          .getElementById(
-            'regFolioFin'
-          )
-          .value,
-
-      observaciones:
-        document
-          .getElementById(
-            'regObservaciones'
-          )
-          .value
-          .trim(),
-
+    const datos={
+      codigoTomo:tomoActual,
+      hojaRuta:document.getElementById('regHojaRuta').value.trim(),
+      fechaDocumento:document.getElementById('regFecha').value,
+      remitente:document.getElementById('regRemitente').value.trim(),
+      destinatario:document.getElementById('regDestinatario').value.trim(),
+      asunto:document.getElementById('regAsunto').value.trim(),
+      folioInicio:document.getElementById('regFolioInicio').value,
+      folioFin:document.getElementById('regFolioFin').value,
+      observaciones:document.getElementById('regObservaciones').value.trim(),
+      nombreArchivo:archivo.name,
       pdfBase64,
-
-      ...credenciales()
+      ...datosAuth()
     };
 
-    mostrarCargando(
-      msj,
-      'Subiendo PDF y registrando documento...'
-    );
+    msj.innerHTML='<div class="info">⏳ Guardando documento...</div>';
+    const r=await llamarBackend('registrarDocumento',datos);
 
-    const r =
-      await llamarBackend(
-        'registrarDocumento',
-        datos
-      );
-
-    if (r.ok) {
-
-      msj.innerHTML =
-        '<div class="ok">' +
-        '✓ Documento registrado correctamente. ' +
-        'ID: ' +
-        escapeHtml(
-          r.datos.codigoDocumento
-        ) +
-        ' · Cite: ' +
-        escapeHtml(
-          r.datos.cite
-        ) +
+    if(r.ok){
+      msj.innerHTML='<div class="ok">✓ Registrado: <strong>'+
+        escapeHtml(r.datos.cite)+'</strong>'+
+        (r.datos.hojaRuta?' · '+escapeHtml(r.datos.hojaRuta):'')+
         '</div>';
 
-      document
-        .getElementById(
-          'regPdf'
-        )
-        .value = '';
-
+      ['regHojaRuta','regRemitente','regDestinatario','regAsunto','regFolioInicio','regFolioFin','regObservaciones']
+        .forEach(id=>document.getElementById(id).value='');
+      document.getElementById('regPdf').value='';
       await actualizarVistaIndice();
-
-    } else {
-
-      msj.innerHTML =
-        '<div class="aviso">' +
-        escapeHtml(
-          r.error?.mensaje ||
-          'No fue posible registrar el documento.'
-        ) +
-        '</div>';
+    }else{
+      msj.innerHTML='<div class="aviso">'+escapeHtml(r.error?.mensaje||'No fue posible registrar.')+'</div>';
     }
-
-  } catch(error) {
-
-    msj.innerHTML =
-      '<div class="aviso">' +
-      escapeHtml(
-        error.message ||
-        'Error al procesar el archivo.'
-      ) +
-      '</div>';
-
-  } finally {
-
-    operacionEnCurso = false;
-    boton.disabled = false;
+  }catch(e){
+    msj.innerHTML='<div class="aviso">'+escapeHtml(e.message||'Error al procesar el PDF.')+'</div>';
+  }finally{
+    operacionEnCurso=false;
+    boton.disabled=false;
   }
 }
-
 
 /* ============================================================
-   QR
+   MOVIMIENTO
    ============================================================ */
+async function registrarMovimiento(){
+  if(!sesion||sesion.rol!=='Administrador') return;
+  if(!tomoActual){alert('Primero consulta un tomo.');return;}
 
-function generarQR() {
+  const msj=document.getElementById('mensajeMovimiento');
+  const estante=document.getElementById('movEstante').value.trim();
+  const balda=document.getElementById('movBalda').value.trim();
+  const posicion=document.getElementById('movPosicion').value.trim();
 
-  const codigo =
-    document
-      .getElementById(
-        'qrCodigoTomo'
-      )
-      .value
-      .trim();
-
-  if (!codigo) {
-
-    alert(
-      'Ingresa el código del tomo.'
-    );
-
-    return;
+  if(!estante&&!balda&&!posicion){
+    msj.innerHTML='<div class="aviso">Indica al menos un dato.</div>';return;
   }
 
-  const contenedor =
-    document.getElementById(
-      'qrContenedor'
-    );
+  const r=await llamarBackend('registrarMovimiento',{
+    codigoTomo:tomoActual,estante,balda,posicion,...datosAuth()
+  });
 
-  contenedor.innerHTML = '';
-
-  const enlace =
-    window.location.href
-      .split('?')[0] +
-    '?tomo=' +
-    encodeURIComponent(
-      codigo
-    );
-
-  qrGenerado =
-    new QRCode(
-      contenedor,
-      {
-        text:enlace,
-        width:200,
-        height:200,
-        correctLevel:
-          QRCode.CorrectLevel.H
-      }
-    );
-
-  const p =
-    document.createElement(
-      'div'
-    );
-
-  p.className =
-    'qr-url';
-
-  p.innerText =
-    enlace;
-
-  contenedor.appendChild(
-    p
-  );
-
-  document
-    .getElementById(
-      'btnDescargarQR'
-    )
-    .classList
-    .remove('oculto');
-}
-
-
-function descargarQR() {
-
-  const contenedor =
-    document.getElementById(
-      'qrContenedor'
-    );
-
-  const imagen =
-    contenedor.querySelector(
-      'img'
-    );
-
-  const canvas =
-    contenedor.querySelector(
-      'canvas'
-    );
-
-  if (
-    !imagen &&
-    !canvas
-  ) {
-
-    alert(
-      'Primero genera el código QR.'
-    );
-
-    return;
-  }
-
-  const enlace =
-    document.createElement(
-      'a'
-    );
-
-  enlace.download =
-    (
-      document
-        .getElementById(
-          'qrCodigoTomo'
-        )
-        .value
-        .trim() ||
-      'tomo'
-    ) +
-    '_QR.png';
-
-  enlace.href =
-    canvas
-      ? canvas.toDataURL(
-          'image/png'
-        )
-      : imagen.src;
-
-  enlace.click();
-}
-
-
-/* ============================================================
-   QR SCANNER
-   ============================================================ */
-
-function onEscaneoExitoso(
-  textoDecodificado
-) {
-
-  let codigo =
-    textoDecodificado;
-
-  try {
-
-    const url =
-      new URL(
-        textoDecodificado
-      );
-
-    codigo =
-      url.searchParams.get(
-        'tomo'
-      ) ||
-      textoDecodificado;
-
-  } catch(e) {}
-
-  codigo =
-    String(
-      codigo || ''
-    ).trim();
-
-  if (codigo) {
-    consultarTomo(codigo);
+  if(r.ok){
+    msj.innerHTML='<div class="ok">✓ Ubicación actualizada.</div>';
+    document.getElementById('movEstante').value='';
+    document.getElementById('movBalda').value='';
+    document.getElementById('movPosicion').value='';
+    await consultarTomo(tomoActual);
+  }else{
+    msj.innerHTML='<div class="aviso">'+escapeHtml(r.error?.mensaje||'No fue posible actualizar.')+'</div>';
   }
 }
-
-
-function iniciarLectorQR() {
-
-  try {
-
-    lectorQR =
-      new Html5QrcodeScanner(
-        'lector',
-        {
-          fps:10,
-          qrbox:220
-        }
-      );
-
-    lectorQR.render(
-      onEscaneoExitoso,
-      function() {}
-    );
-
-  } catch(error) {
-
-    console.warn(
-      'No fue posible iniciar el lector QR.',
-      error
-    );
-  }
-}
-
 
 /* ============================================================
    ADMIN
    ============================================================ */
+async function crearTipoDocumental(){
+  if(!sesion||sesion.rol!=='Administrador') return;
+  const msj=document.getElementById('mensajeAdmTipo');
 
-function esAdministrador() {
+  const datos={
+    codigo:document.getElementById('admTipoCodigo').value.trim(),
+    tipo:document.getElementById('admTipoNombre').value.trim(),
+    naturaleza:document.getElementById('admTipoNaturaleza').value.trim(),
+    uso:document.getElementById('admTipoUso').value.trim(),
+    ordenacion:document.getElementById('admTipoOrdenacion').value.trim(),
+    ...datosAuth()
+  };
 
-  if (
-    !sesion ||
-    sesion.rol !==
-    'Administrador'
-  ) {
-
-    alert(
-      'Esta operación requiere permisos de Administrador.'
-    );
-
-    return false;
+  if(!datos.codigo||!datos.tipo){
+    msj.innerHTML='<div class="aviso">Código y tipo son obligatorios.</div>';return;
   }
 
-  return true;
-}
+  const r=await llamarBackend('crearTipoDocumental',datos);
+  msj.innerHTML=r.ok
+    ? '<div class="ok">✓ Tipo documental creado.</div>'
+    : '<div class="aviso">'+escapeHtml(r.error?.mensaje||'No fue posible crear.')+'</div>';
 
-
-/* ============================================================
-   ESCAPE HTML
-   ============================================================ */
-
-function escapeHtml(
-  valor
-) {
-
-  return String(
-    valor ?? ''
-  )
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-}
-
-
-function escapeAttribute(
-  valor
-) {
-
-  return escapeHtml(
-    valor
-  );
-}
-
-
-/* ============================================================
-   BACKEND STATUS
-   ============================================================ */
-
-async function comprobarBackend() {
-
-  const punto =
-    document.getElementById(
-      'puntoBackend'
-    );
-
-  const estado =
-    document.getElementById(
-      'estadoBackend'
-    );
-
-  const r =
-    await llamarBackend(
-      'ping'
-    );
-
-  if (r.ok) {
-
-    punto.className =
-      'punto ok';
-
-    estado.innerText =
-      'Servidor conectado · ' +
-      r.datos.zonaHoraria;
-
-  } else {
-
-    punto.className =
-      'punto error';
-
-    estado.innerText =
-      'Servidor no disponible';
+  if(r.ok){
+    ['admTipoCodigo','admTipoNombre','admTipoNaturaleza','admTipoUso','admTipoOrdenacion']
+      .forEach(id=>document.getElementById(id).value='');
+    await cargarCatalogos();
   }
 }
 
+async function crearTomo(){
+  if(!sesion||sesion.rol!=='Administrador') return;
+  const msj=document.getElementById('mensajeAdmTomo');
 
-/* ============================================================
-   URL ?tomo=
-   ============================================================ */
+  const datos={
+    gestion:document.getElementById('admTomoGestion').value.trim(),
+    tipoDocumental:document.getElementById('admTomoTipo').value,
+    numeroTomo:document.getElementById('admTomoNumero').value.trim(),
+    estante:document.getElementById('admTomoEstante').value.trim(),
+    balda:document.getElementById('admTomoBalda').value.trim(),
+    posicion:document.getElementById('admTomoPosicion').value.trim(),
+    ...datosAuth()
+  };
 
-function consultarTomoDesdeURL() {
+  const r=await llamarBackend('crearTomo',datos);
+  msj.innerHTML=r.ok
+    ? '<div class="ok">✓ Tomo creado: <strong>'+escapeHtml(r.datos.codigoTomo)+'</strong></div>'
+    : '<div class="aviso">'+escapeHtml(r.error?.mensaje||'No fue posible crear.')+'</div>';
 
-  const parametros =
-    new URLSearchParams(
-      window.location.search
-    );
-
-  const codigo =
-    parametros.get(
-      'tomo'
-    );
-
-  if (codigo) {
-    consultarTomo(
-      codigo
-    );
+  if(r.ok){
+    document.getElementById('admTomoNumero').value='';
+    await cargarCatalogos();
   }
 }
 
+async function crearUsuario(){
+  if(!sesion||sesion.rol!=='Administrador') return;
+  const msj=document.getElementById('mensajeAdmUsuario');
 
-/* ============================================================
-   FECHA ACTUAL
-   ============================================================ */
+  const datos={
+    nombreCompleto:document.getElementById('admUsuarioNombre').value.trim(),
+    correoGoogle:document.getElementById('admUsuarioCorreo').value.trim().toLowerCase(),
+    rolPermiso:document.getElementById('admUsuarioRol').value,
+    ...datosAuth()
+  };
 
-function establecerFechaActual() {
+  if(!datos.nombreCompleto||!datos.correoGoogle){
+    msj.innerHTML='<div class="aviso">Nombre y Gmail son obligatorios.</div>';return;
+  }
 
-  const campo =
-    document.getElementById(
-      'regFecha'
-    );
+  const r=await llamarBackend('crearUsuario',datos);
+  msj.innerHTML=r.ok
+    ? '<div class="ok">✓ Usuario autorizado.</div>'
+    : '<div class="aviso">'+escapeHtml(r.error?.mensaje||'No fue posible autorizar.')+'</div>';
 
-  if (!campo) {
+  if(r.ok){
+    document.getElementById('admUsuarioNombre').value='';
+    document.getElementById('admUsuarioCorreo').value='';
+    await cargarListaUsuarios();
+  }
+}
+
+async function cargarListaUsuarios(){
+  if(!sesion||sesion.rol!=='Administrador') return;
+  const cuerpo=document.getElementById('cuerpoUsuarios');
+  const r=await llamarBackend('listarUsuarios',datosAuth());
+
+  if(!r.ok){
+    cuerpo.innerHTML='<tr><td colspan="4" class="vacio">'+escapeHtml(r.error?.mensaje||'Error')+'</td></tr>';
     return;
   }
 
-  if (!campo.value) {
+  const usuarios=r.datos.usuarios||[];
+  cuerpo.innerHTML=usuarios.length
+    ? usuarios.map(u=>`<tr>
+        <td>${escapeHtml(u.Nombre_Completo||'')}</td>
+        <td>${escapeHtml(u.Correo_Google||'')}</td>
+        <td>${escapeHtml(u.Rol_Permiso||'')}</td>
+        <td>${escapeHtml(u.Estado||'')}</td>
+      </tr>`).join('')
+    : '<tr><td colspan="4" class="vacio">No hay usuarios.</td></tr>';
+}
 
-    const ahora =
-      new Date();
+/* ============================================================
+   QR
+   ============================================================ */
+function generarQR(){
+  const codigo=document.getElementById('qrCodigoTomo').value.trim();
+  if(!codigo){alert('Ingresa el código del tomo.');return;}
 
-    const año =
-      ahora.getFullYear();
+  const cont=document.getElementById('qrContenedor');
+  cont.innerHTML='';
 
-    const mes =
-      String(
-        ahora.getMonth() + 1
-      )
-        .padStart(2,'0');
+  const url=window.location.href.split('?')[0]+'?tomo='+encodeURIComponent(codigo);
+  new QRCode(cont,{text:url,width:200,height:200,correctLevel:QRCode.CorrectLevel.H});
 
-    const dia =
-      String(
-        ahora.getDate()
-      )
-        .padStart(2,'0');
+  const p=document.createElement('div');
+  p.className='qr-url';p.innerText=url;cont.appendChild(p);
+  document.getElementById('btnDescargarQR').classList.remove('oculto');
+}
 
-    campo.value =
-      año +
-      '-' +
-      mes +
-      '-' +
-      dia;
+function descargarQR(){
+  const cont=document.getElementById('qrContenedor');
+  const img=cont.querySelector('img'),canvas=cont.querySelector('canvas');
+  if(!img&&!canvas){alert('Primero genera el QR.');return;}
+
+  const a=document.createElement('a');
+  a.download=(document.getElementById('qrCodigoTomo').value.trim()||'tomo')+'_QR.png';
+  a.href=canvas?canvas.toDataURL('image/png'):img.src;
+  a.click();
+}
+
+function onEscaneoExitoso(texto){
+  let codigo=texto;
+  try{
+    const u=new URL(texto);
+    codigo=u.searchParams.get('tomo')||texto;
+  }catch(e){}
+  if(codigo) consultarTomo(codigo.trim());
+}
+
+function iniciarLectorQR(){
+  try{
+    lectorQR=new Html5QrcodeScanner('lector',{fps:10,qrbox:220});
+    lectorQR.render(onEscaneoExitoso,function(){});
+  }catch(e){console.warn(e);}
+}
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+async function comprobarBackend(){
+  const punto=document.getElementById('puntoBackend');
+  const estado=document.getElementById('estadoBackend');
+  const r=await llamarBackend('ping');
+
+  if(r.ok){
+    punto.className='punto ok';
+    estado.innerText='Servidor conectado · '+r.datos.instancia+' · '+r.datos.gestion;
+  }else{
+    punto.className='punto error';
+    estado.innerText='Servidor no disponible';
   }
 }
 
+function establecerFechaActual(){
+  const c=document.getElementById('regFecha');
+  if(!c.value){
+    const d=new Date();
+    c.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+}
+
+function consultarTomoDesdeURL(){
+  const codigo=new URLSearchParams(location.search).get('tomo');
+  if(codigo) consultarTomo(codigo);
+}
+
+function escapeHtml(v){
+  return String(v??'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+function escapeAttribute(v){return escapeHtml(v);}
 
 /* ============================================================
-   INICIALIZACIÓN
+   INICIO
    ============================================================ */
+window.addEventListener('load',async()=>{
+  establecerFechaActual();
+  iniciarLectorQR();
+  await comprobarBackend();
 
-window.addEventListener(
-  'load',
-  async function() {
-
-    establecerFechaActual();
-
-    iniciarLectorQR();
-
-    await comprobarBackend();
-
-    await consultarTomoDesdeURL();
-
+  /*
+   * Para evitar duplicar el Client ID, se puede leer desde el ping
+   * si el backend lo expone. El backend lo entrega en catalogos;
+   * como el botón de Google debe inicializarse antes de autenticar,
+   * aquí se consulta una vez.
+   */
+  const r=await llamarBackend('obtenerCatalogos');
+  if(r.ok){
+    GOOGLE_CLIENT_ID=r.datos.configuracion.googleClientId||'';
+    inicializarGoogle();
+  }else{
+    document.getElementById('mensajeLogin').innerHTML =
+      '<div class="aviso">No se pudo obtener la configuración de Google.</div>';
   }
-);
 
+  await consultarTomoDesdeURL();
+});
 </script>
-
 </body>
 </html>
