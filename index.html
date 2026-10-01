@@ -1388,27 +1388,36 @@ function api(action,p={},post=false){
         let s=document.createElement('script');
 
         window[cb]=r=>{
-
+        
+            console.log('RESPUESTA APPS SCRIPT:', r);
+        
             delete window[cb];
             s.remove();
-
+        
             try{
                 ok(check(r));
             }catch(e){
+                console.error('ERROR API:', e);
                 no(e);
             }
-
+        
         };
-
+        
         s.onerror=()=>{
+        
+            console.error(
+                'ERROR: no se pudo cargar el script de Apps Script'
+            );
+        
             s.remove();
+        
             no(
                 Error(
                     'No se pudo conectar con Apps Script.'
                 )
             );
+        
         };
-
         let q=new URLSearchParams({
             action,
             callback:cb,
@@ -4688,6 +4697,29 @@ function closeQR(event){
 
         }
 
+        if(token){
+
+            try{
+
+                await enter();
+
+            }catch(e){
+
+                console.warn(
+                    'Sesión no válida:',
+                    e.message
+                );
+
+                sessionStorage.removeItem(
+                    'sgd_token'
+                );
+
+                token='';
+
+            }
+
+        }
+
     }catch(e){
 
         console.error(e);
@@ -4695,6 +4727,7 @@ function closeQR(event){
     }
 
 })();
+
 
 </script>
 
