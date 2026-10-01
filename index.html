@@ -1338,7 +1338,7 @@ footer{
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbxOmWOjL5Mx9sp5lgDTrrHceESyEfH9VCajI0M3l52jSdxxGRv2xGfQ4PDQ7NFD7DVo/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbyj3hMZ56lK5PHlS9mLk0GRnjXjFdyGUNOPdoTtDYaNUdqe1jCOyai0x9-E5MEZDB8Y/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -1346,7 +1346,9 @@ const API_URL='https://script.google.com/macros/s/AKfycbxOmWOjL5Mx9sp5lgDTrrHceE
  */
 const REPOSITORY_ACTION='repositorioPublico';
 
-let token='';
+let token =
+    sessionStorage.getItem('sgd_token') || '';
+
 let me=null;
 let data=null;
 let dashboardData=null;
@@ -1614,8 +1616,15 @@ async function login(){
             }
         );
 
-        token=r.token;
-        me=r.user;
+        token = r.token;
+        
+        sessionStorage.setItem(
+            'sgd_token',
+            token
+        );
+        
+        me = r.user;
+
 
         document
             .getElementById('login')
@@ -1748,9 +1757,17 @@ async function logout(){
 
     }catch(e){}
 
+    sessionStorage.removeItem(
+        'sgd_token'
+    );
+
+    token='';
+
     location.reload();
 
 }
+
+    }
 
 
 /* ======================================================
@@ -1949,7 +1966,6 @@ function renderDashboard(s){
         </div>`;
 
 }
-
 
 /* ======================================================
    TOMOS
@@ -4669,6 +4685,29 @@ function closeQR(event){
         }catch(e){
 
             setConnection(false);
+
+        }
+
+        if(token){
+
+            try{
+
+                await enter();
+
+            }catch(e){
+
+                console.warn(
+                    'Sesión no válida:',
+                    e.message
+                );
+
+                sessionStorage.removeItem(
+                    'sgd_token'
+                );
+
+                token='';
+
+            }
 
         }
 
