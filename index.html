@@ -1,82 +1,33 @@
-<!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>SGD-DV · Gestión Documental</title>
-
-<meta name="description" content="SGD-DV · Sistema de Gestión Documental y Trazabilidad">
-
-<style> :root{ --azul:#242732; --dorado:#B5993A; --dorado2:#9E842D; --fondo:#F4F4F3; --borde:#D4D4D1; --gris:#666; --verde:#008739; } *{ box-sizing:border-box; } html,body{ margin:0; min-height:100%; font-family:Arial,Helvetica,sans-serif; background:var(--fondo); color:var(--azul); } body{ min-height:100vh; display:flex; flex-direction:column; } /* CABECERA */ header{ background:var(--azul); color:white; padding:18px 24px; } .marca{ max-width:1100px; margin:auto; display:flex; align-items:center; gap:14px; } .marca-icono{ width:48px; height:48px; border-radius:9px; background:var(--dorado); display:grid; place-items:center; font-size:25px; } .marca-texto h1{ margin:0; font-size:19px; } .marca-texto small{ display:block; margin-top:4px; color:#d8d8d8; font-size:12px; } /* BARRA */ .tricolor{ height:4px; background: linear-gradient( to right, #E30613 33.33%, #FFED00 33.33% 66.66%, #008739 66.66% ); } /* CONTENIDO */ main{ flex:1; display:flex; justify-content:center; align-items:center; padding:35px 18px; } .contenedor{ width:100%; max-width:470px; } /* TARJETA */ .card{ background:white; border:1px solid var(--borde); border-radius:14px; padding:30px; box-shadow:0 5px 20px rgba(36,39,50,.10); text-align:center; } .icono{ width:74px; height:74px; margin:0 auto 18px; border-radius:15px; background:var(--dorado); display:grid; place-items:center; font-size:37px; } h2{ margin:0; font-size:23px; } .subtitulo{ margin:9px 0 24px; color:var(--gris); font-size:13px; line-height:1.5; } /* BOTÓN */ button{ width:100%; border:0; border-radius:8px; padding:13px 18px; background:var(--dorado); color:var(--azul); font-size:15px; font-weight:700; cursor:pointer; } button:hover{ background:var(--dorado2); color:white; } button:disabled{ opacity:.6; cursor:not-allowed; } /* INFORMACIÓN */ .info{ margin-top:18px; padding:11px 13px; background:#eef2f8; border-left:4px solid var(--azul); border-radius:6px; text-align:left; color:#50535c; font-size:12px; line-height:1.5; } .estado{ margin-top:15px; min-height:18px; font-size:12px; color:#777; } .punto{ display:inline-block; width:8px; height:8px; margin-right:5px; border-radius:50%; background:var(--verde); } /* QR */ .qr-info{ margin-top:20px; padding-top:18px; border-top:1px solid var(--borde); color:#777; font-size:11px; line-height:1.5; } /* FOOTER */ footer{ text-align:center; color:#888; font-size:10px; padding:18px; border-top:3px solid var(--dorado); background:white; } /* MÓVIL */ @media(max-width:520px){ header{ padding:15px; } .marca-icono{ width:42px; height:42px; font-size:22px; } .marca-texto h1{ font-size:16px; } .marca-texto small{ font-size:10px; } main{ padding:20px 12px; } .card{ padding:23px 18px; } h2{ font-size:20px; } } </style> </head> <body> <header> <div class="marca">
-<div class="marca-icono">
-  📦
-</div>
-
-<div class="marca-texto">
-
-  <h1>
-    SGD-DV · Gestión Documental
-  </h1>
-
-  <small>
-    Sistema de Gestión Documental y Trazabilidad
-  </small>
-
-</div>
-
-</div> </header> <div class="tricolor"></div> <main> <div class="contenedor">
-<section class="card">
-
-  <div class="icono">
-    📦
-  </div>
-
-  <h2>
-    Acceso al sistema
-  </h2>
-
-  <div class="subtitulo">
-    Sistema de Gestión Documental y Trazabilidad
-  </div>
-
-
-  <button
-    id="btnIngresar"
-    type="button"
-    onclick="ingresar()">
-
-    🔐 Ingresar al SGD-DV
-
-  </button>
-
-
-  <div class="info">
-
-    <strong>Acceso mediante Google</strong><br>
-
-    El sistema utiliza la autenticación de Google.
-    No debes introducir ni almacenar tu contraseña de
-    Gmail en esta página.
-
-  </div>
-
-
-  <div id="estado" class="estado">
-
-    <span class="punto"></span>
-
-    Sistema disponible
-
-  </div>
-
-
-  <div class="qr-info">
-
-    📷 Los códigos QR de los tomos también pueden
-    utilizar esta dirección de acceso.
-
-  </div>
-
-</section>
-
-</div> </main> <footer>
-
-SGD-DV · Sistema de Gestión Documental y Trazabilidad
-· America/La_Paz
-
-</footer> <script> /* ============================================================== URL DEL WEB APP DE GOOGLE APPS SCRIPT ============================================================== */ const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbybntgOn8ZAqLIIG3c15hPvvrr3pi1CgcFwr3LY_gOdIFMjylguk-zknjXiBzB3jOKg/exec'; /* ============================================================== INGRESAR ============================================================== */ function ingresar(){ const boton = document.getElementById('btnIngresar'); const estado = document.getElementById('estado'); boton.disabled=true; estado.innerHTML = '<span class="punto"></span>' + 'Abriendo SGD-DV...'; /* * Conservamos los parámetros de la URL. * * Ejemplo: * * https://ignaciosandalio.github.io/sgd-dv/?tomo=2026-NI-T03 * * se convierte en: * * https://script.google.com/macros/s/.../exec?tomo=2026-NI-T03 */ const parametros = window.location.search || ''; const destino = URL_APPS_SCRIPT + parametros; window.location.href=destino; } /* ============================================================== ACCESO AUTOMÁTICO OPCIONAL ============================================================== false = muestra botón. true = redirige automáticamente. ============================================================== */ const REDIRECCION_AUTOMATICA=false; window.addEventListener('load',function(){ if(REDIRECCION_AUTOMATICA){ setTimeout(function(){ ingresar(); },500); } }); </script> </body> </html>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SGD-DV</title>
+<style>
+body{margin:0;background:#f3f5f7;color:#17212b;font:15px Arial}header{background:#173f5f;color:white;padding:18px 5%;display:flex;justify-content:space-between}main{max-width:1150px;margin:24px auto;padding:0 16px}.card{background:white;border:1px solid #d9e0e7;border-radius:12px;padding:20px;margin-bottom:16px}h1{font-size:22px;margin:0}label{display:block;margin:10px 0 5px;color:#667085;font-size:13px}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5df;border-radius:7px;box-sizing:border-box}button{padding:10px 14px;background:#173f5f;color:white;border:0;border-radius:7px;cursor:pointer;margin:4px}button.alt{background:#e9eef3;color:#263746}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:700px){.grid{grid-template-columns:1fr}}.hidden{display:none!important}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px;border-bottom:1px solid #ddd;text-align:left}th{background:#f7f9fb}.muted{color:#667085}
+</style></head><body><header><h1>SGD-DV</h1><span id="who">Sistema de Gestión Documental</span></header><main>
+<section id="login" class="card" style="max-width:440px;margin:40px auto"><h2>Acceso al sistema</h2><label>NickName</label><input id="nick" autocomplete="username"><label>Contraseña</label><input id="password" type="password" autocomplete="current-password"><button onclick="login()">Ingresar</button><p id="loginMsg" class="muted"></p></section>
+<section id="first" class="card hidden" style="max-width:500px;margin:40px auto"><h2>Primer acceso: cambie sus credenciales</h2><label>Contraseña temporal actual</label><input id="old" type="password"><label>Nuevo NickName</label><input id="newnick"><label>Nueva contraseña (12+ caracteres, mayúscula, minúscula, número y símbolo)</label><input id="newpass" type="password"><label>Repita contraseña</label><input id="repeat" type="password"><button onclick="firstChange()">Guardar</button><p id="firstMsg"></p></section>
+<section id="app" class="card hidden"><nav><button onclick="home()">Inicio</button><button onclick="tomes()">Tomos</button><button onclick="documents()">Documentos</button><button id="usersBtn" class="hidden" onclick="users()">Usuarios</button><button class="alt" onclick="logout()">Salir</button></nav><div id="panel"></div></section>
+<section id="public" class="hidden"></section></main>
+<script>
+const API_URL='https://script.google.com/macros/s/AKfycbwwlqKMHbEfic9mdecipyKscp4PNExatFhyOvnz51Ni4KrCfCV_yg1H-kcS5RcjpPge/exec';
+let token='',me=null,data=null;
+function api(action,p={},post=false){if(post)return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,payload:p})}).then(r=>r.json()).then(check);
+return new Promise((ok,no)=>{let cb='sgd_'+Math.random().toString(36).slice(2),s=document.createElement('script');window[cb]=r=>{delete window[cb];s.remove();try{ok(check(r))}catch(e){no(e)}};s.onerror=()=>no(Error('No se pudo conectar con Apps Script (URL/CORS).'));let q=new URLSearchParams({action,callback:cb,payload:JSON.stringify(p)});s.src=API_URL+'?'+q;document.body.appendChild(s)})}
+function check(r){if(!r||r.ok===false)throw Error(r?.error||'Error API');return r}function v(id){return document.getElementById(id)?.value||''}function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function login(){try{let r=await api('login',{nickName:v('nick'),password:v('password')});token=r.token;me=r.user;document.getElementById('login').classList.add('hidden');if(r.mustChange)document.getElementById('first').classList.remove('hidden');else await enter()}catch(e){document.getElementById('loginMsg').textContent=e.message}}
+async function firstChange(){if(v('newpass')!==v('repeat'))return document.getElementById('firstMsg').textContent='Las contraseñas no coinciden';try{await api('primerCambio',{token,currentPassword:v('old'),newNickName:v('newnick'),newPassword:v('newpass')});document.getElementById('first').classList.add('hidden');await enter()}catch(e){document.getElementById('firstMsg').textContent=e.message}}
+async function enter(){data=await api('catalogos',{token});me=data.user;document.getElementById('app').classList.remove('hidden');document.getElementById('usersBtn').classList.toggle('hidden',me.role!=='Administrador');document.getElementById('who').textContent=me.name+' · '+me.role;home()}
+async function logout(){try{await api('logout',{token})}catch(e){}location.reload()}
+function home(){document.getElementById('panel').innerHTML=`<h2>Panel principal</h2><p>Instancia: ${esc(data.config.instancia)} · Gestión: ${esc(data.config.gestion)}</p><p>El QR apunta al registro permanente del tomo. Al moverlo, la ubicación actualizada se muestra al escanear el mismo QR.</p>`}
+async function tomes(){data.tomos=(await api('listarTomos',{token})).tomos;let admin=me.role==='Administrador';document.getElementById('panel').innerHTML=`<h2>Tomos</h2>${admin?`<div class="card"><h3>Crear tomo</h3><div class="grid"><div><label>Gestión</label><input id="year" value="${esc(data.config.gestion)}"></div><div><label>Tipo</label><select id="type">${data.types.map(t=>`<option value="${esc(t.Codigo)}">${esc(t.Codigo)} ${esc(t.Tipo)}</option>`).join('')}</select></div><div><label>Número</label><input id="num" type="number" value="1"></div><div><label>Estante</label><input id="shelf"></div><div><label>Balda</label><input id="rack"></div><div><label>Posición</label><input id="position"></div></div><button onclick="createTome()">Crear tomo</button></div>`:''}<table><tr><th>Código</th><th>Ubicación actual</th><th>Estado</th><th></th></tr>${data.tomos.map(t=>`<tr><td>${esc(t.codigo)}</td><td>${esc(t.ubicacion)}</td><td>${esc(t.estado)}</td><td><button onclick="showTome('${esc(t.codigo)}')">Ficha / QR</button>${admin?`<button class="alt" onclick="moveTome('${esc(t.codigo)}')">Mover</button>`:''}</td></tr>`).join('')}</table>`}
+async function createTome(){try{await api('crearTomo',{token,year:v('year'),type:v('type'),number:v('num'),shelf:v('shelf'),rack:v('rack'),position:v('position')});tomes()}catch(e){alert(e.message)}}
+async function moveTome(code){let t=data.tomos.find(x=>x.codigo===code),shelf=prompt('Estante',t.estante);if(shelf===null)return;let rack=prompt('Balda',t.balda);if(rack===null)return;let position=prompt('Posición',t.posicion);if(position===null)return;try{await api('moverTomo',{token,code,shelf,rack,position});tomes()}catch(e){alert(e.message)}}
+function showTome(code){let t=data.tomos.find(x=>x.codigo===code),url=API_URL+'?action=indicePublico&token='+encodeURIComponent(t.token);document.getElementById('panel').innerHTML=`<h2>${esc(t.codigo)}</h2><p>Ubicación actual: <b>${esc(t.ubicacion)}</b></p><p>URL permanente para QR:</p><input readonly value="${esc(url)}"><p class="muted">El QR no contiene la ubicación; el registro consulta la ubicación actual.</p>`}
+function documents(){let admin=me.role==='Administrador';document.getElementById('panel').innerHTML=`<h2>Documentos e índice</h2>${admin?`<div class="card"><div class="grid"><div><label>Tomo</label><select id="dcode">${data.tomos.map(t=>`<option>${esc(t.codigo)}</option>`).join('')}</select></div><div><label>Fecha</label><input id="date" type="date"></div><div><label>Hoja de Ruta opcional</label><input id="route" placeholder="H.R. 41173.26"></div><div><label>Destinatario</label><input id="recipient"></div><div><label>Asunto</label><input id="subject"></div><div><label>Código separación</label><input id="sep" placeholder="S-01"></div><div><label>Folio inicio</label><input id="f1" type="number"></div><div><label>Folio fin</label><input id="f2" type="number"></div><div><label>PDF máx. 20 MB</label><input id="pdf" type="file" accept="application/pdf"></div></div><label>Observaciones</label><textarea id="notes"></textarea><button onclick="addDoc()">Registrar PDF</button></div>`:''}<div class="row">${data.tomos.map(t=>`<button class="alt" onclick="index('${esc(t.codigo)}')">${esc(t.codigo)}</button>`).join('')}</div><div id="idx"></div>`}
+async function addDoc(){let f=document.getElementById('pdf').files[0];if(!f||f.size>20*1024*1024)return alert('Seleccione PDF de hasta 20 MB');let b=await new Promise((ok,no)=>{let r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.onerror=no;r.readAsDataURL(f)});try{let r=await api('registrarDocumento',{token,code:v('dcode'),date:v('date'),route:v('route'),recipient:v('recipient'),subject:v('subject'),separation:v('sep'),folioStart:v('f1'),folioEnd:v('f2'),notes:v('notes'),fileName:f.name,pdfBase64:b},true);alert('Registrado: '+r.cite);documents()}catch(e){alert(e.message)}}
+async function index(code){try{let r=await api('indiceTomo',{token,code});document.getElementById('idx').innerHTML=`<button onclick="exportIndex('${esc(code)}','xlsx')">Excel</button><button onclick="exportIndex('${esc(code)}','csv')">CSV</button><table><tr><th>Nº</th><th>Fecha</th><th>Cite</th><th>Destinatario</th><th>Asunto</th><th>Folios</th></tr>${r.documents.map((d,i)=>`<tr><td>${i+1}</td><td>${esc(d.date)}</td><td>${esc(d.cite)}</td><td>${esc(d.recipient)}</td><td>${esc(d.subject)}</td><td>${d.folioStart}-${d.folioEnd}</td></tr>`).join('')}</table>`}catch(e){alert(e.message)}}
+async function exportIndex(code,format){try{let r=await api('exportarIndice',{token,code,format},true),a=document.createElement('a');a.href='data:'+r.mime+';base64,'+r.data;a.download=r.name;a.click()}catch(e){alert(e.message)}}
+async function users(){let r=await api('listarUsuarios',{token});document.getElementById('panel').innerHTML=`<h2>Administración de usuarios</h2><div class="card"><h3>Crear usuario</h3><div class="grid"><div><label>Nombre completo</label><input id="uname"></div><div><label>NickName</label><input id="unick"></div><div><label>Rol</label><select id="urole"><option>Lector</option><option>Administrador</option></select></div></div><button onclick="createUser()">Crear</button></div><table><tr><th>ID</th><th>Nombre</th><th>NickName</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>${r.users.map(u=>`<tr><td>${esc(u.id)}</td><td>${esc(u.name)}</td><td>${esc(u.nick)}</td><td>${esc(u.role)}</td><td>${esc(u.state)}</td><td><button class="alt" onclick="editUser('${esc(u.id)}','${esc(u.name)}','${esc(u.nick)}','${esc(u.role)}','${esc(u.state)}')">Modificar/Estado</button><button class="alt" onclick="resetUser('${esc(u.id)}')">Restablecer clave</button></td></tr>`).join('')}</table>`}
+async function createUser(){try{let r=await api('crearUsuario',{token,name:v('uname'),nickName:v('unick'),role:v('urole')},true);alert('Usuario '+r.id+'\\nContraseña temporal: '+r.temporaryPassword);users()}catch(e){alert(e.message)}}
+async function editUser(id,name,nick,role,state){let n=prompt('Nombre',name);if(n===null)return;let nn=prompt('NickName',nick);if(nn===null)return;let rr=prompt('Rol Administrador/Lector',role);if(rr===null)return;let st=prompt('Estado Activo/Inactivo/Anulado',state);if(st===null)return;try{await api('actualizarUsuario',{token,id,name:n,nickName:nn,role:rr,state:st},true);users()}catch(e){alert(e.message)}}
+async function resetUser(id){if(!confirm('Restablecer contraseña?'))return;try{let r=await api('restablecerPassword',{token,id},true);alert('Contraseña temporal: '+r.temporaryPassword);users()}catch(e){alert(e.message)}}
+(async()=>{let q=new URLSearchParams(location.search);if(q.get('action')==='indicePublico'&&q.get('token')){document.getElementById('login').classList.add('hidden');let r=await api('indicePublico',{token:q.get('token')});document.getElementById('public').classList.remove('hidden');document.getElementById('public').innerHTML=`<div class="card"><h2>${esc(r.tomo.codigo)}</h2><p>Ubicación actual: <b>${esc(r.tomo.ubicacion)}</b></p><h3>Índice digital</h3><table><tr><th>Nº</th><th>Fecha</th><th>Cite</th><th>Destinatario</th><th>Asunto</th><th>Folios</th></tr>${r.documents.map((d,i)=>`<tr><td>${i+1}</td><td>${esc(d.date)}</td><td>${esc(d.cite)}</td><td>${esc(d.recipient)}</td><td>${esc(d.subject)}</td><td>${d.folioStart}-${d.folioEnd}</td></tr>`).join('')}</table></div>`}})();
+</script></body></html>
