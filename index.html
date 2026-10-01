@@ -85,7 +85,7 @@ h1,h2,h3,p{
 
 /* =========================================================
    ENCABEZADO
-   ========================================================= */
+========================================================= */
 
 .encabezado{
     position:relative;
@@ -180,7 +180,7 @@ h1,h2,h3,p{
 
 /* =========================================================
    CONTENEDOR
-   ========================================================= */
+========================================================= */
 
 .contenedor{
     width:min(1200px,94%);
@@ -189,7 +189,7 @@ h1,h2,h3,p{
 
 /* =========================================================
    TARJETAS
-   ========================================================= */
+========================================================= */
 
 .tarjeta{
     background:var(--blanco);
@@ -226,7 +226,7 @@ h1,h2,h3,p{
 
 /* =========================================================
    BOTONES
-   ========================================================= */
+========================================================= */
 
 button{
     min-height:42px;
@@ -283,7 +283,7 @@ button.small{
 
 /* =========================================================
    FORMULARIOS
-   ========================================================= */
+========================================================= */
 
 label{
     display:block;
@@ -346,8 +346,44 @@ textarea{
 }
 
 /* =========================================================
+   DATOS
+========================================================= */
+
+.datos-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+}
+
+.campo{
+    padding:13px;
+    background:#FAFAF9;
+    border:1px solid var(--gris-claro);
+    border-radius:6px;
+}
+
+.campo span{
+    display:block;
+    margin-bottom:4px;
+    color:var(--gris-medio);
+    font-size:11px;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.campo strong{
+    color:var(--azul-institucional);
+    font-size:14px;
+}
+
+.campo-ancho{
+    grid-column:1/-1;
+}
+
+/* =========================================================
    LOGIN
-   ========================================================= */
+========================================================= */
 
 .login-tarjeta{
     max-width:440px;
@@ -376,7 +412,7 @@ textarea{
 
 /* =========================================================
    MENÚ
-   ========================================================= */
+========================================================= */
 
 .menu{
     display:flex;
@@ -402,7 +438,7 @@ textarea{
 
 /* =========================================================
    INDICADORES
-   ========================================================= */
+========================================================= */
 
 .indicadores{
     display:grid;
@@ -466,7 +502,7 @@ textarea{
 
 /* =========================================================
    TÍTULOS
-   ========================================================= */
+========================================================= */
 
 .titulo-seccion{
     display:flex;
@@ -485,7 +521,7 @@ textarea{
 
 /* =========================================================
    ESTADOS
-   ========================================================= */
+========================================================= */
 
 .semaforo{
     display:inline-flex;
@@ -518,7 +554,7 @@ textarea{
 
 /* =========================================================
    TABLAS
-   ========================================================= */
+========================================================= */
 
 .tabla-contenedor{
     width:100%;
@@ -565,9 +601,22 @@ tr:hover{
     background:#F5F1E4;
 }
 
+tr.documento-anulado{
+    background:#FCEBEC!important;
+}
+
+tr.documento-anulado td{
+    color:#7A2222;
+    text-decoration:none;
+}
+
+.texto-anulado{
+    text-decoration:line-through;
+}
+
 /* =========================================================
    BADGES
-   ========================================================= */
+========================================================= */
 
 .badge{
     display:inline-block;
@@ -592,9 +641,14 @@ tr:hover{
     color:#66551F;
 }
 
+.badge.gris{
+    background:#E7E7E5;
+    color:#585857;
+}
+
 /* =========================================================
    MENSAJES
-   ========================================================= */
+========================================================= */
 
 .mensaje{
     margin-top:15px;
@@ -620,7 +674,7 @@ tr:hover{
 
 /* =========================================================
    QR
-   ========================================================= */
+========================================================= */
 
 .qr-area{
     display:grid;
@@ -663,9 +717,100 @@ tr:hover{
     color:var(--azul-institucional);
 }
 
+.qr2-card{
+    margin-top:18px;
+    padding:16px;
+    border:1px solid var(--gris-claro);
+    border-left:4px solid var(--verde-ok);
+    border-radius:6px;
+    background:#FAFAF9;
+}
+
+/* =========================================================
+   IMPRESIÓN FÍSICA
+========================================================= */
+
+.impresion-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.impresion-campo{
+    border:1px solid #D8D8D6;
+    padding:13px;
+    border-radius:5px;
+    background:#FAFAF9;
+}
+
+.impresion-campo .label{
+    display:block;
+    color:#777;
+    font-size:10px;
+    font-weight:bold;
+    text-transform:uppercase;
+    margin-bottom:4px;
+}
+
+.impresion-campo .valor{
+    font-size:14px;
+    font-weight:bold;
+    color:#242732;
+}
+
+.impresion-qr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin:20px 0;
+}
+
+.impresion-qr-card{
+    border:1px solid #CFCFCB;
+    padding:16px;
+    text-align:center;
+    border-radius:6px;
+    page-break-inside:avoid;
+}
+
+.impresion-qr-card h3{
+    margin:0 0 5px;
+    font-size:15px;
+    color:#242732;
+}
+
+.impresion-qr-card p{
+    min-height:34px;
+    margin-bottom:10px;
+    color:#585857;
+    font-size:12px;
+}
+
+.impresion-qr-card img{
+    width:180px;
+    height:180px;
+    object-fit:contain;
+}
+
+.firma-impresion{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    margin-top:45px;
+}
+
+.firma-linea{
+    padding-top:35px;
+    border-top:1px solid #555;
+    text-align:center;
+    font-size:11px;
+    color:#555;
+}
+
 /* =========================================================
    MODAL
-   ========================================================= */
+========================================================= */
 
 .modal{
     position:fixed;
@@ -698,7 +843,7 @@ tr:hover{
 
 /* =========================================================
    VISTA PÚBLICA
-   ========================================================= */
+========================================================= */
 
 .publico{
     width:min(1200px,94%);
@@ -725,7 +870,7 @@ tr:hover{
 
 /* =========================================================
    FOOTER
-   ========================================================= */
+========================================================= */
 
 footer{
     text-align:center;
@@ -749,7 +894,7 @@ footer{
 
 /* =========================================================
    VACÍO / CARGANDO
-   ========================================================= */
+========================================================= */
 
 .vacio{
     padding:14px;
@@ -771,7 +916,7 @@ footer{
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
+========================================================= */
 
 @media(max-width:900px){
 
@@ -779,7 +924,8 @@ footer{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .grid{
+    .grid,
+    .datos-grid{
         grid-template-columns:repeat(2,minmax(0,1fr));
     }
 }
@@ -830,8 +976,15 @@ footer{
         margin-bottom:16px;
     }
 
-    .grid{
+    .grid,
+    .datos-grid,
+    .impresion-info,
+    .impresion-qr{
         grid-template-columns:1fr;
+    }
+
+    .campo-ancho{
+        grid-column:auto;
     }
 
     .indicadores{
@@ -938,24 +1091,9 @@ footer{
     }
 }
 
-@media(prefers-reduced-motion:reduce){
-
-    html{
-        scroll-behavior:auto;
-    }
-
-    *,
-    *::before,
-    *::after{
-        transition-duration:.01ms!important;
-        animation-duration:.01ms!important;
-        animation-iteration-count:1!important;
-    }
-}
-
 /* =========================================================
    IMPRESIÓN
-   ========================================================= */
+========================================================= */
 
 @media print{
 
@@ -995,15 +1133,15 @@ footer{
     td{
         color:#000;
     }
+
+    .documento-anulado{
+        background:#f5dada!important;
+    }
 }
 </style>
 </head>
 
 <body>
-
-<!-- ======================================================
-     ENCABEZADO
-====================================================== -->
 
 <header class="encabezado no-print">
     <div class="encabezado-contenido">
@@ -1030,11 +1168,6 @@ footer{
     </div>
 </header>
 
-
-<!-- ======================================================
-     APLICACIÓN
-====================================================== -->
-
 <main id="main" class="contenedor">
 
     <!-- LOGIN -->
@@ -1052,11 +1185,13 @@ footer{
         </div>
 
         <label>NickName</label>
+
         <input id="nick"
                autocomplete="username"
                placeholder="Ingrese su NickName">
 
         <label>Contraseña</label>
+
         <input id="password"
                type="password"
                autocomplete="current-password"
@@ -1071,8 +1206,7 @@ footer{
 
     </section>
 
-
-    <!-- CAMBIO PRIMER ACCESO -->
+    <!-- PRIMER ACCESO -->
 
     <section id="first"
              class="tarjeta login-tarjeta hidden">
@@ -1096,10 +1230,7 @@ footer{
         <label>Nuevo NickName</label>
         <input id="newnick">
 
-        <label>
-            Nueva contraseña
-        </label>
-
+        <label>Nueva contraseña</label>
         <input id="newpass"
                type="password"
                placeholder="Mínimo 12 caracteres">
@@ -1115,7 +1246,6 @@ footer{
         <div id="firstMsg"></div>
 
     </section>
-
 
     <!-- APP -->
 
@@ -1160,15 +1290,9 @@ footer{
 
 </main>
 
-
-<!-- ======================================================
-     VISTA PÚBLICA
-====================================================== -->
-
 <section id="public"
          class="publico hidden">
 </section>
-
 
 <footer class="no-print">
 
@@ -1181,11 +1305,6 @@ footer{
     SGD-DV · Sistema de Gestión Documental
 
 </footer>
-
-
-<!-- ======================================================
-     MODAL QR
-====================================================== -->
 
 <div id="qrModal"
      class="modal hidden"
@@ -1211,22 +1330,27 @@ footer{
 
 </div>
 
-
-<!-- ======================================================
-     QR CODE
-====================================================== -->
-
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
 
 <script>
 
-const API_URL='https://script.google.com/macros/s/AKfycbwATI780yv7lPykNNilwNN3WtId5KFUHGdIrHR5-5Cgsj7hpJGM35iRmekFf4DZe5Zs/exec';
+/* ======================================================
+   CONFIGURACIÓN
+====================================================== */
+
+const API_URL='https://script.google.com/macros/s/AKfycbxOmWOjL5Mx9sp5lgDTrrHceESyEfH9VCajI0M3l52jSdxxGRv2xGfQ4PDQ7NFD7DVo/exec';
+
+/*
+ * Acción pública que deberá implementar el Apps Script
+ * para el segundo QR.
+ */
+const REPOSITORY_ACTION='repositorioPublico';
 
 let token='';
 let me=null;
 let data=null;
 let dashboardData=null;
+let currentIndexData=null;
 
 
 /* ======================================================
@@ -1387,6 +1511,91 @@ function msg(id,text,type=''){
 }
 
 
+function normalizeStatus(status){
+
+    return String(status||'Vigente')
+        .trim();
+
+}
+
+
+function isAnulado(status){
+
+    return normalizeStatus(status)
+        .toLowerCase()
+        .includes('anulad');
+
+}
+
+
+function documentStatusBadge(status){
+
+    let s=
+        normalizeStatus(status);
+
+    if(isAnulado(s)){
+
+        return `<span class="badge rojo">
+            ANULADO
+        </span>`;
+
+    }
+
+    if(
+        s.toLowerCase().includes('activo') ||
+        s.toLowerCase().includes('vigente') ||
+        s.toLowerCase().includes('registrado')
+    ){
+
+        return `<span class="badge verde">
+            ${esc(s)}
+        </span>`;
+
+    }
+
+    return `<span class="badge amarillo">
+        ${esc(s)}
+    </span>`;
+
+}
+
+
+/*
+ * QR permanente del tomo.
+ */
+function tomePublicUrl(t){
+
+    return API_URL+
+        '?action=indicePublico&token='+
+        encodeURIComponent(t.token);
+
+}
+
+
+/*
+ * Segundo QR.
+ *
+ * El backend deberá exponer:
+ *
+ * ?action=repositorioPublico&token=TOKEN
+ */
+function repositoryPublicUrl(t){
+
+    if(t.repositorioUrl){
+
+        return String(t.repositorioUrl);
+
+    }
+
+    return API_URL+
+        '?action='+
+        encodeURIComponent(REPOSITORY_ACTION)+
+        '&token='+
+        encodeURIComponent(t.token);
+
+}
+
+
 /* ======================================================
    LOGIN
 ====================================================== */
@@ -1448,6 +1657,18 @@ async function firstChange(){
         msg(
             'firstMsg',
             'Las contraseñas no coinciden.',
+            'error'
+        );
+
+        return;
+
+    }
+
+    if(v('newpass').length<12){
+
+        msg(
+            'firstMsg',
+            'La nueva contraseña debe tener al menos 12 caracteres.',
             'error'
         );
 
@@ -1533,7 +1754,7 @@ async function logout(){
 
 
 /* ======================================================
-   INICIO / DASHBOARD
+   INICIO
 ====================================================== */
 
 async function home(){
@@ -1600,8 +1821,7 @@ async function home(){
                 ${
                     me.role==='Administrador'
                     ?
-                    `<button
-                        onclick="users()">
+                    `<button onclick="users()">
                         👥 Administrar usuarios
                     </button>`
                     :''
@@ -1614,22 +1834,22 @@ async function home(){
         <div class="tarjeta">
 
             <span class="etiqueta-institucional">
-                INFORMACIÓN
+                IDENTIFICACIÓN DOCUMENTAL
             </span>
 
-            <h2>QR permanente</h2>
+            <h2>QR permanente y repositorio digital</h2>
 
             <div class="separador-dorado"></div>
 
             <p>
-                Cada tomo posee un código QR asociado
-                a un registro permanente.
+                Cada tomo posee un código QR permanente
+                que permite consultar su índice y ubicación
+                física actual.
             </p>
 
             <p class="muted">
-                Si un tomo cambia de estante, balda o
-                posición, el QR permanece vigente y
-                mostrará automáticamente su ubicación actual.
+                El índice físico incorpora además un segundo
+                QR para acceder al repositorio digital.
             </p>
 
         </div>`;
@@ -1672,9 +1892,11 @@ function renderDashboard(s){
                 <div class="indicador-label">
                     Tomos
                 </div>
+
                 <div class="indicador-numero">
                     ${s.tomos}
                 </div>
+
                 <div class="indicador-detalle">
                     ${s.tomosAbiertos}
                     abiertos
@@ -1685,9 +1907,11 @@ function renderDashboard(s){
                 <div class="indicador-label">
                     Documentos
                 </div>
+
                 <div class="indicador-numero">
                     ${s.documentos}
                 </div>
+
                 <div class="indicador-detalle">
                     Registrados
                 </div>
@@ -1697,9 +1921,11 @@ function renderDashboard(s){
                 <div class="indicador-label">
                     Usuarios
                 </div>
+
                 <div class="indicador-numero">
                     ${s.usuarios}
                 </div>
+
                 <div class="indicador-detalle">
                     ${s.usuariosActivos}
                     activos
@@ -1710,9 +1936,11 @@ function renderDashboard(s){
                 <div class="indicador-label">
                     Tomos cerrados
                 </div>
+
                 <div class="indicador-numero">
                     ${s.tomosCerrados}
                 </div>
+
                 <div class="indicador-detalle">
                     Archivo documental
                 </div>
@@ -1831,6 +2059,7 @@ function renderTomes(tomos){
 
                     <div>
                         <label>Número</label>
+
                         <input id="num"
                                type="number"
                                min="1"
@@ -2130,7 +2359,7 @@ async function moveTome(code){
 
 
 /* ======================================================
-   FICHA DEL TOMO
+   FICHA TOMO
 ====================================================== */
 
 function showTome(code){
@@ -2143,9 +2372,10 @@ function showTome(code){
     if(!t)return;
 
     let url=
-        API_URL+
-        '?action=indicePublico&token='+
-        encodeURIComponent(t.token);
+        tomePublicUrl(t);
+
+    let repositoryUrl=
+        repositoryPublicUrl(t);
 
     document.getElementById('panel').innerHTML=
 
@@ -2273,6 +2503,60 @@ function showTome(code){
 
         </div>
 
+        <div class="tarjeta">
+
+            <span class="etiqueta-institucional">
+                REPOSITORIO DIGITAL
+            </span>
+
+            <h2>QR2 · Acceda al Repositorio Digital</h2>
+
+            <div class="separador-dorado"></div>
+
+            <div class="qr-area">
+
+                <div
+                    id="qr2-${esc(code)}"
+                    class="qr-box">
+                </div>
+
+                <div class="qr-info">
+
+                    <div class="qr-titulo">
+                        Acceda al Repositorio Digital
+                    </div>
+
+                    <p class="muted">
+                        Este segundo código QR permite
+                        acceder al repositorio digital
+                        asociado al tomo.
+                    </p>
+
+                    <label>
+                        URL del repositorio
+                    </label>
+
+                    <input
+                        class="url-box"
+                        readonly
+                        value="${esc(repositoryUrl)}">
+
+                    <div class="fila no-print"
+                         style="margin-top:15px">
+
+                        <button
+                            onclick="downloadQR2('${esc(code)}')">
+                            Descargar QR2
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
         <div class="tarjeta no-print">
 
             <div class="fila">
@@ -2287,24 +2571,33 @@ function showTome(code){
                     Ver documentos
                 </button>
 
+                <button
+                    class="success"
+                    onclick="index('${esc(code)}')">
+                    Índice / Impresión física
+                </button>
+
             </div>
 
         </div>`;
 
     generateQR(
-        code,
+        'qr-'+code,
         url
+    );
+
+    generateQR(
+        'qr2-'+code,
+        repositoryUrl
     );
 
 }
 
 
-function generateQR(code,url){
+function generateQR(id,url){
 
     let box=
-        document.getElementById(
-            'qr-'+code
-        );
+        document.getElementById(id);
 
     if(!box)return;
 
@@ -2337,12 +2630,10 @@ function generateQR(code,url){
 }
 
 
-function getQRCanvas(code){
+function getCanvas(id){
 
     let box=
-        document.getElementById(
-            'qr-'+code
-        );
+        document.getElementById(id);
 
     if(!box)return null;
 
@@ -2353,10 +2644,25 @@ function getQRCanvas(code){
 }
 
 
-function downloadQR(code){
+function getQRCanvas(code){
 
-    let canvas=
-        getQRCanvas(code);
+    return getCanvas(
+        'qr-'+code
+    );
+
+}
+
+
+function getQR2Canvas(code){
+
+    return getCanvas(
+        'qr2-'+code
+    );
+
+}
+
+
+function downloadCanvas(canvas,name){
 
     if(!canvas){
 
@@ -2365,13 +2671,13 @@ function downloadQR(code){
         );
 
         return;
+
     }
 
     let a=
         document.createElement('a');
 
-    a.download=
-        'QR_'+code+'.png';
+    a.download=name;
 
     a.href=
         canvas.toDataURL(
@@ -2383,6 +2689,30 @@ function downloadQR(code){
 }
 
 
+function downloadQR(code){
+
+    downloadCanvas(
+        getQRCanvas(code),
+        'QR_'+code+'.png'
+    );
+
+}
+
+
+function downloadQR2(code){
+
+    downloadCanvas(
+        getQR2Canvas(code),
+        'QR2_REPOSITORIO_'+code+'.png'
+    );
+
+}
+
+
+/* ======================================================
+   IMPRESIÓN QR INDIVIDUAL
+====================================================== */
+
 function printQR(code){
 
     let t=
@@ -2393,9 +2723,7 @@ function printQR(code){
     if(!t)return;
 
     let url=
-        API_URL+
-        '?action=indicePublico&token='+
-        encodeURIComponent(t.token);
+        tomePublicUrl(t);
 
     let canvas=
         getQRCanvas(code);
@@ -2582,7 +2910,7 @@ function documents(){
                         <select id="dcode">
 
                             ${data.tomos.map(t=>
-                                `<option>
+                                `<option value="${esc(t.codigo)}">
                                     ${esc(t.codigo)}
                                 </option>`
                             ).join('')}
@@ -2600,6 +2928,7 @@ function documents(){
                         <label>
                             Hoja de Ruta opcional
                         </label>
+
                         <input
                             id="route"
                             placeholder="H.R. 41173.26">
@@ -2619,6 +2948,7 @@ function documents(){
                         <label>
                             Código separación
                         </label>
+
                         <input
                             id="sep"
                             placeholder="S-01">
@@ -2638,8 +2968,27 @@ function documents(){
 
                     <div>
                         <label>
+                            Estado físico
+                        </label>
+
+                        <select id="docStatus">
+
+                            <option value="Vigente">
+                                Vigente
+                            </option>
+
+                            <option value="Anulado">
+                                Anulado
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>
                             PDF máximo 20 MB
                         </label>
+
                         <input
                             id="pdf"
                             type="file"
@@ -2657,7 +3006,7 @@ function documents(){
                 <button
                     onclick="addDoc()"
                     style="margin-top:12px">
-                    Registrar PDF
+                    Registrar documento
                 </button>
 
             </div>`
@@ -2730,6 +3079,7 @@ async function addDoc(){
                     separation:v('sep'),
                     folioStart:v('f1'),
                     folioEnd:v('f2'),
+                    status:v('docStatus') || 'Vigente',
                     notes:v('notes'),
                     fileName:f.name,
                     pdfBase64:b
@@ -2753,6 +3103,10 @@ async function addDoc(){
 }
 
 
+/* ======================================================
+   ÍNDICE
+====================================================== */
+
 async function index(code){
 
     try{
@@ -2765,6 +3119,30 @@ async function index(code){
                     code
                 }
             );
+
+        currentIndexData={
+            code,
+            ...r
+        };
+
+        let t=
+            data.tomos.find(
+                x=>x.codigo===code
+            );
+
+        if(!t){
+
+            throw Error(
+                'No se encontró información del tomo.'
+            );
+
+        }
+
+        let tomeUrl=
+            tomePublicUrl(t);
+
+        let repositoryUrl=
+            repositoryPublicUrl(t);
 
         let html=
             `<div class="tarjeta">
@@ -2800,91 +3178,281 @@ async function index(code){
                         </button>
 
                         <button
-                            class="small alt"
-                            onclick="printIndex()">
-                            Imprimir
+                            class="small success"
+                            onclick="printPhysicalIndex('${esc(code)}')">
+                            Imprimir índice físico
                         </button>
 
                     </div>
 
-                </div>`;
+                </div>
+
+                <div class="datos-grid">
+
+                    <div class="campo">
+                        <span>Tomo</span>
+                        <strong>
+                            ${esc(t.codigo)}
+                        </strong>
+                    </div>
+
+                    <div class="campo">
+                        <span>Tipo documental</span>
+                        <strong>
+                            ${esc(t.tipo)}
+                        </strong>
+                    </div>
+
+                    <div class="campo">
+                        <span>Gestión</span>
+                        <strong>
+                            ${esc(t.gestion)}
+                        </strong>
+                    </div>
+
+                    <div class="campo campo-ancho">
+                        <span>Ubicación Física del Tomo</span>
+                        <strong>
+                            ${esc(t.ubicacion)}
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="qr2-card">
+
+                    <strong>
+                        📍 Ubicación Física del Tomo
+                    </strong>
+
+                    <p style="margin:5px 0 0">
+                        ${esc(t.ubicacion)}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="tarjeta no-print">
+
+                <span class="etiqueta-institucional">
+                    IDENTIFICACIÓN PARA EL ARCHIVO FÍSICO
+                </span>
+
+                <h2>
+                    Códigos QR del índice
+                </h2>
+
+                <div class="separador-dorado"></div>
+
+                <div class="impresion-qr">
+
+                    <div class="impresion-qr-card">
+
+                        <h3>
+                            ${esc(t.codigo)}
+                        </h3>
+
+                        <p>
+                            Ubicación Física del Tomo
+                        </p>
+
+                        <div id="indexQrTomo"
+                             style="display:flex;justify-content:center">
+                        </div>
+
+                    </div>
+
+                    <div class="impresion-qr-card">
+
+                        <h3>
+                            Repositorio Digital
+                        </h3>
+
+                        <p>
+                            Acceda al Repositorio Digital
+                        </p>
+
+                        <div id="indexQrRepository"
+                             style="display:flex;justify-content:center">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mensaje">
+                    Al imprimir este índice se incorporarán
+                    automáticamente ambos códigos QR, la
+                    ubicación física actual del tomo y el
+                    estado de cada documento.
+                </div>
+
+            </div>`;
 
         if(!r.documents.length){
 
             html+=
-                `<div class="vacio">
-                    Este tomo todavía no tiene
-                    documentos registrados.
+                `<div class="tarjeta">
+
+                    <div class="vacio">
+                        Este tomo todavía no tiene
+                        documentos registrados.
+                    </div>
+
                 </div>`;
 
         }else{
 
             html+=
-                `<div class="tabla-contenedor">
+                `<div class="tarjeta">
 
-                    <table id="printIndexTable">
+                    <div class="tabla-contenedor">
 
-                        <thead>
+                        <table id="printIndexTable">
 
-                            <tr>
-                                <th>Nº</th>
-                                <th>Fecha</th>
-                                <th>Cite</th>
-                                <th>Destinatario</th>
-                                <th>Asunto</th>
-                                <th>Folios</th>
-                            </tr>
+                            <thead>
 
-                        </thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Fecha</th>
+                                    <th>Cite</th>
+                                    <th>Destinatario</th>
+                                    <th>Asunto</th>
+                                    <th>Folios</th>
+                                    <th>Estado</th>
+                                    <th class="no-print">
+                                        Acciones
+                                    </th>
+                                </tr>
 
-                        <tbody>
+                            </thead>
 
-                        ${r.documents.map((d,i)=>
+                            <tbody>
 
-                            `<tr>
+                            ${r.documents.map((d,i)=>{
 
-                                <td>${i+1}</td>
+                                let anulado=
+                                    isAnulado(d.status);
 
-                                <td>
-                                    ${esc(d.date)}
-                                </td>
+                                return `
 
-                                <td>
-                                    ${esc(d.cite)}
-                                </td>
+                                <tr class="${
+                                    anulado
+                                    ? 'documento-anulado'
+                                    : ''
+                                }">
 
-                                <td>
-                                    ${esc(d.recipient)}
-                                </td>
+                                    <td>
+                                        ${i+1}
+                                    </td>
 
-                                <td>
-                                    ${esc(d.subject)}
-                                </td>
+                                    <td>
+                                        ${esc(d.date)}
+                                    </td>
 
-                                <td>
-                                    ${esc(d.folioStart)}
-                                    -
-                                    ${esc(d.folioEnd)}
-                                </td>
+                                    <td>
+                                        <strong>
+                                            ${esc(d.cite)}
+                                        </strong>
+                                    </td>
 
-                            </tr>`
+                                    <td>
+                                        ${esc(d.recipient)}
+                                    </td>
 
-                        ).join('')}
+                                    <td>
+                                        ${esc(d.subject)}
+                                    </td>
 
-                        </tbody>
+                                    <td>
+                                        ${esc(d.folioStart)}
+                                        -
+                                        ${esc(d.folioEnd)}
+                                    </td>
 
-                    </table>
+                                    <td>
+                                        ${documentStatusBadge(
+                                            d.status
+                                        )}
+                                    </td>
+
+                                    <td class="no-print">
+
+                                        ${
+                                            me.role==='Administrador'
+                                            ?
+                                            `<button
+                                                class="small ${
+                                                    anulado
+                                                    ? 'success'
+                                                    : 'danger'
+                                                }"
+                                                onclick="toggleDocumentStatus(
+                                                    '${esc(d.id||d.ID||d.cite)}',
+                                                    '${esc(d.status||'Vigente')}',
+                                                    '${esc(code)}'
+                                                )">
+
+                                                ${
+                                                    anulado
+                                                    ? 'Reactivar'
+                                                    : 'Anular'
+                                                }
+
+                                            </button>`
+                                            :
+                                            ''
+                                        }
+
+                                    </td>
+
+                                </tr>`;
+
+                            }).join('')}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
 
                 </div>`;
 
         }
 
         html+=
-            `</div>`;
+            `<div class="tarjeta no-print">
+
+                <div class="fila">
+
+                    <button onclick="documents()">
+                        ← Volver a documentos
+                    </button>
+
+                    <button
+                        class="alt"
+                        onclick="showTome('${esc(code)}')">
+                        Ficha del tomo
+                    </button>
+
+                </div>
+
+            </div>`;
 
         document.getElementById(
             'idx'
         ).innerHTML=html;
+
+        generateQR(
+            'indexQrTomo',
+            tomeUrl
+        );
+
+        generateQR(
+            'indexQrRepository',
+            repositoryUrl
+        );
 
     }catch(e){
 
@@ -2895,112 +3463,593 @@ async function index(code){
 }
 
 
-function printIndex(){
+/* ======================================================
+   ANULAR / REACTIVAR DOCUMENTO
+====================================================== */
 
-    let el=
+async function toggleDocumentStatus(
+    documentId,
+    currentStatus,
+    code
+){
+
+    let current=
+        normalizeStatus(currentStatus);
+
+    let next=
+        isAnulado(current)
+        ? 'Vigente'
+        : 'Anulado';
+
+    let confirmation=
+        next==='Anulado'
+        ?
+        '¿Confirma que el documento fue ANULADO en físico?\n\n' +
+        'El sistema lo mostrará como ANULADO en el índice.'
+        :
+        '¿Desea volver a marcar este documento como VIGENTE?';
+
+    if(!confirm(confirmation)){
+
+        return;
+
+    }
+
+    let observation='';
+
+    if(next==='Anulado'){
+
+        observation=
+            prompt(
+                'Indique la observación o motivo de la anulación física:',
+                ''
+            );
+
+        if(observation===null){
+
+            return;
+
+        }
+
+    }
+
+    try{
+
+        await api(
+            'actualizarEstadoDocumento',
+            {
+                token,
+                documentId,
+                code,
+                status:next,
+                observation
+            },
+            true
+        );
+
+        alert(
+            next==='Anulado'
+            ?
+            'Documento marcado como ANULADO.'
+            :
+            'Documento marcado como VIGENTE.'
+        );
+
+        await index(code);
+
+    }catch(e){
+
+        alert(e.message);
+
+    }
+
+}
+
+
+/* ======================================================
+   IMPRESIÓN FÍSICA DEL ÍNDICE
+====================================================== */
+
+function printPhysicalIndex(code){
+
+    let t=
+        data.tomos.find(
+            x=>x.codigo===code
+        );
+
+    if(!t){
+
+        alert(
+            'No se encontró el tomo.'
+        );
+
+        return;
+
+    }
+
+    let table=
         document.getElementById(
             'printIndexTable'
         );
 
-    if(!el){
+    if(!table){
 
         alert(
-            'No hay datos para imprimir.'
+            'No hay índice para imprimir.'
         );
 
         return;
+
     }
+
+    let qrTomo=
+        getCanvas('indexQrTomo');
+
+    let qrRepository=
+        getCanvas('indexQrRepository');
+
+    if(!qrTomo || !qrRepository){
+
+        alert(
+            'Los códigos QR todavía no están listos. Espere un momento e intente nuevamente.'
+        );
+
+        return;
+
+    }
+
+    let imgTomo=
+        qrTomo.toDataURL('image/png');
+
+    let imgRepository=
+        qrRepository.toDataURL('image/png');
+
+    /*
+     * Eliminamos de la copia de impresión
+     * la columna de acciones.
+     */
+    let clone=
+        table.cloneNode(true);
+
+    clone
+        .querySelectorAll('.no-print')
+        .forEach(el=>el.remove());
+
+    let tomeUrl=
+        tomePublicUrl(t);
+
+    let repositoryUrl=
+        repositoryPublicUrl(t);
+
+    let fecha=
+        new Date()
+        .toLocaleDateString(
+            'es-BO'
+        );
 
     let w=
         window.open(
             '',
-            '_blank'
+            '_blank',
+            'width=1100,height=900'
         );
 
-    if(!w)return;
+    if(!w){
+
+        alert(
+            'El navegador bloqueó la ventana de impresión.'
+        );
+
+        return;
+
+    }
 
     w.document.write(`
 
-        <!doctype html>
+<!doctype html>
 
-        <html>
+<html lang="es">
 
-        <head>
+<head>
 
-            <title>
-                Índice documental
-            </title>
+<meta charset="utf-8">
 
-            <style>
+<title>
+Índice físico ${esc(t.codigo)}
+</title>
 
-                body{
-                    font-family:Arial;
-                    margin:25px;
-                }
+<style>
 
-                h1{
-                    color:#242732;
-                    margin-bottom:5px;
-                }
+@page{
+    size:A4 landscape;
+    margin:12mm;
+}
 
-                .linea{
-                    width:100px;
-                    height:3px;
-                    background:#B5993A;
-                    margin:10px 0 20px;
-                }
+*{
+    box-sizing:border-box;
+}
 
-                table{
-                    width:100%;
-                    border-collapse:collapse;
-                    font-size:11px;
-                }
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#242732;
+    background:#fff;
+}
 
-                th{
-                    background:#242732;
-                    color:#fff;
-                    padding:8px;
-                    text-align:left;
-                    border-bottom:3px solid #B5993A;
-                }
+.cabecera{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    border-bottom:3px solid #B5993A;
+    padding-bottom:10px;
+    margin-bottom:14px;
+}
 
-                td{
-                    padding:7px;
-                    border-bottom:1px solid #ddd;
-                }
+.institucion{
+    font-size:20px;
+    font-weight:bold;
+}
 
-                tr:nth-child(even){
-                    background:#fafafa;
-                }
+.subtitulo{
+    margin-top:3px;
+    color:#585857;
+    font-size:12px;
+}
 
-            </style>
+.fecha{
+    text-align:right;
+    color:#585857;
+    font-size:10px;
+}
 
-        </head>
+.titulo{
+    margin-bottom:10px;
+}
 
-        <body>
+.titulo h1{
+    margin:0;
+    font-size:20px;
+}
 
-            <h1>SGD-DV</h1>
+.titulo p{
+    margin:4px 0;
+    color:#585857;
+    font-size:11px;
+}
 
-            <div class="linea"></div>
+.info{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:14px;
+}
 
-            ${el.outerHTML}
+.info-box{
+    border:1px solid #ccc;
+    padding:8px;
+    border-radius:3px;
+}
 
-            <script>
-                window.onload=function(){
-                    window.print();
-                };
-            <\/script>
+.info-label{
+    display:block;
+    color:#777;
+    font-size:8px;
+    font-weight:bold;
+    text-transform:uppercase;
+    margin-bottom:3px;
+}
 
-        </body>
+.info-value{
+    font-size:11px;
+    font-weight:bold;
+}
 
-        </html>
+.qrs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+}
 
-    `);
+.qr{
+    border:1px solid #bbb;
+    padding:8px;
+    display:grid;
+    grid-template-columns:95px 1fr;
+    gap:10px;
+    align-items:center;
+    min-height:110px;
+}
+
+.qr img{
+    width:90px;
+    height:90px;
+}
+
+.qr h3{
+    margin:0 0 4px;
+    font-size:11px;
+}
+
+.qr p{
+    margin:0 0 5px;
+    font-size:9px;
+    color:#555;
+}
+
+.url{
+    font-size:7px;
+    word-break:break-all;
+    color:#777;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:8.5px;
+}
+
+th{
+    background:#242732;
+    color:#fff;
+    padding:6px;
+    text-align:left;
+    border-bottom:2px solid #B5993A;
+}
+
+td{
+    padding:5px;
+    border-bottom:1px solid #ddd;
+    vertical-align:top;
+}
+
+tr:nth-child(even){
+    background:#fafafa;
+}
+
+tr.documento-anulado{
+    background:#F8D7DA!important;
+}
+
+tr.documento-anulado td{
+    color:#842029;
+}
+
+.anulado{
+    font-weight:bold;
+    color:#842029;
+}
+
+.pie{
+    margin-top:12px;
+    padding-top:7px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+    color:#777;
+    font-size:8px;
+}
+
+.firmas{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:100px;
+    margin-top:25px;
+    page-break-inside:avoid;
+}
+
+.firma{
+    padding-top:25px;
+    border-top:1px solid #555;
+    text-align:center;
+    font-size:9px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="cabecera">
+
+    <div>
+        <div class="institucion">
+            SGD-DV
+        </div>
+
+        <div class="subtitulo">
+            Sistema de Gestión Documental
+        </div>
+    </div>
+
+    <div class="fecha">
+        Índice físico<br>
+        ${esc(fecha)}
+    </div>
+
+</div>
+
+<div class="titulo">
+
+    <h1>
+        ÍNDICE DOCUMENTAL DEL TOMO
+        ${esc(t.codigo)}
+    </h1>
+
+    <p>
+        Documento de referencia para el archivo físico.
+    </p>
+
+</div>
+
+<div class="info">
+
+    <div class="info-box">
+
+        <span class="info-label">
+            Código del Tomo
+        </span>
+
+        <span class="info-value">
+            ${esc(t.codigo)}
+        </span>
+
+    </div>
+
+    <div class="info-box">
+
+        <span class="info-label">
+            Gestión
+        </span>
+
+        <span class="info-value">
+            ${esc(t.gestion)}
+        </span>
+
+    </div>
+
+    <div class="info-box">
+
+        <span class="info-label">
+            Tipo documental
+        </span>
+
+        <span class="info-value">
+            ${esc(t.tipo)}
+        </span>
+
+    </div>
+
+</div>
+
+<div class="info">
+
+    <div class="info-box"
+         style="grid-column:1/-1">
+
+        <span class="info-label">
+            Ubicación Física del Tomo
+        </span>
+
+        <span class="info-value">
+            ${esc(t.ubicacion)}
+        </span>
+
+    </div>
+
+</div>
+
+<div class="qrs">
+
+    <div class="qr">
+
+        <img src="${imgTomo}">
+
+        <div>
+
+            <h3>
+                Ubicación Física del Tomo
+            </h3>
+
+            <p>
+                Escanee este código para consultar
+                la ficha e índice público del tomo.
+            </p>
+
+            <div class="url">
+                ${esc(tomeUrl)}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="qr">
+
+        <img src="${imgRepository}">
+
+        <div>
+
+            <h3>
+                Acceda al Repositorio Digital
+            </h3>
+
+            <p>
+                Escanee este código para acceder
+                al repositorio digital correspondiente.
+            </p>
+
+            <div class="url">
+                ${esc(repositoryUrl)}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+${clone.outerHTML}
+
+<div class="pie">
+
+    <span>
+        SGD-DV · Sistema de Gestión Documental
+    </span>
+
+    <span>
+        Tomo ${esc(t.codigo)}
+    </span>
+
+</div>
+
+<script>
+
+window.onload=function(){
+
+    setTimeout(function(){
+        window.print();
+    },400);
+
+};
+
+<\/script>
+
+</body>
+
+</html>
+
+`);
 
     w.document.close();
 
 }
 
+
+/*
+ * Conservamos compatibilidad con el botón
+ * antiguo de impresión.
+ */
+function printIndex(){
+
+    if(
+        currentIndexData &&
+        currentIndexData.code
+    ){
+
+        printPhysicalIndex(
+            currentIndexData.code
+        );
+
+    }
+
+}
+
+
+/* ======================================================
+   EXPORTACIÓN
+====================================================== */
 
 async function exportIndex(code,format){
 
@@ -3335,7 +4384,7 @@ async function resetUser(id){
 
 
 /* ======================================================
-   VISTA PÚBLICA QR
+   VISTA PÚBLICA DEL TOMO
 ====================================================== */
 
 async function publicView(qToken){
@@ -3417,7 +4466,10 @@ async function publicView(qToken){
                 </div>
 
                 <div class="campo campo-ancho">
-                    <span>Ubicación actual</span>
+                    <span>
+                        Ubicación Física del Tomo
+                    </span>
+
                     <strong>
                         ${esc(t.ubicacion)}
                     </strong>
@@ -3459,17 +4511,29 @@ async function publicView(qToken){
                                 <th>Destinatario</th>
                                 <th>Asunto</th>
                                 <th>Folios</th>
+                                <th>Estado</th>
                             </tr>
 
                         </thead>
 
                         <tbody>
 
-                        ${r.documents.map((d,i)=>
+                        ${r.documents.map((d,i)=>{
 
-                            `<tr>
+                            let anulado=
+                                isAnulado(d.status);
 
-                                <td>${i+1}</td>
+                            return `
+
+                            <tr class="${
+                                anulado
+                                ? 'documento-anulado'
+                                : ''
+                            }">
+
+                                <td>
+                                    ${i+1}
+                                </td>
 
                                 <td>
                                     ${esc(d.date)}
@@ -3493,9 +4557,15 @@ async function publicView(qToken){
                                     ${esc(d.folioEnd)}
                                 </td>
 
-                            </tr>`
+                                <td>
+                                    ${documentStatusBadge(
+                                        d.status
+                                    )}
+                                </td>
 
-                        ).join('')}
+                            </tr>`;
+
+                        }).join('')}
 
                         </tbody>
 
@@ -3505,12 +4575,6 @@ async function publicView(qToken){
             }
 
         </div>`;
-
-        document
-            .querySelector('.encabezado')
-            ?.classList.remove(
-                'no-print'
-            );
 
     }catch(e){
 
@@ -3533,6 +4597,33 @@ async function publicView(qToken){
                 </div>
 
             </div>`;
+
+    }
+
+}
+
+
+/* ======================================================
+   MODAL QR
+====================================================== */
+
+function hideQR(){
+
+    document
+        .getElementById('qrModal')
+        .classList.add('hidden');
+
+}
+
+
+function closeQR(event){
+
+    if(
+        event.target===
+        document.getElementById('qrModal')
+    ){
+
+        hideQR();
 
     }
 
