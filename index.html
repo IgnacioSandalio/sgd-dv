@@ -1724,7 +1724,6 @@ async function firstChange(){
 
 }
 
-
 async function enter(){
 
     data=await api(
@@ -1733,6 +1732,10 @@ async function enter(){
     );
 
     me=data.user;
+
+    document
+        .getElementById('login')
+        .classList.add('hidden');
 
     document
         .getElementById('app')
@@ -1753,7 +1756,6 @@ async function enter(){
     await home();
 
 }
-
 
 async function logout(){
 
@@ -4636,8 +4638,7 @@ function hideQR(){
         .classList.add('hidden');
 
 }
-
-
+    
 function closeQR(event){
 
     if(
