@@ -4688,29 +4688,6 @@ function closeQR(event){
 
         }
 
-        if(token){
-
-            try{
-
-                await enter();
-
-            }catch(e){
-
-                console.warn(
-                    'Sesión no válida:',
-                    e.message
-                );
-
-                sessionStorage.removeItem(
-                    'sgd_token'
-                );
-
-                token='';
-
-            }
-
-        }
-
     }catch(e){
 
         console.error(e);
