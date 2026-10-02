@@ -1138,10 +1138,229 @@ footer{
         background:#f5dada!important;
     }
 }
+
+/* ============================================================
+   ACCESO RESTRINGIDO
+   ============================================================ */
+
+.acceso-restringido-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        rgba(15, 23, 42, 0.72);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.acceso-restringido-card {
+    width: min(460px, 100%);
+
+    padding: 36px 30px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+    animation:
+        accesoRestringidoEntrada
+        .25s
+        ease-out;
+}
+
+.acceso-restringido-icono {
+    width: 76px;
+    height: 76px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fef3c7;
+
+    color: #92400e;
+
+    font-size: 36px;
+}
+
+.acceso-restringido-titulo {
+    margin: 0 0 12px;
+
+    color: #1e293b;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.acceso-restringido-mensaje {
+    margin: 0 auto 10px;
+
+    max-width: 380px;
+
+    color: #475569;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.acceso-restringido-contacto {
+    margin: 0 auto 26px;
+
+    max-width: 380px;
+
+    color: #64748b;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.acceso-restringido-botones {
+    display: flex;
+
+    gap: 10px;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+}
+
+.acceso-restringido-btn {
+    border: 0;
+
+    padding: 11px 20px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+}
+
+.acceso-restringido-btn:hover {
+    transform: translateY(-1px);
+}
+
+.acceso-restringido-btn-principal {
+    background: #2563eb;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 4px 12px rgba(37, 99, 235, .25);
+}
+
+.acceso-restringido-btn-secundario {
+    background: #f1f5f9;
+
+    color: #334155;
+}
+
+@keyframes accesoRestringidoEntrada {
+
+    from {
+        opacity: 0;
+        transform: scale(.96) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- ============================================================
+     ACCESO RESTRINGIDO
+     ============================================================ -->
+
+<div
+    id="accesoRestringidoOverlay"
+    class="acceso-restringido-overlay"
+    style="display:none;"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="accesoRestringidoTitulo"
+>
+
+    <div class="acceso-restringido-card">
+
+        <div
+            class="acceso-restringido-icono"
+            aria-hidden="true"
+        >
+            🔒
+        </div>
+
+        <h2
+            id="accesoRestringidoTitulo"
+            class="acceso-restringido-titulo"
+        >
+            Acceso restringido
+        </h2>
+
+        <p
+            id="accesoRestringidoMensaje"
+            class="acceso-restringido-mensaje"
+        >
+            Para consultar esta información debe ingresar
+            desde el Sistema de Gestión Documental.
+        </p>
+
+        <p class="acceso-restringido-contacto">
+            Si necesita autorización para consultar esta
+            información, comuníquese con el Administrador.
+        </p>
+
+        <div class="acceso-restringido-botones">
+
+            <button
+                type="button"
+                class="acceso-restringido-btn acceso-restringido-btn-principal"
+                onclick="irAlSistema_()"
+            >
+                Ir al Sistema
+            </button>
+
+            <button
+                type="button"
+                class="acceso-restringido-btn acceso-restringido-btn-secundario"
+                onclick="cerrarAccesoRestringido_()"
+            >
+                Cerrar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <header class="encabezado no-print">
     <div class="encabezado-contenido">
@@ -1334,11 +1553,340 @@ footer{
 
 <script>
 
+    /* ============================================================
+   ACCESO RESTRINGIDO
+   ============================================================ */
+
+/**
+ * Muestra la pantalla de acceso restringido.
+ *
+ * Esta función debe ejecutarse cuando el backend responde:
+ *
+ * {
+ *     ok: true,
+ *     requiereAutenticacion: true,
+ *     mensaje: "..."
+ * }
+ */
+function mostrarAccesoRestringido_(mensaje) {
+
+    /*
+     * Ocultar login.
+     */
+    const login =
+        document.getElementById(
+            'login'
+        );
+
+    if (login) {
+
+        login.classList.add(
+            'hidden'
+        );
+    }
+
+
+    /*
+     * Ocultar vista pública.
+     */
+    const publico =
+        document.getElementById(
+            'public'
+        );
+
+    if (publico) {
+
+        publico.classList.add(
+            'hidden'
+        );
+    }
+
+
+    /*
+     * Obtener overlay.
+     */
+    const overlay =
+        document.getElementById(
+            'accesoRestringidoOverlay'
+        );
+
+    const mensajeEl =
+        document.getElementById(
+            'accesoRestringidoMensaje'
+        );
+
+
+    /*
+     * Si por alguna razón el HTML
+     * todavía no está disponible,
+     * usamos alert como respaldo.
+     */
+    if (!overlay) {
+
+        alert(
+            mensaje ||
+            'Acceso restringido. Comuníquese con el Administrador.'
+        );
+
+        return;
+    }
+
+
+    /*
+     * Colocar mensaje enviado por el backend.
+     */
+    if (mensajeEl) {
+
+        mensajeEl.textContent =
+            mensaje ||
+            'Para consultar esta información debe iniciar sesión.';
+    }
+
+
+    /*
+     * Mostrar pantalla.
+     */
+    overlay.style.display =
+        'flex';
+
+
+    document.body.style.overflow =
+        'hidden';
+}
+
+/**
+ * Cierra la pantalla de acceso restringido.
+ */
+function cerrarAccesoRestringido_() {
+
+    const overlay =
+        document.getElementById(
+            'accesoRestringidoOverlay'
+        );
+
+    if (!overlay) {
+        return;
+    }
+
+    overlay.style.display =
+        'none';
+
+    document.body.style.overflow =
+        '';
+}
+
+
+/**
+ * Acción del botón "Iniciar sesión".
+ *
+ * Intenta utilizar las funciones de login
+ * que ya existan en la aplicación.
+ */
+function accesoRestringidoIniciarSesion_() {
+
+    cerrarAccesoRestringido_();
+
+    /*
+     * Si tu aplicación tiene una función
+     * específica para mostrar el login,
+     * intenta utilizarla.
+     */
+
+    if (
+        typeof mostrarLogin_ ===
+        'function'
+    ) {
+
+        mostrarLogin_();
+
+        return;
+    }
+
+    if (
+        typeof mostrarLogin ===
+        'function'
+    ) {
+
+        mostrarLogin();
+
+        return;
+    }
+
+    if (
+        typeof abrirLogin_ ===
+        'function'
+    ) {
+
+        abrirLogin_();
+
+        return;
+    }
+
+    /*
+     * Si no encontramos una función
+     * de login, mostramos un mensaje.
+     */
+
+    alert(
+        'Para acceder a esta información debe iniciar sesión. ' +
+        'Si necesita asistencia, comuníquese con el Administrador.'
+    );
+}
+
+
+/**
+ * Determina si una respuesta del backend
+ * requiere autenticación.
+ *
+ * Devuelve true cuando corresponde
+ * mostrar la pantalla de acceso restringido.
+ */
+function manejarAccesoRestringido_(result) {
+
+    if (
+        !result ||
+        !result.requiereAutenticacion
+    ) {
+
+        return false;
+    }
+
+    mostrarAccesoRestringido_(
+        result.mensaje
+    );
+
+    return true;
+}
+
+ /* ============================================================
+   ACCESO RESTRINGIDO
+============================================================ */
+
+function irAlSistema_() {
+
+    window.location.href =
+        'https://ignaciosandalio.github.io/sgd-dv/';
+}
+
+
+function cerrarAccesoRestringido_() {
+
+    const overlay =
+        document.getElementById(
+            'accesoRestringidoOverlay'
+        );
+
+    if (!overlay) {
+        return;
+    }
+
+    overlay.style.display =
+        'none';
+
+    document.body.style.overflow =
+        '';
+}
+
+
+function mostrarAccesoRestringido_(mensaje) {
+
+    /*
+     * Ocultar login.
+     */
+    const login =
+        document.getElementById('login');
+
+    if (login) {
+
+        login.classList.add('hidden');
+    }
+
+
+    /*
+     * Ocultar vista pública.
+     */
+    const publico =
+        document.getElementById('public');
+
+    if (publico) {
+
+        publico.classList.add('hidden');
+    }
+
+
+    /*
+     * Obtener ventana de acceso restringido.
+     */
+    const overlay =
+        document.getElementById(
+            'accesoRestringidoOverlay'
+        );
+
+    const mensajeEl =
+        document.getElementById(
+            'accesoRestringidoMensaje'
+        );
+
+
+    if (!overlay) {
+
+        /*
+         * Respaldo por si el HTML todavía
+         * no contiene el componente.
+         */
+        alert(
+            mensaje ||
+            'Acceso restringido. ' +
+            'Debe ingresar desde el Sistema de Gestión Documental.'
+        );
+
+        return;
+    }
+
+
+    if (mensajeEl) {
+
+        mensajeEl.textContent =
+            mensaje ||
+            'Para consultar esta información debe ingresar desde el Sistema de Gestión Documental.';
+    }
+
+
+    /*
+     * Mostrar.
+     */
+    overlay.style.display =
+        'flex';
+
+    document.body.style.overflow =
+        'hidden';
+}
+
+
+function manejarAccesoRestringido_(result) {
+
+    if (
+        !result ||
+        !result.requiereAutenticacion
+    ) {
+
+        return false;
+    }
+
+
+    mostrarAccesoRestringido_(
+        result.mensaje
+    );
+
+
+    return true;
+}
+   
 /* ======================================================
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbyj3hMZ56lK5PHlS9mLk0GRnjXjFdyGUNOPdoTtDYaNUdqe1jCOyai0x9-E5MEZDB8Y/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbxFlutFTHF80T6r-_j1VAP8s3vinnOmfR7PkVIaell0kZbGa_8IRNmF4dTPmW9R3UOq/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -4415,13 +4963,30 @@ async function publicView(qToken){
 
     try{
 
-        let r=
+        const r =
             await api(
                 'indicePublico',
                 {
-                    token:qToken
+                    token: qToken
                 }
             );
+
+
+        /*
+         * Usuario no autenticado.
+         */
+        if (
+            manejarAccesoRestringido_(r)
+        ) {
+
+            return;
+        }
+
+
+        /*
+         * Usuario autorizado.
+         * Continúa la vista normal.
+         */
 
         document
             .getElementById('login')
@@ -4431,11 +4996,17 @@ async function publicView(qToken){
             .getElementById('public')
             .classList.remove('hidden');
 
-        let t=r.tomo;
+
+        let t =
+            r.tomo;
+  
+        let t =
+            r.tomo;
+
 
         document.getElementById(
             'public'
-        ).innerHTML=
+        ).innerHTML =
 
         `<div class="publico-header">
 
@@ -4449,11 +5020,13 @@ async function publicView(qToken){
 
         </div>
 
+
         <div class="tarjeta">
 
             <span class="etiqueta-institucional">
                 REGISTRO PÚBLICO DEL TOMO
             </span>
+
 
             <div class="titulo-seccion">
 
@@ -4467,29 +5040,44 @@ async function publicView(qToken){
 
                 </div>
 
+
                 <div>
                     ${statusBadge(t.estado)}
                 </div>
 
             </div>
 
+
             <div class="datos-grid">
 
                 <div class="campo">
-                    <span>Gestión</span>
+
+                    <span>
+                        Gestión
+                    </span>
+
                     <strong>
                         ${esc(t.gestion)}
                     </strong>
+
                 </div>
 
+
                 <div class="campo">
-                    <span>Tipo documental</span>
+
+                    <span>
+                        Tipo documental
+                    </span>
+
                     <strong>
                         ${esc(t.tipo)}
                     </strong>
+
                 </div>
 
+
                 <div class="campo campo-ancho">
+
                     <span>
                         Ubicación Física del Tomo
                     </span>
@@ -4497,11 +5085,13 @@ async function publicView(qToken){
                     <strong>
                         ${esc(t.ubicacion)}
                     </strong>
+
                 </div>
 
             </div>
 
         </div>
+
 
         <div class="tarjeta">
 
@@ -4509,19 +5099,26 @@ async function publicView(qToken){
                 CONTENIDO DOCUMENTAL
             </span>
 
+
             <h2>
                 Índice digital
             </h2>
 
+
             <div class="separador-dorado"></div>
+
 
             ${
                 !r.documents.length
+
                 ?
+
                 `<div class="vacio">
                     Este tomo no registra documentos.
                 </div>`
+
                 :
+
                 `<div class="tabla-contenedor">
 
                     <table>
@@ -4529,23 +5126,49 @@ async function publicView(qToken){
                         <thead>
 
                             <tr>
-                                <th>Nº</th>
-                                <th>Fecha</th>
-                                <th>Cite</th>
-                                <th>Destinatario</th>
-                                <th>Asunto</th>
-                                <th>Folios</th>
-                                <th>Estado</th>
+
+                                <th>
+                                    Nº
+                                </th>
+
+                                <th>
+                                    Fecha
+                                </th>
+
+                                <th>
+                                    Cite
+                                </th>
+
+                                <th>
+                                    Destinatario
+                                </th>
+
+                                <th>
+                                    Asunto
+                                </th>
+
+                                <th>
+                                    Folios
+                                </th>
+
+                                <th>
+                                    Estado
+                                </th>
+
                             </tr>
 
                         </thead>
+
 
                         <tbody>
 
                         ${r.documents.map((d,i)=>{
 
-                            let anulado=
-                                isAnulado(d.status);
+                            let anulado =
+                                isAnulado(
+                                    d.status
+                                );
+
 
                             return `
 
@@ -4576,9 +5199,13 @@ async function publicView(qToken){
                                 </td>
 
                                 <td>
+
                                     ${esc(d.folioStart)}
+
                                     -
+
                                     ${esc(d.folioEnd)}
+
                                 </td>
 
                                 <td>
@@ -4600,7 +5227,9 @@ async function publicView(qToken){
 
         </div>`;
 
-    }catch(e){
+    }
+
+    catch(e){
 
         document
             .getElementById('login')
@@ -4610,22 +5239,23 @@ async function publicView(qToken){
             .getElementById('public')
             .classList.remove('hidden');
 
+
         document
             .getElementById('public')
-            .innerHTML=
+            .innerHTML =
 
             `<div class="tarjeta">
 
                 <div class="mensaje error">
+
                     ${esc(e.message)}
+
                 </div>
 
             </div>`;
-
     }
 
 }
-
 
 /* ======================================================
    MODAL QR
