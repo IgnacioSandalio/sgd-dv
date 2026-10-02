@@ -842,6 +842,439 @@ tr.documento-anulado td{
 }
 
 /* =========================================================
+   ESCÁNER QR INTERNO
+========================================================= */
+
+.scanner-contenido{
+    width:min(560px,100%);
+    text-align:center;
+}
+
+.scanner-instrucciones{
+    margin-bottom:18px;
+}
+
+.scanner-instrucciones h3{
+    margin:5px 0 8px;
+    color:var(--azul-institucional);
+    font-size:20px;
+}
+
+.scanner-instrucciones p{
+    margin:0 auto;
+    max-width:440px;
+    color:var(--gris-institucional);
+    font-size:14px;
+    line-height:1.55;
+}
+
+.qr-reader{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    overflow:hidden;
+    border:1px solid var(--gris-borde);
+    border-radius:10px;
+    background:#FAFAF9;
+}
+
+.qr-reader video{
+    width:100%!important;
+    height:auto!important;
+    border-radius:8px;
+}
+
+.qr-reader img{
+    max-width:100%;
+}
+
+.qr-reader__dashboard{
+    padding:12px!important;
+}
+
+.qr-reader__dashboard_section{
+    margin-bottom:8px!important;
+}
+
+.qr-reader button{
+    min-height:38px;
+    padding:8px 14px;
+}
+
+.scanner-pie{
+    display:flex;
+    justify-content:center;
+    margin-top:16px;
+}
+
+.scanner-resultado{
+    margin-top:18px;
+}
+
+@media(max-width:700px){
+
+    .scanner-contenido{
+        padding:18px;
+    }
+
+    .qr-reader{
+        max-width:100%;
+    }
+
+}
+
+/* =========================================================
+   RESULTADOS DEL ESCÁNER QR
+========================================================= */
+
+.qr-resultado-card,
+.qr-indice-card{
+    width:100%;
+    max-width:900px;
+    margin:0 auto;
+    text-align:center;
+    padding:26px;
+    background:#fff;
+    border:1px solid var(--gris-claro);
+    border-radius:10px;
+    box-shadow:var(--sombra-suave);
+}
+
+.qr-resultado-icono{
+    width:58px;
+    height:58px;
+    margin:0 auto 12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#E1F0E6;
+    color:var(--verde-ok);
+
+    font-size:32px;
+    font-weight:bold;
+}
+
+.qr-resultado-titulo{
+    color:var(--verde-ok);
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.qr-resultado-subtitulo{
+    margin-top:20px;
+    color:var(--gris-institucional);
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:1.2px;
+}
+
+.qr-ubicacion-principal{
+    margin:12px 0 22px;
+
+    color:var(--azul-institucional);
+
+    font-size:30px;
+    font-weight:bold;
+
+    letter-spacing:1px;
+}
+
+.qr-ubicacion-detalle{
+    display:grid;
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:12px;
+
+    max-width:600px;
+
+    margin:0 auto 22px;
+}
+
+.qr-ubicacion-detalle > div{
+    padding:14px;
+
+    background:#FAFAF9;
+
+    border:1px solid var(--gris-claro);
+
+    border-radius:7px;
+}
+
+.qr-ubicacion-detalle span,
+.qr-tomo-datos span,
+.qr-indice-identificacion span,
+.qr-indice-resumen span,
+.qr-cites span{
+    display:block;
+
+    margin-bottom:5px;
+
+    color:var(--gris-medio);
+
+    font-size:10px;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    letter-spacing:.7px;
+}
+
+.qr-ubicacion-detalle strong{
+    display:block;
+
+    color:var(--azul-institucional);
+
+    font-size:20px;
+}
+
+.qr-tomo-datos{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:12px;
+
+    margin-bottom:20px;
+
+    text-align:left;
+}
+
+.qr-tomo-datos > div{
+    padding:13px;
+
+    background:#FAFAF9;
+
+    border:1px solid var(--gris-claro);
+
+    border-radius:6px;
+}
+
+.qr-tomo-datos strong{
+    color:var(--azul-institucional);
+
+    font-size:14px;
+}
+
+.qr-estadistica{
+    padding:18px;
+
+    margin:20px auto;
+
+    background:#F5F1E4;
+
+    border:1px solid #E5DDBD;
+
+    border-radius:8px;
+}
+
+.qr-estadistica-numero{
+    color:var(--azul-institucional);
+
+    font-size:34px;
+
+    font-weight:bold;
+}
+
+.qr-estadistica-texto{
+    margin-top:3px;
+
+    color:var(--gris-institucional);
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    letter-spacing:.6px;
+}
+
+.qr-cites{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:12px;
+
+    margin-bottom:22px;
+
+    text-align:left;
+}
+
+.qr-cites > div{
+    padding:13px;
+
+    background:#FAFAF9;
+
+    border:1px solid var(--gris-claro);
+
+    border-radius:6px;
+}
+
+.qr-cites strong{
+    color:var(--azul-institucional);
+
+    font-size:14px;
+
+    word-break:break-word;
+}
+
+.qr-volver{
+    min-width:190px;
+}
+
+
+/* =========================================================
+   ÍNDICE QR
+========================================================= */
+
+.qr-indice-card{
+    text-align:left;
+}
+
+.qr-indice-card
+.qr-resultado-icono,
+.qr-indice-card
+.qr-resultado-titulo,
+.qr-indice-card
+.qr-resultado-subtitulo{
+    text-align:center;
+}
+
+.qr-indice-identificacion{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:12px;
+
+    margin-top:20px;
+}
+
+.qr-indice-identificacion > div{
+    padding:13px;
+
+    background:#FAFAF9;
+
+    border:1px solid var(--gris-claro);
+
+    border-radius:6px;
+}
+
+.qr-indice-identificacion strong{
+    color:var(--azul-institucional);
+
+    font-size:14px;
+}
+
+.qr-indice-resumen{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:12px;
+
+    margin-top:14px;
+}
+
+.qr-indice-resumen > div{
+    padding:15px;
+
+    background:#F5F1E4;
+
+    border:1px solid #E5DDBD;
+
+    border-radius:7px;
+}
+
+.qr-indice-resumen strong{
+    display:block;
+
+    color:var(--azul-institucional);
+
+    font-size:16px;
+
+    word-break:break-word;
+}
+
+.documento-pdf-link{
+    display:inline-block;
+
+    padding:7px 10px;
+
+    border-radius:5px;
+
+    background:var(--verde-ok);
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:12px;
+
+    font-weight:bold;
+}
+
+.documento-pdf-link:hover{
+    background:#006E2E;
+
+    color:#fff;
+}
+
+.pdf-no-disponible{
+    color:var(--gris-medio);
+
+    font-size:12px;
+
+    font-style:italic;
+}
+
+.qr-indice-acciones{
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE RESULTADO QR
+========================================================= */
+
+@media(max-width:700px){
+
+    .qr-resultado-card,
+    .qr-indice-card{
+        padding:18px;
+    }
+
+    .qr-ubicacion-principal{
+        font-size:24px;
+    }
+
+    .qr-ubicacion-detalle,
+    .qr-tomo-datos,
+    .qr-cites,
+    .qr-indice-identificacion,
+    .qr-indice-resumen{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* =========================================================
    VISTA PÚBLICA
 ========================================================= */
 
@@ -866,6 +1299,264 @@ tr.documento-anulado td{
 
 .publico-header p{
     color:var(--gris-institucional);
+}
+  
+/* =========================================================
+   QR RECONOCIDO — UBICACIÓN
+========================================================= */
+
+.qr-reconocido-card{
+    text-align:center;
+    padding:38px 30px;
+}
+
+.qr-reconocido-icono{
+    width:76px;
+    height:76px;
+
+    margin:0 auto 14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#E1F0E6;
+    color:var(--verde-ok);
+
+    font-size:42px;
+    font-weight:bold;
+
+    border:3px solid rgba(0,135,57,.18);
+}
+
+.qr-reconocido-titulo{
+    color:var(--verde-ok);
+
+    font-size:24px;
+    font-weight:bold;
+
+    letter-spacing:.8px;
+}
+
+.qr-separador-centro{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.ubicacion-titulo{
+    margin-top:4px;
+
+    color:var(--gris-institucional);
+
+    font-size:14px;
+    font-weight:bold;
+
+    letter-spacing:1.2px;
+}
+
+.ubicacion-codigo{
+    margin:12px 0 25px;
+
+    color:var(--azul-institucional);
+
+    font-size:30px;
+    font-weight:bold;
+
+    letter-spacing:1.5px;
+}
+
+.ubicacion-detalle{
+    width:min(390px,100%);
+
+    margin:0 auto;
+
+    border-top:1px solid var(--gris-claro);
+}
+
+.ubicacion-fila{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    padding:11px 0;
+
+    border-bottom:1px solid var(--gris-claro);
+
+    text-align:left;
+}
+
+.ubicacion-fila span{
+    color:var(--gris-institucional);
+
+    font-size:15px;
+}
+
+.ubicacion-fila strong{
+    color:var(--azul-institucional);
+
+    font-size:17px;
+
+    text-align:right;
+}
+
+.cantidad-documentos{
+    font-size:16px!important;
+}
+
+/* =========================================================
+   RESUMEN DOCUMENTAL
+========================================================= */
+
+.resumen-documental{
+    display:grid;
+
+    grid-template-columns:
+        minmax(180px, .8fr)
+        minmax(0, 1.6fr);
+
+    gap:20px;
+}
+
+.resumen-principal{
+    padding:22px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:#FAFAF9;
+
+    border:1px solid var(--gris-claro);
+
+    border-left:4px solid var(--dorado);
+
+    border-radius:7px;
+}
+
+.resumen-principal strong{
+    color:var(--azul-institucional);
+
+    font-size:34px;
+    line-height:1;
+}
+
+.resumen-principal span{
+    margin-top:9px;
+
+    color:var(--gris-institucional);
+
+    font-size:13px;
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    letter-spacing:.4px;
+}
+
+.resumen-rango{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+}
+
+.resumen-rango > div{
+    padding:17px;
+
+    background:#FAFAF9;
+
+    border:1px solid var(--gris-claro);
+
+    border-radius:7px;
+}
+
+.resumen-rango span{
+    display:block;
+
+    margin-bottom:7px;
+
+    color:var(--gris-medio);
+
+    font-size:11px;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+}
+
+.resumen-rango strong{
+    display:block;
+
+    color:var(--azul-institucional);
+
+    font-size:16px;
+
+    word-break:break-word;
+}
+
+/* =========================================================
+   ENLACES PDF
+========================================================= */
+
+.pdf-link{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    min-height:34px;
+
+    padding:7px 12px;
+
+    border-radius:5px;
+
+    background:var(--azul-institucional);
+
+    color:var(--blanco);
+
+    text-decoration:none;
+
+    font-size:12px;
+    font-weight:bold;
+
+    white-space:nowrap;
+
+    transition:
+        background .2s ease,
+        transform .1s ease;
+}
+
+.pdf-link:hover{
+    background:#303441;
+
+    transform:translateY(-1px);
+}
+
+.pdf-no-disponible{
+    color:var(--gris-medio);
+
+    font-size:12px;
+
+    font-style:italic;
+}
+
+/* =========================================================
+   BOTÓN DE ACCIÓN QR
+========================================================= */
+
+.tarjeta-qr-accion{
+    display:flex;
+
+    justify-content:center;
+
+    padding-top:10px;
 }
 
 /* =========================================================
@@ -1047,6 +1738,22 @@ footer{
         margin-left:-1px;
         margin-right:-1px;
         width:calc(100% + 2px);
+    }
+    
+    .resumen-documental{
+        grid-template-columns:1fr;
+    }
+
+    .resumen-rango{
+        grid-template-columns:1fr;
+    }
+
+    .ubicacion-codigo{
+        font-size:24px;
+    }
+
+    .qr-reconocido-card{
+        padding:30px 18px;
     }
 }
 
@@ -1466,41 +2173,85 @@ footer{
 
     </section>
 
+    <!-- ESCANER QR -->
+
+    <div id="scannerModal"
+     class="modal hidden"
+     onclick="cerrarScannerQR_(event)">
+
+    <div class="modal-contenido"
+         onclick="event.stopPropagation()">
+
+        <div class="modal-cabecera">
+
+            <h2>
+                Escanear código QR
+            </h2>
+
+            <button
+                class="alt"
+                onclick="cerrarScannerQR_()">
+                Cerrar
+            </button>
+
+        </div>
+
+        <div id="qrScanner">
+
+            <!-- Aquí aparecerá la cámara -->
+
+        </div>
+
+        <div
+            id="scannerMensaje"
+            class="mensaje"
+            style="display:none;">
+        </div>
+
+    </div>
+
+</div>
+
+
     <!-- APP -->
 
     <section id="app" class="tarjeta hidden">
-
+        
         <nav class="menu no-print">
-
+        
             <button onclick="home()">
                 Inicio
             </button>
-
+        
             <button onclick="tomes()">
                 Tomos
             </button>
-
+        
             <button onclick="documents()">
                 Documentos
             </button>
-
+        
+            <button onclick="abrirEscanerQR()">
+                Escanear QR
+            </button>
+        
             <button id="usersBtn"
                     class="hidden"
                     onclick="users()">
                 Usuarios
             </button>
-
+        
             <button class="alt"
                     onclick="logout()">
                 Salir
             </button>
-
+        
             <div class="usuario-menu">
                 <span id="who">
                     Usuario
                 </span>
             </div>
-
+        
         </nav>
 
         <div id="panel"></div>
@@ -1549,7 +2300,72 @@ footer{
 
 </div>
 
+    <!-- ============================================================
+     ESCÁNER QR INTERNO
+============================================================ -->
+
+<div id="scannerModal"
+     class="modal hidden"
+     onclick="cerrarEscanerQR(event)">
+
+    <div class="modal-contenido scanner-contenido"
+         onclick="event.stopPropagation()">
+
+        <div class="modal-cabecera">
+
+            <h2>
+                Escanear código QR
+            </h2>
+
+            <button class="alt"
+                    type="button"
+                    onclick="cerrarEscanerQR()">
+                Cerrar
+            </button>
+
+        </div>
+
+        <div class="scanner-instrucciones">
+
+            <span class="etiqueta-institucional">
+                CONSULTA DESDE EL SISTEMA
+            </span>
+
+            <h3>
+                Escanee el QR del Tomo
+            </h3>
+
+            <p>
+                Apunte la cámara hacia el código QR
+                correspondiente al Lomo o al Índice Digital.
+            </p>
+
+        </div>
+
+        <div id="qr-reader"
+             class="qr-reader">
+        </div>
+
+        <div id="scannerMsg"
+             class="mensaje hidden">
+        </div>
+
+        <div class="scanner-pie">
+
+            <button type="button"
+                    class="alt"
+                    onclick="detenerEscanerQR()">
+                Detener cámara
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <script>
 
@@ -1657,107 +2473,6 @@ function mostrarAccesoRestringido_(mensaje) {
 /**
  * Cierra la pantalla de acceso restringido.
  */
-function cerrarAccesoRestringido_() {
-
-    const overlay =
-        document.getElementById(
-            'accesoRestringidoOverlay'
-        );
-
-    if (!overlay) {
-        return;
-    }
-
-    overlay.style.display =
-        'none';
-
-    document.body.style.overflow =
-        '';
-}
-
-
-/**
- * Acción del botón "Iniciar sesión".
- *
- * Intenta utilizar las funciones de login
- * que ya existan en la aplicación.
- */
-function accesoRestringidoIniciarSesion_() {
-
-    cerrarAccesoRestringido_();
-
-    /*
-     * Si tu aplicación tiene una función
-     * específica para mostrar el login,
-     * intenta utilizarla.
-     */
-
-    if (
-        typeof mostrarLogin_ ===
-        'function'
-    ) {
-
-        mostrarLogin_();
-
-        return;
-    }
-
-    if (
-        typeof mostrarLogin ===
-        'function'
-    ) {
-
-        mostrarLogin();
-
-        return;
-    }
-
-    if (
-        typeof abrirLogin_ ===
-        'function'
-    ) {
-
-        abrirLogin_();
-
-        return;
-    }
-
-    /*
-     * Si no encontramos una función
-     * de login, mostramos un mensaje.
-     */
-
-    alert(
-        'Para acceder a esta información debe iniciar sesión. ' +
-        'Si necesita asistencia, comuníquese con el Administrador.'
-    );
-}
-
-
-/**
- * Determina si una respuesta del backend
- * requiere autenticación.
- *
- * Devuelve true cuando corresponde
- * mostrar la pantalla de acceso restringido.
- */
-function manejarAccesoRestringido_(result) {
-
-    if (
-        !result ||
-        !result.requiereAutenticacion
-    ) {
-
-        return false;
-    }
-
-    mostrarAccesoRestringido_(
-        result.mensaje
-    );
-
-    return true;
-}
-
  /* ============================================================
    ACCESO RESTRINGIDO
 ============================================================ */
@@ -1790,33 +2505,22 @@ function cerrarAccesoRestringido_() {
 
 function mostrarAccesoRestringido_(mensaje) {
 
-    /*
-     * Ocultar login.
-     */
     const login =
         document.getElementById('login');
 
     if (login) {
-
         login.classList.add('hidden');
     }
 
 
-    /*
-     * Ocultar vista pública.
-     */
     const publico =
         document.getElementById('public');
 
     if (publico) {
-
         publico.classList.add('hidden');
     }
 
 
-    /*
-     * Obtener ventana de acceso restringido.
-     */
     const overlay =
         document.getElementById(
             'accesoRestringidoOverlay'
@@ -1830,10 +2534,6 @@ function mostrarAccesoRestringido_(mensaje) {
 
     if (!overlay) {
 
-        /*
-         * Respaldo por si el HTML todavía
-         * no contiene el componente.
-         */
         alert(
             mensaje ||
             'Acceso restringido. ' +
@@ -1848,13 +2548,10 @@ function mostrarAccesoRestringido_(mensaje) {
 
         mensajeEl.textContent =
             mensaje ||
-            'Para consultar esta información debe ingresar desde el Sistema de Gestión Documental.';
+            'Para consultar esta información debe iniciar sesión desde el Sistema de Gestión Documental.';
     }
 
 
-    /*
-     * Mostrar.
-     */
     overlay.style.display =
         'flex';
 
@@ -1886,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbxFlutFTHF80T6r-_j1VAP8s3vinnOmfR7PkVIaell0kZbGa_8IRNmF4dTPmW9R3UOq/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbzKxySXCpiJPkbFiNFCWkMnmZ0BZZK7Ws2vLt21kNckKjYga1eAWcsgY74I8nZjmr5j/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -2154,6 +2851,34 @@ function repositoryPublicUrl(t){
 
 }
 
+function escAttr(value){
+
+    return String(
+        value == null
+            ? ''
+            : value
+    )
+    .replace(
+        /&/g,
+        '&amp;'
+    )
+    .replace(
+        /"/g,
+        '&quot;'
+    )
+    .replace(
+        /'/g,
+        '&#39;'
+    )
+    .replace(
+        /</g,
+        '&lt;'
+    )
+    .replace(
+        />/g,
+        '&gt;'
+    );
+}
 
 /* ======================================================
    LOGIN
@@ -4956,7 +5681,7 @@ async function resetUser(id){
 
 
 /* ======================================================
-   VISTA PÚBLICA DEL TOMO
+   VISTA PÚBLICA DEL ÍNDICE
 ====================================================== */
 
 async function publicView(qToken){
@@ -4971,28 +5696,27 @@ async function publicView(qToken){
                 }
             );
 
-console.log(
-    'RESPUESTA INDICE PUBLICO:',
-    r
-);
+        console.log(
+            'RESPUESTA INDICE PUBLICO:',
+            r
+        );
 
 
         /*
          * Usuario no autenticado.
          */
-        if (
+        if(
             manejarAccesoRestringido_(r)
-        ) {
+        ){
 
             return;
+
         }
 
 
         /*
-         * Usuario autorizado.
-         * Continúa la vista normal.
+         * Mostrar vista pública.
          */
-
         document
             .getElementById('login')
             .classList.add('hidden');
@@ -5001,231 +5725,10 @@ console.log(
             .getElementById('public')
             .classList.remove('hidden');
 
-        let t =
-            r.tomo;
 
-        document.getElementById(
-            'public'
-        ).innerHTML =
-
-        `<div class="publico-header">
-
-            <h1>
-                SGD-DV
-            </h1>
-
-            <p>
-                Sistema de Gestión Documental
-            </p>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <span class="etiqueta-institucional">
-                REGISTRO PÚBLICO DEL TOMO
-            </span>
-
-
-            <div class="titulo-seccion">
-
-                <div>
-
-                    <h2>
-                        ${esc(t.codigo)}
-                    </h2>
-
-                    <div class="separador-dorado"></div>
-
-                </div>
-
-
-                <div>
-                    ${statusBadge(t.estado)}
-                </div>
-
-            </div>
-
-
-            <div class="datos-grid">
-
-                <div class="campo">
-
-                    <span>
-                        Gestión
-                    </span>
-
-                    <strong>
-                        ${esc(t.gestion)}
-                    </strong>
-
-                </div>
-
-
-                <div class="campo">
-
-                    <span>
-                        Tipo documental
-                    </span>
-
-                    <strong>
-                        ${esc(t.tipo)}
-                    </strong>
-
-                </div>
-
-
-                <div class="campo campo-ancho">
-
-                    <span>
-                        Ubicación Física del Tomo
-                    </span>
-
-                    <strong>
-                        ${esc(t.ubicacion)}
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="tarjeta">
-
-            <span class="etiqueta-institucional">
-                CONTENIDO DOCUMENTAL
-            </span>
-
-
-            <h2>
-                Índice digital
-            </h2>
-
-
-            <div class="separador-dorado"></div>
-
-
-            ${
-                !r.documents.length
-
-                ?
-
-                `<div class="vacio">
-                    Este tomo no registra documentos.
-                </div>`
-
-                :
-
-                `<div class="tabla-contenedor">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Nº
-                                </th>
-
-                                <th>
-                                    Fecha
-                                </th>
-
-                                <th>
-                                    Cite
-                                </th>
-
-                                <th>
-                                    Destinatario
-                                </th>
-
-                                <th>
-                                    Asunto
-                                </th>
-
-                                <th>
-                                    Folios
-                                </th>
-
-                                <th>
-                                    Estado
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                        ${r.documents.map((d,i)=>{
-
-                            let anulado =
-                                isAnulado(
-                                    d.status
-                                );
-
-
-                            return `
-
-                            <tr class="${
-                                anulado
-                                ? 'documento-anulado'
-                                : ''
-                            }">
-
-                                <td>
-                                    ${i+1}
-                                </td>
-
-                                <td>
-                                    ${esc(d.date)}
-                                </td>
-
-                                <td>
-                                    ${esc(d.cite)}
-                                </td>
-
-                                <td>
-                                    ${esc(d.recipient)}
-                                </td>
-
-                                <td>
-                                    ${esc(d.subject)}
-                                </td>
-
-                                <td>
-
-                                    ${esc(d.folioStart)}
-
-                                    -
-
-                                    ${esc(d.folioEnd)}
-
-                                </td>
-
-                                <td>
-                                    ${documentStatusBadge(
-                                        d.status
-                                    )}
-                                </td>
-
-                            </tr>`;
-
-                        }).join('')}
-
-                        </tbody>
-
-                    </table>
-
-                </div>`
-            }
-
-        </div>`;
+        renderPublicIndex(
+            r
+        );
 
     }
 
@@ -5248,13 +5751,868 @@ console.log(
 
                 <div class="mensaje error">
 
-                    ${esc(e.message)}
+                    ${esc(
+                        e.message ||
+                        'No se pudo consultar el índice.'
+                    )}
 
                 </div>
 
             </div>`;
     }
 
+}
+
+/* ======================================================
+   VISTA PÚBLICA DEL LOMO / UBICACIÓN
+====================================================== */
+
+async function publicLocationView(qToken){
+
+    try{
+
+        const r =
+            await api(
+                'ubicacionPublica',
+                {
+                    token: qToken
+                }
+            );
+
+
+        console.log(
+            'RESPUESTA UBICACION PUBLICA:',
+            r
+        );
+
+
+        /*
+         * Usuario no autenticado.
+         */
+        if(
+            manejarAccesoRestringido_(r)
+        ){
+
+            return;
+
+        }
+
+
+        /*
+         * Mostrar vista pública.
+         */
+        document
+            .getElementById('login')
+            .classList.add('hidden');
+
+        document
+            .getElementById('public')
+            .classList.remove('hidden');
+
+
+        renderPublicLocationView(
+            r
+        );
+
+    }
+
+    catch(e){
+
+        document
+            .getElementById('login')
+            .classList.add('hidden');
+
+        document
+            .getElementById('public')
+            .classList.remove('hidden');
+
+
+        document
+            .getElementById('public')
+            .innerHTML =
+
+            `<div class="tarjeta">
+
+                <div class="mensaje error">
+
+                    ${esc(
+                        e.message ||
+                        'No se pudo consultar la ubicación.'
+                    )}
+
+                </div>
+
+            </div>`;
+    }
+
+}
+
+/* ======================================================
+   RENDER UBICACIÓN PÚBLICA
+====================================================== */
+
+function renderPublicLocation(r){
+
+    const publico =
+        document.getElementById(
+            'public'
+        );
+
+    if(!publico){
+
+        return;
+
+    }
+
+
+    const t =
+        r.tomo || {};
+
+
+    const estante =
+        String(
+            t.estante ||
+            ''
+        ).trim();
+
+
+    const balda =
+        String(
+            t.balda ||
+            ''
+        ).trim();
+
+
+    const posicion =
+        String(
+            t.posicion ||
+            ''
+        ).trim();
+
+
+    const ubicacion =
+        [
+            estante,
+            balda,
+            posicion
+        ]
+        .filter(Boolean)
+        .join(' / ') ||
+        'Sin ubicación';
+
+
+    publico.innerHTML =
+
+    `<div class="publico-header">
+
+        <h1>
+            SGD-DV
+        </h1>
+
+        <p>
+            Sistema de Gestión Documental
+        </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         TARJETA QR RECONOCIDO
+    ================================================== -->
+
+    <div class="tarjeta qr-reconocido-card">
+
+        <div class="qr-reconocido-icono">
+            ✓
+        </div>
+
+
+        <div class="qr-reconocido-titulo">
+            QR RECONOCIDO
+        </div>
+
+
+        <div class="qr-reconocido-subtitulo">
+            UBICACIÓN DEL TOMO
+        </div>
+
+
+        <div class="ubicacion-principal">
+
+            ${esc(
+                ubicacion
+            )}
+
+        </div>
+
+
+        <div class="ubicacion-detalle">
+
+            <div>
+
+                <span>
+                    Estante
+                </span>
+
+                <strong>
+                    ${esc(
+                        estante || '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Balda
+                </span>
+
+                <strong>
+                    ${esc(
+                        balda || '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Posición
+                </span>
+
+                <strong>
+                    ${esc(
+                        posicion || '—'
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="ubicacion-tomo">
+
+            <div>
+
+                <span>
+                    TOMO
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.codigo ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Gestión
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.gestion ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Tipo
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.tipo ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="qr-reconocido-acciones">
+
+            <button
+                type="button"
+                onclick="volverAescanear_()"
+            >
+                Volver a escanear
+            </button>
+
+        </div>
+
+    </div>`;
+}
+
+/* ============================================================
+   RENDER — QR DEL ÍNDICE DIGITAL
+============================================================ */
+
+/* ======================================================
+   RENDER ÍNDICE PÚBLICO
+====================================================== */
+
+function renderPublicIndex(r){
+
+    const publico =
+        document.getElementById(
+            'public'
+        );
+
+    if(!publico){
+
+        return;
+
+    }
+
+
+    const t =
+        r.tomo || {};
+
+
+    const documents =
+        Array.isArray(r.documents)
+            ? r.documents
+            : [];
+
+
+const cantidad =
+    Number(
+        r.cantidadDocumentos
+    ) ||
+    documents.length;
+
+
+const primerCite =
+    r.primerCite ||
+    (
+        cantidad > 0
+            ? documents[0].cite || '—'
+            : '—'
+    );
+
+
+const ultimoCite =
+    r.ultimoCite ||
+    (
+        cantidad > 0
+            ? documents[cantidad - 1].cite || '—'
+            : '—'
+    );
+
+    /*
+     * Construir tabla.
+     */
+    let tabla = '';
+
+
+    if(!cantidad){
+
+        tabla =
+
+            `<div class="vacio">
+
+                Este tomo no registra documentos.
+
+            </div>`;
+
+    }else{
+
+        tabla =
+
+        `<div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Nº
+                        </th>
+
+                        <th>
+                            Fecha
+                        </th>
+
+                        <th>
+                            Cite
+                        </th>
+
+                        <th>
+                            Destinatario
+                        </th>
+
+                        <th>
+                            Asunto
+                        </th>
+
+                        <th>
+                            Folios
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Documento
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${
+                        documents
+                            .map(
+                                (d,i)=>{
+
+                                    const anulado =
+                                        isAnulado(
+                                            d.status
+                                        );
+
+
+                                    const pdf =
+                                        String(
+                                            d.pdfUrl ||
+                                            ''
+                                        ).trim();
+
+
+                                    return `
+
+                                    <tr class="${
+                                        anulado
+                                            ? 'documento-anulado'
+                                            : ''
+                                    }">
+
+                                        <td>
+                                            ${i + 1}
+                                        </td>
+
+                                        <td>
+                                            ${esc(
+                                                d.date
+                                            )}
+                                        </td>
+
+                                        <td>
+                                            ${esc(
+                                                d.cite
+                                            )}
+                                        </td>
+
+                                        <td>
+                                            ${esc(
+                                                d.recipient
+                                            )}
+                                        </td>
+
+                                        <td>
+                                            ${esc(
+                                                d.subject
+                                            )}
+                                        </td>
+
+                                        <td>
+
+                                            ${esc(
+                                                d.folioStart
+                                            )}
+
+                                            -
+
+                                            ${esc(
+                                                d.folioEnd
+                                            )}
+
+                                        </td>
+
+                                        <td>
+
+                                            ${documentStatusBadge(
+                                                d.status
+                                            )}
+
+                                        </td>
+
+                                        <td>
+
+                                            ${
+                                                pdf
+                                                ?
+
+                                                `<a
+                                                    href="${escAttr(pdf)}"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    class="documento-pdf-link"
+                                                >
+                                                    Ver PDF
+                                                </a>`
+
+                                                :
+
+                                                `<span
+                                                    class="muted"
+                                                >
+                                                    Sin PDF
+                                                </span>`
+                                            }
+
+                                        </td>
+
+                                    </tr>`;
+
+                                }
+                            )
+                            .join('')
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>`;
+    }
+
+
+    publico.innerHTML =
+
+    `<div class="publico-header">
+
+        <h1>
+            SGD-DV
+        </h1>
+
+        <p>
+            Sistema de Gestión Documental
+        </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         TARJETA DEL TOMO
+    ================================================== -->
+
+    <div class="tarjeta">
+
+        <span class="etiqueta-institucional">
+            REGISTRO PÚBLICO DEL TOMO
+        </span>
+
+
+        <div class="titulo-seccion">
+
+            <div>
+
+                <h2>
+                    ${esc(
+                        t.codigo ||
+                        'Tomo'
+                    )}
+                </h2>
+
+                <div class="separador-dorado"></div>
+
+            </div>
+
+
+            <div>
+                ${statusBadge(
+                    t.estado
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="datos-grid">
+
+            <div class="campo">
+
+                <span>
+                    Gestión
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.gestion
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="campo">
+
+                <span>
+                    Tipo documental
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.tipo
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="campo">
+
+                <span>
+                    Tomo
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.tomoTexto ||
+                        t.numero ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="campo campo-ancho">
+
+                <span>
+                    Ubicación Física del Tomo
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.ubicacion ||
+                        'Sin ubicación'
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         RESUMEN DOCUMENTAL
+    ================================================== -->
+
+    <div class="tarjeta">
+
+        <span class="etiqueta-institucional">
+            RESUMEN DEL ÍNDICE
+        </span>
+
+
+        <h2>
+            ${cantidad}
+            ${
+                cantidad === 1
+                    ? 'documento registrado'
+                    : 'documentos registrados'
+            }
+        </h2>
+
+
+        <div class="separador-dorado"></div>
+
+
+        <div class="indice-resumen-grid">
+
+            <div class="indice-resumen-item">
+
+                <span>
+                    Primer Cite
+                </span>
+
+                <strong>
+                    ${esc(
+                        primerCite
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="indice-resumen-item">
+
+                <span>
+                    Último Cite
+                </span>
+
+                <strong>
+                    ${esc(
+                        ultimoCite
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         ÍNDICE DIGITAL
+    ================================================== -->
+
+    <div class="tarjeta">
+
+        <span class="etiqueta-institucional">
+            CONTENIDO DOCUMENTAL
+        </span>
+
+
+        <h2>
+            Índice digital
+        </h2>
+
+
+        <div class="separador-dorado"></div>
+
+
+        <div class="indice-encabezado">
+
+            <div>
+
+                <span>
+                    Tomo
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.codigo ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Gestión
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.gestion ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Tipo documental
+                </span>
+
+                <strong>
+                    ${esc(
+                        t.tipo ||
+                        '—'
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Documentos
+                </span>
+
+                <strong>
+                    ${cantidad}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Primer Cite
+                </span>
+
+                <strong>
+                    ${esc(
+                        primerCite
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Último Cite
+                </span>
+
+                <strong>
+                    ${esc(
+                        ultimoCite
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        ${tabla}
+
+    </div>`;
+}
+
+/* ======================================================
+   VOLVER A ESCANEAR
+====================================================== */
+
+function volverAescanear_(){
+
+    /*
+     * Volvemos a la página principal
+     * para permitir un nuevo escaneo.
+     */
+
+    window.location.href =
+        'https://ignaciosandalio.github.io/sgd-dv/';
 }
 
 /* ======================================================
@@ -5282,6 +6640,1482 @@ function closeQR(event){
 
 }
 
+/* ============================================================
+   ESCÁNER QR INTERNO
+============================================================ */
+
+let qrScanner = null;
+
+let qrScannerActivo = false;
+
+
+/**
+ * Abre el lector QR.
+ *
+ * Disponible para:
+ *
+ * - Administrador
+ * - Lector
+ */
+async function abrirEscanerQR(){
+
+    const modal =
+        document.getElementById(
+            'scannerModal'
+        );
+
+    if(!modal){
+
+        console.error(
+            'No existe #scannerModal'
+        );
+
+        return;
+    }
+
+    /*
+     * Reconstruir el contenido original
+     * por si anteriormente se mostró
+     * un resultado.
+     */
+    reconstruirModalScanner_();
+
+    modal.classList.remove(
+        'hidden'
+    );
+
+    mostrarMensajeScanner_(
+        '',
+        false
+    );
+
+    await detenerEscanerQR();
+
+    qrScanner =
+        new Html5Qrcode(
+            'qr-reader'
+        );
+
+    // ... el resto continúa exactamente
+    // como el bloque anterior.
+
+    /*
+     * Verificación de sesión.
+     *
+     * El escáner interno sólo se utiliza
+     * dentro de la aplicación autenticada.
+     */
+    if(!token){
+
+        alert(
+            'Debe iniciar sesión para utilizar el escáner QR.'
+        );
+
+        return;
+    }
+
+
+    modal.classList.remove(
+        'hidden'
+    );
+
+
+    mostrarMensajeScanner_(
+        '',
+        false
+    );
+
+
+    /*
+     * Limpiar lector anterior.
+     */
+    await detenerEscanerQR();
+
+
+    /*
+     * Crear lector.
+     */
+    qrScanner =
+        new Html5Qrcode(
+            'qr-reader'
+        );
+
+
+    try{
+
+        qrScannerActivo =
+            true;
+
+
+        await qrScanner.start(
+
+            {
+                facingMode:
+                    'environment'
+            },
+
+            {
+                fps:10,
+
+                qrbox:function(
+                    width,
+                    height
+                ){
+
+                    const size =
+                        Math.min(
+                            width,
+                            height,
+                            280
+                        );
+
+                    return {
+                        width:size,
+                        height:size
+                    };
+
+                },
+
+                aspectRatio:1.0
+
+            },
+
+            function(decodedText){
+
+                procesarQRInterno_(
+                    decodedText
+                );
+
+            },
+
+            function(errorMessage){
+
+                /*
+                 * No mostramos los errores normales
+                 * de lectura.
+                 *
+                 * El lector genera muchos mensajes
+                 * mientras todavía está buscando
+                 * un QR.
+                 */
+
+            }
+
+        );
+
+    }catch(e){
+
+        qrScannerActivo =
+            false;
+
+        console.error(
+            'Error iniciando cámara:',
+            e
+        );
+
+
+        mostrarMensajeScanner_(
+            'No fue posible acceder a la cámara. ' +
+            'Verifique que el navegador tenga permiso ' +
+            'para utilizar la cámara.',
+            true
+        );
+
+    }
+
+}
+
+
+/**
+ * Procesa el contenido leído por la cámara.
+ */
+async function procesarQRInterno_(
+    decodedText
+){
+
+    /*
+     * Evitar múltiples lecturas
+     * del mismo QR.
+     */
+    if(!qrScannerActivo){
+
+        return;
+
+    }
+
+
+    qrScannerActivo =
+        false;
+
+
+    /*
+     * Detener cámara.
+     */
+    try{
+
+        if(qrScanner){
+
+            await qrScanner.stop();
+
+        }
+
+    }catch(e){
+
+        console.warn(
+            'No se pudo detener inmediatamente el lector:',
+            e
+        );
+
+    }
+
+
+    /*
+     * Analizar URL.
+     */
+    let info;
+
+
+    try{
+
+        info =
+            analizarQR_(
+                decodedText
+            );
+
+    }catch(e){
+
+        mostrarMensajeScanner_(
+            e.message,
+            true
+        );
+
+        qrScannerActivo =
+            false;
+
+        return;
+
+    }
+
+
+    /*
+     * Consultar backend.
+     */
+    try{
+
+        mostrarMensajeScanner_(
+            'Consultando información...',
+            false
+        );
+
+
+        let r;
+
+
+        if(
+            info.action ===
+            'ubicacionPublica'
+        ){
+
+            r =
+                await api(
+                    'ubicacionPublica',
+                    {
+                        token:
+                            info.token,
+
+                        sessionToken:
+                            token
+                    }
+                );
+
+
+            if(
+                manejarAccesoRestringido_(
+                    r
+                )
+            ){
+
+                cerrarEscanerQR();
+
+                return;
+
+            }
+
+
+            renderResultadoQRUbicacion_(
+                r
+            );
+
+
+        }else if(
+            info.action ===
+            'indicePublico'
+        ){
+
+            r =
+                await api(
+                    'indicePublico',
+                    {
+                        token:
+                            info.token,
+
+                        sessionToken:
+                            token
+                    }
+                );
+
+
+            if(
+                manejarAccesoRestringido_(
+                    r
+                )
+            ){
+
+                cerrarEscanerQR();
+
+                return;
+
+            }
+
+
+            renderResultadoQRIndice_(
+                r
+            );
+
+
+        }else{
+
+            throw Error(
+                'El código QR no corresponde a un QR válido del SGD-DV.'
+            );
+
+        }
+
+
+    }catch(e){
+
+        console.error(
+            'Error consultando QR:',
+            e
+        );
+
+
+        mostrarMensajeScanner_(
+            e.message ||
+            'No fue posible consultar la información del QR.',
+            true
+        );
+
+
+        /*
+         * Permitir volver a intentar.
+         */
+        qrScannerActivo =
+            false;
+
+    }
+
+}
+
+
+/**
+ * Analiza la URL obtenida del QR.
+ */
+function analizarQR_(
+    texto
+){
+
+    const raw =
+        String(
+            texto ||
+            ''
+        ).trim();
+
+
+    if(!raw){
+
+        throw Error(
+            'El código QR está vacío.'
+        );
+
+    }
+
+
+    let url;
+
+
+    try{
+
+        url =
+            new URL(
+                raw
+            );
+
+    }catch(e){
+
+        throw Error(
+            'El QR no contiene una dirección válida del SGD-DV.'
+        );
+
+    }
+
+
+    const action =
+        url.searchParams.get(
+            'action'
+        );
+
+
+    const qrToken =
+        url.searchParams.get(
+            'token'
+        );
+
+
+    if(!action){
+
+        throw Error(
+            'El QR no contiene una acción válida.'
+        );
+
+    }
+
+
+    if(!qrToken){
+
+        throw Error(
+            'El QR no contiene un token válido.'
+        );
+
+    }
+
+
+    return {
+
+        action:
+            action,
+
+        token:
+            qrToken,
+
+        url:
+            raw
+
+    };
+
+}
+
+
+/**
+ * Muestra un mensaje dentro del lector.
+ */
+function mostrarMensajeScanner_(
+    mensaje,
+    error
+){
+
+    const el =
+        document.getElementById(
+            'scannerMsg'
+        );
+
+
+    if(!el){
+
+        return;
+
+    }
+
+
+    if(!mensaje){
+
+        el.textContent =
+            '';
+
+        el.classList.add(
+            'hidden'
+        );
+
+        el.classList.remove(
+            'error'
+        );
+
+        return;
+
+    }
+
+
+    el.textContent =
+        mensaje;
+
+
+    el.classList.remove(
+        'hidden'
+    );
+
+
+    if(error){
+
+        el.classList.add(
+            'error'
+        );
+
+    }else{
+
+        el.classList.remove(
+            'error'
+        );
+
+    }
+
+}
+
+
+/**
+ * Detiene completamente la cámara.
+ */
+async function detenerEscanerQR(){
+
+    qrScannerActivo =
+        false;
+
+
+    if(!qrScanner){
+
+        return;
+
+    }
+
+
+    try{
+
+        await qrScanner.stop();
+
+    }catch(e){
+
+        console.warn(
+            'Error deteniendo QR:',
+            e
+        );
+
+    }
+
+
+    try{
+
+        qrScanner.clear();
+
+    }catch(e){
+
+        /*
+         * Puede ocurrir si ya estaba detenido.
+         */
+
+    }
+
+
+    qrScanner =
+        null;
+
+}
+
+
+/**
+ * Cierra el modal del escáner.
+ */
+async function cerrarEscanerQR(
+    event
+){
+
+    /*
+     * Si se hizo clic en el fondo,
+     * cerrar.
+     *
+     * Si se hizo clic dentro del contenido,
+     * no cerrar.
+     */
+    if(
+        event &&
+        event.target !==
+        document.getElementById(
+            'scannerModal'
+        )
+    ){
+
+        return;
+
+    }
+
+
+    await detenerEscanerQR();
+
+
+    const modal =
+        document.getElementById(
+            'scannerModal'
+        );
+
+
+    if(modal){
+
+        modal.classList.add(
+            'hidden'
+        );
+
+    }
+
+
+    mostrarMensajeScanner_(
+        '',
+        false
+    );
+
+}
+
+
+/**
+ * Permite volver a abrir el lector
+ * desde las tarjetas de resultado.
+ */
+async function volverAEscanearQR(){
+
+    await cerrarEscanerQR();
+
+
+    /*
+     * Abrir nuevamente.
+     */
+    setTimeout(
+        function(){
+
+            abrirEscanerQR();
+
+        },
+        100
+    );
+
+}
+
+/* ============================================================
+   RESULTADO QR — UBICACIÓN DEL TOMO
+============================================================ */
+
+function renderResultadoQRUbicacion_(
+    r
+){
+
+    if(
+        !r ||
+        !r.tomo
+    ){
+
+        throw Error(
+            'El servidor no devolvió información del tomo.'
+        );
+
+    }
+
+
+    const t =
+        r.tomo;
+
+
+    const cantidad =
+        Number(
+            r.cantidadDocumentos ||
+            0
+        );
+
+
+    const primero =
+        r.primerCite ||
+        '—';
+
+
+    const ultimo =
+        r.ultimoCite ||
+        '—';
+
+
+    const contenido = `
+
+        <div class="qr-resultado-card">
+
+            <div class="qr-resultado-icono">
+                ✓
+            </div>
+
+
+            <div class="qr-resultado-titulo">
+                QR RECONOCIDO
+            </div>
+
+
+            <div class="qr-resultado-subtitulo">
+                UBICACIÓN DEL TOMO
+            </div>
+
+
+            <div class="qr-ubicacion-principal">
+
+                ${esc(
+                    t.estante || '—'
+                )}
+
+                /
+
+                ${esc(
+                    t.balda || '—'
+                )}
+
+                /
+
+                ${esc(
+                    t.posicion || '—'
+                )}
+
+            </div>
+
+
+            <div class="qr-ubicacion-detalle">
+
+                <div>
+
+                    <span>
+                        Estante
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.estante || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Balda
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.balda || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Posición
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.posicion || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="qr-tomo-datos">
+
+                <div>
+
+                    <span>
+                        TOMO
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.codigo || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        GESTIÓN
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.gestion || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        TIPO
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.tipo || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="qr-estadistica">
+
+                <div class="qr-estadistica-numero">
+
+                    ${cantidad}
+
+                </div>
+
+                <div class="qr-estadistica-texto">
+
+                    documentos registrados
+
+                </div>
+
+            </div>
+
+
+            <div class="qr-cites">
+
+                <div>
+
+                    <span>
+                        Primer Cite
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            primero
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Último Cite
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            ultimo
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="qr-volver"
+                onclick="volverAEscanearQR()"
+            >
+                Volver a escanear
+            </button>
+
+        </div>
+    `;
+
+
+    mostrarResultadoQR_(
+        contenido
+    );
+
+}
+
+/* ============================================================
+   RESULTADO QR — ÍNDICE DIGITAL
+============================================================ */
+
+function renderResultadoQRIndice_(
+    r
+){
+
+    if(
+        !r ||
+        !r.tomo
+    ){
+
+        throw Error(
+            'El servidor no devolvió información del tomo.'
+        );
+
+    }
+
+
+    const t =
+        r.tomo;
+
+
+    const documentos =
+        Array.isArray(
+            r.documents
+        )
+            ? r.documents
+            : [];
+
+
+    const cantidad =
+        Number(
+            r.cantidadDocumentos ??
+            documentos.length
+        );
+
+
+    const primero =
+        r.primerCite ||
+        (
+            documentos.length
+                ? documentos[0].cite
+                : '—'
+        );
+
+
+    const ultimo =
+        r.ultimoCite ||
+        (
+            documentos.length
+                ? documentos[
+                    documentos.length - 1
+                  ].cite
+                : '—'
+        );
+
+
+    const filas =
+        documentos.length
+
+        ?
+
+        documentos
+            .map(
+                function(d,i){
+
+                    const anulado =
+                        isAnulado(
+                            d.status
+                        );
+
+
+                    const pdf =
+                        String(
+                            d.pdfUrl ||
+                            ''
+                        ).trim();
+
+
+                    const documentoLink =
+                        pdf
+
+                        ?
+
+                        `<a
+                            href="${esc(pdf)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="documento-pdf-link"
+                        >
+                            Ver PDF
+                        </a>`
+
+                        :
+
+                        `<span class="pdf-no-disponible">
+                            PDF no disponible
+                        </span>`;
+
+
+                    return `
+
+                        <tr class="${
+                            anulado
+                                ? 'documento-anulado'
+                                : ''
+                        }">
+
+                            <td>
+                                ${i+1}
+                            </td>
+
+                            <td>
+                                ${esc(
+                                    d.date || ''
+                                )}
+                            </td>
+
+                            <td>
+
+                                <strong>
+                                    ${esc(
+                                        d.cite || ''
+                                    )}
+                                </strong>
+
+                            </td>
+
+                            <td>
+                                ${esc(
+                                    d.recipient || ''
+                                )}
+                            </td>
+
+                            <td>
+                                ${esc(
+                                    d.subject || ''
+                                )}
+                            </td>
+
+                            <td>
+
+                                ${esc(
+                                    d.folioStart || ''
+                                )}
+
+                                -
+
+                                ${esc(
+                                    d.folioEnd || ''
+                                )}
+
+                            </td>
+
+                            <td>
+                                ${documentStatusBadge(
+                                    d.status
+                                )}
+                            </td>
+
+                            <td>
+                                ${documentoLink}
+                            </td>
+
+                        </tr>
+                    `;
+
+                }
+            )
+            .join('')
+
+        :
+
+        `
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="vacio">
+
+                        Este tomo no registra documentos.
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+    const contenido = `
+
+        <div class="qr-indice-card">
+
+            <div class="qr-resultado-icono">
+                ✓
+            </div>
+
+
+            <div class="qr-resultado-titulo">
+                QR RECONOCIDO
+            </div>
+
+
+            <div class="qr-resultado-subtitulo">
+                ÍNDICE DIGITAL DEL TOMO
+            </div>
+
+
+            <div class="qr-indice-identificacion">
+
+                <div>
+
+                    <span>
+                        TOMO
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.codigo || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        GESTIÓN
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.gestion || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        TIPO DOCUMENTAL
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.tipo || '—'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        UBICACIÓN
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            t.ubicacion || 'Sin ubicación'
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="qr-indice-resumen">
+
+                <div>
+
+                    <span>
+                        Documentos registrados
+                    </span>
+
+                    <strong>
+                        ${cantidad}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Primer Cite
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            primero
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Último Cite
+                    </span>
+
+                    <strong>
+                        ${esc(
+                            ultimo
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="separador-dorado"></div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Nº
+                            </th>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Cite
+                            </th>
+
+                            <th>
+                                Destinatario
+                            </th>
+
+                            <th>
+                                Asunto
+                            </th>
+
+                            <th>
+                                Folios
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Documento
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        ${filas}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="qr-indice-acciones">
+
+                <button
+                    type="button"
+                    onclick="volverAEscanearQR()"
+                >
+                    Volver a escanear
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    mostrarResultadoQR_(
+        contenido
+    );
+
+}
+
+/* ============================================================
+   MOSTRAR RESULTADO QR
+============================================================ */
+
+function mostrarResultadoQR_(
+    contenido
+){
+
+    const modal =
+        document.getElementById(
+            'scannerModal'
+        );
+
+
+    if(!modal){
+
+        return;
+
+    }
+
+
+    const contenedor =
+        modal.querySelector(
+            '.modal-contenido'
+        );
+
+
+    if(!contenedor){
+
+        return;
+
+    }
+
+
+    /*
+     * Sustituimos temporalmente el contenido
+     * del lector por el resultado.
+     */
+
+    contenedor.innerHTML = `
+
+        <div class="modal-cabecera">
+
+            <h2>
+                Consulta QR
+            </h2>
+
+            <button
+                class="alt"
+                type="button"
+                onclick="cerrarEscanerQR()"
+            >
+                Cerrar
+            </button>
+
+        </div>
+
+
+        <div class="scanner-resultado">
+
+            ${contenido}
+
+        </div>
+
+    `;
+
+
+    modal.classList.remove(
+        'hidden'
+    );
+
+}
+
+/* ============================================================
+   RECONSTRUIR ESCÁNER
+============================================================ */
+
+function reconstruirModalScanner_(){
+
+    const modal =
+        document.getElementById(
+            'scannerModal'
+        );
+
+
+    if(!modal){
+
+        return;
+
+    }
+
+
+    const contenido =
+        modal.querySelector(
+            '.modal-contenido'
+        );
+
+
+    if(!contenido){
+
+        return;
+
+    }
+
+
+    contenido.innerHTML = `
+
+        <div class="modal-cabecera">
+
+            <h2>
+                Escanear código QR
+            </h2>
+
+            <button
+                class="alt"
+                type="button"
+                onclick="cerrarEscanerQR()"
+            >
+                Cerrar
+            </button>
+
+        </div>
+
+
+        <div class="scanner-instrucciones">
+
+            <span class="etiqueta-institucional">
+                CONSULTA DESDE EL SISTEMA
+            </span>
+
+            <h3>
+                Escanee el QR del Tomo
+            </h3>
+
+            <p>
+                Apunte la cámara hacia el código QR
+                correspondiente al Lomo o al Índice Digital.
+            </p>
+
+        </div>
+
+
+        <div id="qr-reader"
+             class="qr-reader">
+        </div>
+
+
+        <div id="scannerMsg"
+             class="mensaje hidden">
+        </div>
+
+
+        <div class="scanner-pie">
+
+            <button
+                type="button"
+                class="alt"
+                onclick="detenerEscanerQR()"
+            >
+                Detener cámara
+            </button>
+
+        </div>
+
+    `;
+
+}
 
 /* ======================================================
    INICIALIZACIÓN
@@ -5301,20 +8135,34 @@ function closeQR(event){
 
         let qToken=
             q.get('token');
-
+        
         if(
-            action==='indicePublico' &&
-            qToken
+            qToken &&
+            (
+                action === 'indicePublico' ||
+                action === 'ubicacionPublica'
+            )
         ){
-
-            await publicView(
-                qToken
-            );
-
+        
+            if(
+                action === 'indicePublico'
+            ){
+        
+                await publicView(
+                    qToken
+                );
+        
+            }else{
+        
+                await publicLocationView(
+                    qToken
+                );
+        
+            }
+        
             return;
-
+        
         }
-
         try{
 
             await api('ping');
