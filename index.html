@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbzKxySXCpiJPkbFiNFCWkMnmZ0BZZK7Ws2vLt21kNckKjYga1eAWcsgY74I8nZjmr5j/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbyD4jjAA34Iq4Dd2mALR-ik68UiDWXdy3_R2oiFN6ewOxl3i0x4e-Zr1k9Brw9N5R7H/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -5889,18 +5889,12 @@ function renderPublicLocation(r){
             ''
         ).trim();
 
-
     const ubicacion =
-        [
-            estante,
-            balda,
-            posicion
-        ]
-        .filter(Boolean)
-        .join(' / ') ||
-        'Sin ubicación';
-
-
+        String(
+            t.ubicacion ||
+            'Sin ubicación'
+        ).trim();
+    
     publico.innerHTML =
 
     `<div class="publico-header">
@@ -8125,53 +8119,70 @@ function reconstruirModalScanner_(){
 
     try{
 
-        let q=
+        const q =
             new URLSearchParams(
                 location.search
             );
 
-        let action=
+        const action =
             q.get('action');
 
-        let qToken=
+        const qToken =
             q.get('token');
-        
+
+
+        /* ==================================================
+           VISTAS PÚBLICAS POR QR
+        ================================================== */
+
         if(
             qToken &&
-            (
-                action === 'indicePublico' ||
-                action === 'ubicacionPublica'
-            )
+            action === 'indicePublico'
         ){
-        
-            if(
-                action === 'indicePublico'
-            ){
-        
-                await publicView(
-                    qToken
-                );
-        
-            }else{
-        
-                await publicLocationView(
-                    qToken
-                );
-        
-            }
-        
+
+            await publicView(
+                qToken
+            );
+
             return;
-        
         }
+
+
+        if(
+            qToken &&
+            action === 'ubicacionPublica'
+        ){
+
+            await publicLocationView(
+                qToken
+            );
+
+            return;
+        }
+
+
+        /* ==================================================
+           CONEXIÓN CON EL BACKEND
+        ================================================== */
+
         try{
 
-            await api('ping');
+            await api(
+                'ping'
+            );
 
         }catch(e){
 
-            setConnection(false);
+            setConnection(
+                false
+            );
 
         }
+
+
+        /* ==================================================
+           RECUPERAR SESIÓN
+        ================================================== */
 
         if(token){
 
@@ -8186,11 +8197,12 @@ function reconstruirModalScanner_(){
                     e.message
                 );
 
+
                 sessionStorage.removeItem(
                     'sgd_token'
                 );
 
-                token='';
+                token = '';
 
             }
 
@@ -8198,7 +8210,10 @@ function reconstruirModalScanner_(){
 
     }catch(e){
 
-        console.error(e);
+        console.error(
+            'Error durante la inicialización:',
+            e
+        );
 
     }
 
