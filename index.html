@@ -4737,31 +4737,18 @@ async function index(code){
 
             </div>`;
         
-            const indexContainer = document.getElementById('idx');
+            const indexContainer = document.getElementById('panel');
             
             if (!indexContainer) {
-                throw new Error('No se encuentra el contenedor id="idx".');
+                throw new Error(
+                    'No se encontró el contenedor principal id="panel".'
+                );
             }
             
             indexContainer.innerHTML = html;
             
-            console.log('PASO 1: índice insertado correctamente.');
-            
-            try {
-                generateQR('indexQrTomo', tomeUrl);
-                console.log('PASO 2: QR del tomo generado.');
-            } catch (e) {
-                console.error('ERROR al generar QR del tomo:', e);
-                throw e;
-            }
-            
-            try {
-                generateQR('indexQrRepository', repositoryUrl);
-                console.log('PASO 3: QR del repositorio generado.');
-            } catch (e) {
-                console.error('ERROR al generar QR del repositorio:', e);
-                throw e;
-            } 
+            generateQR('indexQrTomo', tomeUrl);
+            generateQR('indexQrRepository', repositoryUrl); 
                     
     }catch(e){
 
