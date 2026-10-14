@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbzjtxKxzUCIWf7sopbG7sj8VgMuDoDJEdb84I9u3YU/dev';
+const API_URL='https://script.google.com/macros/s/AKfycbwYVqToIwN6_G5JVK5afcejgxEnoGAaxWOKMas7ev3sYU-YAzmT4GNiO_QyDwme1B4N/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -4491,10 +4491,18 @@ async function index(code){
                         </strong>
                     </div>
 
+
                     <div class="campo">
                         <span>Tipo documental</span>
                         <strong>
                             ${esc(t.tipo)}
+                            - 
+                            ${esc(
+                                (data.types || []).find(
+                                    x => String(x.Codigo).trim() ===
+                                         String(t.tipo || '').trim()
+                                )?.Tipo || ''
+                            )}
                         </strong>
                     </div>
 
@@ -4842,11 +4850,6 @@ function printPhysicalIndex(code){
             x=>x.codigo===code
         );
 
-    <div class="campo">
-    <span>Valor de t.tipo</span>
-    <strong>${esc(t.tipo)}</strong>
-</div>
-    
     if(!t){
 
         alert(
