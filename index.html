@@ -8218,20 +8218,19 @@ function reconstruirModalScanner_(){
            CONEXIÓN CON EL BACKEND
         ================================================== */
 
-        try{
-
-            await api(
-                'ping'
-            );
-
-        }catch(e){
-
-            setConnection(
-                false
-            );
-
+        try {
+        
+            await api('ping');
+        
+            setConnection(true);
+        
+        } catch (e) {
+        
+            console.error('Error de conexión:', e);
+        
+            setConnection(false);
+        
         }
-
 
         /* ==================================================
            RECUPERAR SESIÓN
