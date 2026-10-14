@@ -4736,21 +4736,33 @@ async function index(code){
                 </div>
 
             </div>`;
-
-        document.getElementById(
-            'idx'
-        ).innerHTML=html;
-
-        generateQR(
-            'indexQrTomo',
-            tomeUrl
-        );
-
-        generateQR(
-            'indexQrRepository',
-            repositoryUrl
-        );
-
+        
+            const indexContainer = document.getElementById('idx');
+            
+            if (!indexContainer) {
+                throw new Error('No se encuentra el contenedor id="idx".');
+            }
+            
+            indexContainer.innerHTML = html;
+            
+            console.log('PASO 1: índice insertado correctamente.');
+            
+            try {
+                generateQR('indexQrTomo', tomeUrl);
+                console.log('PASO 2: QR del tomo generado.');
+            } catch (e) {
+                console.error('ERROR al generar QR del tomo:', e);
+                throw e;
+            }
+            
+            try {
+                generateQR('indexQrRepository', repositoryUrl);
+                console.log('PASO 3: QR del repositorio generado.');
+            } catch (e) {
+                console.error('ERROR al generar QR del repositorio:', e);
+                throw e;
+            } 
+                    
     }catch(e){
 
         alert(e.message);
@@ -4876,7 +4888,6 @@ function printPhysicalIndex(code){
         );
 
         return;
-
     }
 
     let qrTomo=
