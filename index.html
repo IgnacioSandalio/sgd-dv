@@ -4737,19 +4737,10 @@ async function index(code){
 
             </div>`;
         
-            const indexContainer = document.getElementById('panel');
-            
-            if (!indexContainer) {
-                throw new Error(
-                    'No se encontró el contenedor principal id="panel".'
-                );
-            }
-            
-            indexContainer.innerHTML = html;
-            
-            generateQR('indexQrTomo', tomeUrl);
-            generateQR('indexQrRepository', repositoryUrl); 
-                    
+        document.getElementById('panel').innerHTML = html;
+        
+        generateQR('indexQrTomo', tomeUrl);
+        generateQR('indexQrRepository', repositoryUrl);                    
     }catch(e){
 
         alert(e.message);
