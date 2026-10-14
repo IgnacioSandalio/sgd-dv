@@ -7055,94 +7055,56 @@ async function procesarQRInterno_(
 /**
  * Analiza la URL obtenida del QR.
  */
-function analizarQR_(
-    texto
-){
+function analizarQR_(texto) {
 
-    const raw =
-        String(
-            texto ||
-            ''
-        ).trim();
+  const raw = String(texto || '').trim();
 
+  if (!raw) {
+    throw Error('El código QR está vacío.');
+  }
 
-    if(!raw){
+  let url;
 
-        throw Error(
-            'El código QR está vacío.'
-        );
+  try {
+    url = new URL(raw);
+  } catch (e) {
+    throw Error(
+      'El QR no contiene una dirección válida del SGD-DV.'
+    );
+  }
 
-    }
+  const action = (
+    url.searchParams.get('action') || ''
+  ).trim();
 
+  const qrToken = (
+    url.searchParams.get('token') || ''
+  ).trim();
 
-    let url;
+  const accionesPermitidas = [
+    'ubicacionPublica',
+    'indicePublico'
+  ];
 
+  if (!accionesPermitidas.includes(action)) {
+    throw Error(
+      'El QR no contiene una acción válida.'
+    );
+  }
 
-    try{
+  if (!qrToken) {
+    throw Error(
+      'El QR no contiene un token válido.'
+    );
+  }
 
-        url =
-            new URL(
-                raw
-            );
-
-    }catch(e){
-
-        throw Error(
-            'El QR no contiene una dirección válida del SGD-DV.'
-        );
-
-    }
-
-
-    const action =
-        url.searchParams.get(
-            'action'
-        );
-
-
-    const qrToken =
-        url.searchParams.get(
-            'token'
-        );
-
-
-    if(!action){
-
-        throw Error(
-            'El QR no contiene una acción válida.'
-        );
-
-    }
-
-
-    if(!qrToken){
-
-        throw Error(
-            'El QR no contiene un token válido.'
-        );
-
-    }
-
-
-    return {
-
-        action:
-            action,
-
-        token:
-            qrToken,
-
-        url:
-            raw
-
-    };
-
+  return {
+    action: action,
+    token: qrToken,
+    url: raw
+  };
 }
-
-
-/**
- * Muestra un mensaje dentro del lector.
- */
+    
 function mostrarMensajeScanner_(
     mensaje,
     error
