@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbyD4jjAA34Iq4Dd2mALR-ik68UiDWXdy3_R2oiFN6ewOxl3i0x4e-Zr1k9Brw9N5R7H/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbzjtxKxzUCIWf7sopbG7sj8VgMuDoDJEdb84I9u3YU/dev';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -2819,38 +2819,36 @@ function documentStatusBadge(status){
 /*
  * QR permanente del tomo.
  */
-function tomePublicUrl(t){
+
+/* ============================================================
+   QR1 — IDENTIFICACIÓN Y UBICACIÓN DEL TOMO
+============================================================ */
+
+function tomePublicUrl(t) {
+
+    const token =
+        t.tokenPublico || '';
 
     return 'https://ignaciosandalio.github.io/sgd-dv/' +
-        '?action=indicePublico' +
+        '?action=ubicacionPublica' +
         '&token=' +
-        encodeURIComponent(t.token);
-
+        encodeURIComponent(token);
 }
 
-/*
- * Segundo QR.
- *
- * El backend deberá exponer:
- *
- * ?action=repositorioPublico&token=TOKEN
- */
-function repositoryPublicUrl(t){
+/* ============================================================
+   QR2 — ÍNDICE DIGITAL DEL TOMO
+============================================================ */
+function repositoryPublicUrl(t) {
 
-    if(t.repositorioUrl){
+    const token =
+        t.tokenIndice || '';
 
-        return String(t.repositorioUrl);
-
-    }
-
-    return API_URL+
-        '?action='+
-        encodeURIComponent(REPOSITORY_ACTION)+
-        '&token='+
-        encodeURIComponent(t.token);
-
+    return 'https://ignaciosandalio.github.io/sgd-dv/' +
+        '?action=repositorioPublico' +
+        '&token=' +
+        encodeURIComponent(token);
 }
-
+    
 function escAttr(value){
 
     return String(
@@ -4843,7 +4841,10 @@ function printPhysicalIndex(code){
         data.tomos.find(
             x=>x.codigo===code
         );
-
+console.log('Objeto completo del tomo:', t);
+console.log('Contenido de t.tipo:', t.tipo);
+console.log('Tipo de dato:', typeof t.tipo);
+    
     if(!t){
 
         alert(
@@ -5752,6 +5753,51 @@ async function publicView(qToken){
 
 }
 
+async function publicRepositoryView(qToken) {
+
+    try {
+
+        const r = await api(
+            'repositorioPublico',
+            { token: qToken }
+        );
+
+        if (manejarAccesoRestringido_(r)) {
+            return;
+        }
+
+        document
+            .getElementById('login')
+            .classList.add('hidden');
+
+        document
+            .getElementById('public')
+            .classList.remove('hidden');
+
+        renderPublicIndex(r);
+
+    } catch (e) {
+
+        document
+            .getElementById('login')
+            .classList.add('hidden');
+
+        document
+            .getElementById('public')
+            .classList.remove('hidden');
+
+        document.getElementById('public').innerHTML =
+            `<div class="tarjeta">
+                <div class="mensaje error">
+                    ${esc(
+                        e.message ||
+                        'No se pudo consultar el repositorio digital.'
+                    )}
+                </div>
+            </div>`;
+    }
+}
+    
 /* ======================================================
    VISTA PÚBLICA DEL LOMO / UBICACIÓN
 ====================================================== */
@@ -8149,6 +8195,19 @@ function reconstruirModalScanner_(){
             return;
         }
 
+        /* ==================================================
+           RESPOSITORIO PUBLICO
+        ================================================== */
+
+        if (
+            qToken &&
+            action === 'repositorioPublico'
+        ) {
+        
+            await publicRepositoryView(qToken);
+        
+            return;
+        }
 
         /* ==================================================
            CONEXIÓN CON EL BACKEND
