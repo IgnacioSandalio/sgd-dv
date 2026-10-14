@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbwYVqToIwN6_G5JVK5afcejgxEnoGAaxWOKMas7ev3sYU-YAzmT4GNiO_QyDwme1B4N/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbxgsIUF8zdX9SbZ6lZ6_m1fLQK2Lq7Kiuf5vcQZilOJs1IMOETN_5IXoWNSEwWAVB00/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -8218,19 +8218,24 @@ function reconstruirModalScanner_(){
            CONEXIÓN CON EL BACKEND
         ================================================== */
 
-        try {
-        
-            await api('ping');
-        
-            setConnection(true);
-        
-        } catch (e) {
-        
-            console.error('Error de conexión:', e);
-        
-            setConnection(false);
-        
-        }
+try {
+    const r = await api('ping');
+
+    console.log('RESPUESTA PING:', r);
+
+    if (!r || r.ok !== true) {
+        throw new Error(
+            'El backend respondió, pero el ping no fue válido.'
+        );
+    }
+
+    setConnection(true);
+
+} catch (e) {
+    console.error('ERROR DE CONEXIÓN SGD-DV:', e);
+
+    setConnection(false);
+}
 
         /* ==================================================
            RECUPERAR SESIÓN
