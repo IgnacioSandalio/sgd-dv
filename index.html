@@ -2173,45 +2173,44 @@ footer{
 
     </section>
 
-    <!-- ESCANER QR -->
 
-    <div id="scannerModal"
-     class="modal hidden"
-     onclick="cerrarScannerQR_(event)">
+<!-- ESCÁNER QR -->
 
-    <div class="modal-contenido"
-         onclick="event.stopPropagation()">
+<div
+    id="scannerModal"
+    class="modal hidden"
+    onclick="cerrarEscanerQR(event)">
+
+    <div
+        class="modal-contenido"
+        onclick="event.stopPropagation()">
 
         <div class="modal-cabecera">
 
-            <h2>
-                Escanear código QR
-            </h2>
+            <h2>Escanear código QR</h2>
 
             <button
                 class="alt"
-                onclick="cerrarScannerQR_()">
+                type="button"
+                onclick="cerrarEscanerQR()">
                 Cerrar
             </button>
 
         </div>
 
         <div id="qrScanner">
-
             <!-- Aquí aparecerá la cámara -->
-
         </div>
 
         <div
             id="scannerMensaje"
-            class="mensaje"
+            class="mensaje hidden"
             style="display:none;">
         </div>
 
     </div>
 
 </div>
-
 
     <!-- APP -->
 
@@ -6909,211 +6908,141 @@ async function abrirEscanerQR(){
 /**
  * Procesa el contenido leído por la cámara.
  *
- * QR1: ubicacionPublica
- * QR índice: indicePublico
- * QR2: repositorioPublico
+ * QR1: ubicación del tomo.
+ * QR de índice: índice digital.
+ * QR2: repositorio digital.
  */
 async function procesarQRInterno_(decodedText) {
 
-  /*
-   * Evitar múltiples lecturas
-   * del mismo QR.
-   */
-  if (!qrScannerActivo) {
-    return;
-  }
-
-  qrScannerActivo = false;
-
-
-  /*
-   * Detener la cámara antes de
-   * consultar el backend.
-   */
-  try {
-
-    if (qrScanner) {
-      await qrScanner.stop();
+    if (!qrScannerActivo) {
+        return;
     }
-
-  } catch (e) {
-
-    console.warn(
-      'No se pudo detener inmediatamente el lector:',
-      e
-    );
-
-  }
-
-
-  /*
-   * Analizar la URL del QR.
-   */
-  let info;
-
-  try {
-
-    info = analizarQR_(decodedText);
-
-  } catch (e) {
-
-    mostrarMensajeScanner_(
-      e.message ||
-      'El código QR no es válido.',
-      true
-    );
-
-    return;
-
-  }
-
-
-  /*
-   * Consultar el backend.
-   */
-  try {
-
-    mostrarMensajeScanner_(
-      'Consultando información...',
-      false
-    );
-
-
-    /*
-     * Parámetros comunes para
-     * las tres acciones.
-     */
-    const parametros = {
-      token: info.token,
-      sessionToken: token
-    };
-
-
-    let r;
-
-
-    /*
-     * Procesar la acción identificada
-     * en el código QR.
-     */
-    switch (info.action) {
-
-
-      /*
-       * QR1:
-       * Ubicación física del tomo.
-       */
-      case 'ubicacionPublica':
-
-        r = await api(
-          'ubicacionPublica',
-          parametros
-        );
-
-        if (
-          manejarAccesoRestringido_(r)
-        ) {
-
-          await cerrarEscanerQR();
-          return;
-
-        }
-
-        renderResultadoQRUbicacion_(r);
-
-        break;
-
-
-      /*
-       * Índice digital:
-       * Lista de documentos del tomo.
-       */
-      case 'indicePublico':
-
-        r = await api(
-          'indicePublico',
-          parametros
-        );
-
-        if (
-          manejarAccesoRestringido_(r)
-        ) {
-
-          await cerrarEscanerQR();
-          return;
-
-        }
-
-        renderResultadoQRIndice_(r);
-
-        break;
-
-
-      /*
-       * QR2:
-       * Repositorio digital del tomo.
-       *
-       * Reutiliza la vista del índice,
-       * que contiene la tabla documental
-       * y los enlaces a los PDF.
-       */
-      case 'repositorioPublico':
-
-        r = await api(
-          'repositorioPublico',
-          parametros
-        );
-
-        if (
-          manejarAccesoRestringido_(r)
-        ) {
-
-          await cerrarEscanerQR();
-          return;
-
-        }
-
-        renderResultadoQRIndice_(r);
-
-        break;
-
-
-      /*
-       * Acción desconocida.
-       */
-      default:
-
-        throw Error(
-          'El código QR no corresponde a una acción válida del SGD-DV.'
-        );
-
-    }
-
-
-    /*
-     * Cerrar el escáner después
-     * de procesar correctamente.
-     */
-    await cerrarEscanerQR();
-
-
-  } catch (e) {
-
-    console.error(
-      'Error consultando QR:',
-      e
-    );
-
-    mostrarMensajeScanner_(
-      e.message ||
-      'No fue posible consultar la información del QR.',
-      true
-    );
 
     qrScannerActivo = false;
 
-  }
+    // Detener la cámara antes de consultar el servidor.
+    try {
+        if (qrScanner) {
+            await qrScanner.stop();
+        }
+    } catch (e) {
+        console.warn(
+            'No se pudo detener el lector QR:',
+            e
+        );
+    }
 
+    let info;
+
+    try {
+        info = analizarQR_(decodedText);
+    } catch (e) {
+        mostrarMensajeScanner_(
+            e.message || 'El código QR no es válido.',
+            true
+        );
+
+        // El lector se detuvo; no fingir que sigue activo.
+        return;
+    }
+
+    try {
+
+        mostrarMensajeScanner_(
+            'Consultando información...',
+            false
+        );
+
+        const parametros = {
+            token: info.token,
+            sessionToken: token
+        };
+
+        let r;
+
+        switch (info.action) {
+
+            case 'ubicacionPublica':
+
+                r = await api(
+                    'ubicacionPublica',
+                    parametros
+                );
+
+                if (manejarAccesoRestringido_(r)) {
+                    await cerrarEscanerQR();
+                    return;
+                }
+
+                renderResultadoQRUbicacion_(r);
+                break;
+
+            case 'indicePublico':
+
+                r = await api(
+                    'indicePublico',
+                    parametros
+                );
+
+                if (manejarAccesoRestringido_(r)) {
+                    await cerrarEscanerQR();
+                    return;
+                }
+
+                renderResultadoQRIndice_(r);
+                break;
+
+            case 'repositorioPublico':
+
+                r = await api(
+                    'repositorioPublico',
+                    parametros
+                );
+
+                if (manejarAccesoRestringido_(r)) {
+                    await cerrarEscanerQR();
+                    return;
+                }
+
+                // El repositorio reutiliza la tabla del índice.
+                renderResultadoQRIndice_(
+                    Object.assign({}, r, {
+                        modo: 'repositorio'
+                    })
+                );
+                break;
+
+            default:
+
+                throw Error(
+                    'El código QR no corresponde a una acción válida del SGD-DV.'
+                );
+        }
+
+        /*
+         * No cerrar el modal aquí.
+         * El resultado QR debe permanecer visible.
+         *
+         * renderResultadoQRIndice_() y
+         * renderResultadoQRUbicacion_() muestran el resultado
+         * dentro de scannerModal.
+         */
+
+    } catch (e) {
+
+        console.error(
+            'Error consultando QR:',
+            e
+        );
+
+        mostrarMensajeScanner_(
+            e.message ||
+            'No fue posible consultar la información del QR.',
+            true
+        );
+
+        qrScannerActivo = false;
+    }
 }
     
 /**
@@ -7121,114 +7050,95 @@ async function procesarQRInterno_(decodedText) {
  */
 function analizarQR_(texto) {
 
-  const raw = String(texto || '').trim();
+    const raw = String(texto || '').trim();
 
-  if (!raw) {
-    throw Error('El código QR está vacío.');
-  }
+    if (!raw) {
+        throw Error('El código QR está vacío.');
+    }
 
-  let url;
+    let url;
 
-  try {
-    url = new URL(raw);
-  } catch (e) {
-    throw Error(
-      'El QR no contiene una dirección válida del SGD-DV.'
-    );
-  }
+    try {
+        url = new URL(raw);
+    } catch (e) {
+        throw Error(
+            'El QR no contiene una dirección válida del SGD-DV.'
+        );
+    }
 
-  const action = (
-    url.searchParams.get('action') || ''
-  ).trim();
+    const action = String(
+        url.searchParams.get('action') || ''
+    ).trim();
 
-  const qrToken = (
-    url.searchParams.get('token') || ''
-  ).trim();
+    const qrToken = String(
+        url.searchParams.get('token') || ''
+    ).trim();
 
     const accionesPermitidas = [
         'ubicacionPublica',
         'indicePublico',
         'repositorioPublico'
     ];
-  
-if (!accionesPermitidas.includes(action)) {
-    throw Error(
-      'El QR no contiene una acción válida.'
-    );
-  }
 
-  if (!qrToken) {
-    throw Error(
-      'El QR no contiene un token válido.'
-    );
-  }
+    if (!accionesPermitidas.includes(action)) {
+        throw Error(
+            'El QR no contiene una acción válida.'
+        );
+    }
 
-  return {
-    action: action,
-    token: qrToken,
-    url: raw
-  };
+    if (!qrToken) {
+        throw Error(
+            'El QR no contiene un token válido.'
+        );
+    }
+
+    return {
+        action: action,
+        token: qrToken,
+        url: raw
+    };
 }
     
-function mostrarMensajeScanner_(
-    mensaje,
-    error
-){
+/* ============================================================
+   MENSAJES DEL ESCÁNER QR
+============================================================ */
 
+function mostrarMensajeScanner_(mensaje, error) {
+
+    /*
+     * Compatibilidad con los dos identificadores.
+     */
     const el =
-        document.getElementById(
-            'scannerMsg'
+        document.getElementById('scannerMensaje') ||
+        document.getElementById('scannerMsg');
+
+    if (!el) {
+        console.warn(
+            'No se encontró el elemento del mensaje QR.'
         );
+        return;
+    }
 
+    if (!mensaje) {
 
-    if(!el){
+        el.textContent = '';
+        el.classList.add('hidden');
+        el.classList.remove('error');
+        el.style.display = 'none';
 
         return;
-
     }
 
+    el.textContent = mensaje;
 
-    if(!mensaje){
+    el.classList.remove('hidden');
+    el.style.display = '';
 
-        el.textContent =
-            '';
-
-        el.classList.add(
-            'hidden'
-        );
-
-        el.classList.remove(
-            'error'
-        );
-
-        return;
-
+    if (error) {
+        el.classList.add('error');
+    } else {
+        el.classList.remove('error');
     }
-
-
-    el.textContent =
-        mensaje;
-
-
-    el.classList.remove(
-        'hidden'
-    );
-
-
-    if(error){
-
-        el.classList.add(
-            'error'
-        );
-
-    }else{
-
-        el.classList.remove(
-            'error'
-        );
-
-    }
-
 }
 
 
@@ -7281,57 +7191,46 @@ async function detenerEscanerQR(){
 }
 
 
-/**
- * Cierra el modal del escáner.
- */
-async function cerrarEscanerQR(
-    event
-){
+/* ============================================================
+   CERRAR MODAL DEL ESCÁNER QR
+============================================================ */
 
-    /*
-     * Si se hizo clic en el fondo,
-     * cerrar.
-     *
-     * Si se hizo clic dentro del contenido,
-     * no cerrar.
-     */
-    if(
-        event &&
-        event.target !==
-        document.getElementById(
-            'scannerModal'
-        )
-    ){
+async function cerrarEscanerQR(event) {
 
+    const modal = document.getElementById(
+        'scannerModal'
+    );
+
+    if (!modal) {
         return;
-
     }
 
+    /*
+     * Si se hizo clic en el fondo, cerrar.
+     * Si se hizo clic dentro del modal, no cerrar.
+     */
+    if (
+        event &&
+        event.target !== modal
+    ) {
+        return;
+    }
 
     await detenerEscanerQR();
 
+    modal.classList.add('hidden');
 
-    const modal =
-        document.getElementById(
-            'scannerModal'
-        );
-
-
-    if(modal){
-
-        modal.classList.add(
-            'hidden'
-        );
-
-    }
-
-
-    mostrarMensajeScanner_(
-        '',
-        false
-    );
-
+    mostrarMensajeScanner_('', false);
 }
+
+
+/*
+ * Compatibilidad con el nombre usado en el HTML.
+ */
+async function cerrarScannerQR_(event) {
+    return cerrarEscanerQR(event);
+}
+
 
 
 /**
@@ -8014,75 +7913,56 @@ function renderResultadoQRIndice_(
    MOSTRAR RESULTADO QR
 ============================================================ */
 
-function mostrarResultadoQR_(
-    contenido
-){
+function mostrarResultadoQR_(contenido) {
 
-    const modal =
-        document.getElementById(
-            'scannerModal'
+    const modal = document.getElementById(
+        'scannerModal'
+    );
+
+    if (!modal) {
+        throw Error(
+            'No se encontró la ventana del lector QR.'
         );
-
-
-    if(!modal){
-
-        return;
-
     }
 
+    const contenedor = modal.querySelector(
+        '.modal-contenido'
+    );
 
-    const contenedor =
-        modal.querySelector(
-            '.modal-contenido'
+    if (!contenedor) {
+        throw Error(
+            'No se encontró el contenedor del resultado QR.'
         );
-
-
-    if(!contenedor){
-
-        return;
-
     }
-
 
     /*
-     * Sustituimos temporalmente el contenido
-     * del lector por el resultado.
+     * El modal se reutiliza para mostrar el resultado.
+     * No se destruye ni se reemplaza el elemento modal.
      */
-
     contenedor.innerHTML = `
-
         <div class="modal-cabecera">
-
-            <h2>
-                Consulta QR
-            </h2>
+            <h2>Consulta QR</h2>
 
             <button
                 class="alt"
                 type="button"
-                onclick="cerrarEscanerQR()"
-            >
+                onclick="cerrarEscanerQR()">
                 Cerrar
             </button>
-
         </div>
-
 
         <div class="scanner-resultado">
-
             ${contenido}
-
         </div>
-
     `;
 
+    modal.classList.remove('hidden');
 
-    modal.classList.remove(
-        'hidden'
+    console.log(
+        'Resultado QR renderizado correctamente.'
     );
-
 }
-
+    
 /* ============================================================
    RECONSTRUIR ESCÁNER
 ============================================================ */
