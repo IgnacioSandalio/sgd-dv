@@ -3379,7 +3379,14 @@ function renderTomes(tomos){
                                 .map(t=>
                                     `<option value="${esc(t.Codigo)}">
                                         ${esc(t.Codigo)}
-                                        ${esc(t.Tipo)}
+                                            ${esc(t.tipo)}
+                                            - 
+                                            ${esc(
+                                                (data.types || []).find(
+                                                x => String(x.Codigo).trim() ===
+                                                String(t.tipo || '').trim()
+                                                )?.Tipo || ''
+                                            )}
                                     </option>`
                                 ).join('')}
 
@@ -3527,8 +3534,16 @@ function renderTomeTable(tomos){
                         </strong>
                     </td>
 
+
                     <td>
                         ${esc(t.tipo)}
+                        - 
+                        ${esc(
+                            (data.types || []).find(
+                            x => String(x.Codigo).trim() ===
+                            String(t.tipo || '').trim()
+                            )?.Tipo || ''
+                        )}
                     </td>
 
                     <td>
@@ -3760,12 +3775,19 @@ function showTome(code){
                     </strong>
                 </div>
 
-                <div class="campo">
-                    <span>Tipo documental</span>
-                    <strong>
-                        ${esc(t.tipo)}
-                    </strong>
-                </div>
+                    <div class="campo">
+                        <span>Tipo documental</span>
+                        <strong>
+                            ${esc(t.tipo)}
+                            - 
+                            ${esc(
+                                (data.types || []).find(
+                                    x => String(x.Codigo).trim() ===
+                                         String(t.tipo || '').trim()
+                                )?.Tipo || ''
+                            )}
+                        </strong>
+                    </div>
 
                 <div class="campo">
                     <span>Número</span>
@@ -5255,6 +5277,13 @@ tr.documento-anulado td{
 
         <span class="info-value">
             ${esc(t.tipo)}
+            - 
+            ${esc(
+                (data.types || []).find(
+                x => String(x.Codigo).trim() ===
+                String(t.tipo || '').trim()
+                )?.Tipo || ''
+            )}
         </span>
 
     </div>
