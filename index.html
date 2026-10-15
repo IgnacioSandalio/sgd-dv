@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbyvgAHc0xEH2mJ762jAM-zrCJjYqjSaUWPIpmdw6AgeyTnG714HioCSA46Y063rjkeO/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbyLaftIqoArFsI_bTuhgxO65ryX_iQWJKgeKabhQZMDIPQx3VagRxelbthL64uAcV5p/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -2826,26 +2826,44 @@ function documentStatusBadge(status){
 
 function tomePublicUrl(t) {
 
+    if (!t) {
+        throw Error(
+            'No se recibieron los datos del tomo.'
+        );
+    }
+
     const tokenPublico =
         String(t.token || '').trim();
 
     if (!tokenPublico) {
         throw Error(
             'El tomo no contiene un token público. ' +
-            'Verifica Token_Publico en la hoja TOMOS.'
+            'Verifica que el backend entregue Token_Publico ' +
+            'en la propiedad token.'
         );
     }
 
-    return 'https://ignaciosandalio.github.io/sgd-dv/' +
+    const base =
+        'https://ignaciosandalio.github.io/sgd-dv/';
+
+    return base +
         '?action=ubicacionPublica' +
         '&token=' +
         encodeURIComponent(tokenPublico);
 }
-    
+
+
 /* ============================================================
-   QR2 — ÍNDICE DIGITAL DEL TOMO
+   QR2 — REPOSITORIO DIGITAL DEL TOMO
 ============================================================ */
+
 function repositoryPublicUrl(t) {
+
+    if (!t) {
+        throw Error(
+            'No se recibieron los datos del tomo.'
+        );
+    }
 
     const tokenIndice =
         String(t.tokenIndice || '').trim();
@@ -2853,16 +2871,19 @@ function repositoryPublicUrl(t) {
     if (!tokenIndice) {
         throw Error(
             'El tomo no contiene un token de índice. ' +
-            'Verifica Token_Indice en la hoja TOMOS.'
+            'Verifica que el backend entregue Token_Indice ' +
+            'en la propiedad tokenIndice.'
         );
     }
 
-    return 'https://ignaciosandalio.github.io/sgd-dv/' +
+    const base =
+        'https://ignaciosandalio.github.io/sgd-dv/';
+
+    return base +
         '?action=repositorioPublico' +
         '&token=' +
         encodeURIComponent(tokenIndice);
-}
-    
+}    
 function escAttr(value){
 
     return String(
