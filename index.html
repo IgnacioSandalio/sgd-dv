@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbzWe5D_zUQb0yodo3ah4FSq1qn4lu_1A7-sKh88zw2XYfPlsa0T5pFhbDzfKii_7aPe/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbyvgAHc0xEH2mJ762jAM-zrCJjYqjSaUWPIpmdw6AgeyTnG714HioCSA46Y063rjkeO/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -2826,19 +2826,20 @@ function documentStatusBadge(status){
 
 function tomePublicUrl(t) {
 
-    const token =
+    const tokenPublico =
         String(t.token || '').trim();
 
-    if (!token) {
+    if (!tokenPublico) {
         throw Error(
-            'El tomo no contiene un token público.'
+            'El tomo no contiene un token público. ' +
+            'Verifica Token_Publico en la hoja TOMOS.'
         );
     }
 
     return 'https://ignaciosandalio.github.io/sgd-dv/' +
         '?action=ubicacionPublica' +
         '&token=' +
-        encodeURIComponent(token);
+        encodeURIComponent(tokenPublico);
 }
     
 /* ============================================================
@@ -2846,13 +2847,20 @@ function tomePublicUrl(t) {
 ============================================================ */
 function repositoryPublicUrl(t) {
 
-    const token =
-        t.tokenIndice || '';
+    const tokenIndice =
+        String(t.tokenIndice || '').trim();
+
+    if (!tokenIndice) {
+        throw Error(
+            'El tomo no contiene un token de índice. ' +
+            'Verifica Token_Indice en la hoja TOMOS.'
+        );
+    }
 
     return 'https://ignaciosandalio.github.io/sgd-dv/' +
         '?action=repositorioPublico' +
         '&token=' +
-        encodeURIComponent(token);
+        encodeURIComponent(tokenIndice);
 }
     
 function escAttr(value){
@@ -3684,6 +3692,12 @@ function showTome(code){
     let repositoryUrl=
         repositoryPublicUrl(t);
 
+        console.log('Tomo:', t.codigo);
+        console.log('Token público:', t.token);
+        console.log('Token índice:', t.tokenIndice);
+        console.log('URL QR1:', url);
+        console.log('URL QR2:', repositoryUrl);
+    
     document.getElementById('panel').innerHTML=
 
         `<div class="tarjeta">
