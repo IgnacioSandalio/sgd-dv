@@ -2583,7 +2583,7 @@ function manejarAccesoRestringido_(result) {
    CONFIGURACIÓN
 ====================================================== */
 
-const API_URL='https://script.google.com/macros/s/AKfycbxE-Uq4FpMjQT_uZIF_GG5Amg1HiugckVdA_E9GJmfJC2A9v50SjjwJ_-PZtovQ7Xhx/exec';
+const API_URL='https://script.google.com/macros/s/AKfycbzWe5D_zUQb0yodo3ah4FSq1qn4lu_1A7-sKh88zw2XYfPlsa0T5pFhbDzfKii_7aPe/exec';
 
 /*
  * Acción pública que deberá implementar el Apps Script
@@ -2827,14 +2827,20 @@ function documentStatusBadge(status){
 function tomePublicUrl(t) {
 
     const token =
-        t.tokenPublico || '';
+        String(t.token || '').trim();
+
+    if (!token) {
+        throw Error(
+            'El tomo no contiene un token público.'
+        );
+    }
 
     return 'https://ignaciosandalio.github.io/sgd-dv/' +
         '?action=ubicacionPublica' +
         '&token=' +
         encodeURIComponent(token);
 }
-
+    
 /* ============================================================
    QR2 — ÍNDICE DIGITAL DEL TOMO
 ============================================================ */
@@ -3666,6 +3672,12 @@ function showTome(code){
 
     if(!t)return;
 
+    const esAdministrador =
+        Boolean(
+            me &&
+            me.role === 'Administrador'
+        );
+        
     let url=
         tomePublicUrl(t);
 
@@ -3767,14 +3779,14 @@ function showTome(code){
                         permanentemente el tomo.
                     </p>
 
-                    <label>
-                        URL permanente
-                    </label>
-
-                    <input
-                        class="url-box"
-                        readonly
-                        value="${esc(url)}">
+                    ${esAdministrador ? `
+                        <label>URL permanente</label>
+                    
+                        <input
+                            class="url-box"
+                            readonly
+                            value="${esc(url)}">
+                    ` : ''}
 
                     <div class="fila no-print"
                          style="margin-top:15px">
@@ -3827,14 +3839,14 @@ function showTome(code){
                         asociado al tomo.
                     </p>
 
-                    <label>
-                        URL del repositorio
-                    </label>
-
-                    <input
-                        class="url-box"
-                        readonly
-                        value="${esc(repositoryUrl)}">
+                    ${esAdministrador ? `
+                        <label>URL del repositorio</label>
+                    
+                        <input
+                            class="url-box"
+                            readonly
+                            value="${esc(repositoryUrl)}">
+                    ` : ''}
 
                     <div class="fila no-print"
                          style="margin-top:15px">
@@ -6859,199 +6871,216 @@ async function abrirEscanerQR(){
 
 }
 
-
 /**
  * Procesa el contenido leído por la cámara.
+ *
+ * QR1: ubicacionPublica
+ * QR índice: indicePublico
+ * QR2: repositorioPublico
  */
-async function procesarQRInterno_(
-    decodedText
-){
+async function procesarQRInterno_(decodedText) {
 
-    /*
-     * Evitar múltiples lecturas
-     * del mismo QR.
-     */
-    if(!qrScannerActivo){
+  /*
+   * Evitar múltiples lecturas
+   * del mismo QR.
+   */
+  if (!qrScannerActivo) {
+    return;
+  }
 
-        return;
+  qrScannerActivo = false;
 
+
+  /*
+   * Detener la cámara antes de
+   * consultar el backend.
+   */
+  try {
+
+    if (qrScanner) {
+      await qrScanner.stop();
     }
 
+  } catch (e) {
 
-    qrScannerActivo =
-        false;
+    console.warn(
+      'No se pudo detener inmediatamente el lector:',
+      e
+    );
+
+  }
+
+
+  /*
+   * Analizar la URL del QR.
+   */
+  let info;
+
+  try {
+
+    info = analizarQR_(decodedText);
+
+  } catch (e) {
+
+    mostrarMensajeScanner_(
+      e.message ||
+      'El código QR no es válido.',
+      true
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Consultar el backend.
+   */
+  try {
+
+    mostrarMensajeScanner_(
+      'Consultando información...',
+      false
+    );
 
 
     /*
-     * Detener cámara.
+     * Parámetros comunes para
+     * las tres acciones.
      */
-    try{
+    const parametros = {
+      token: info.token,
+      sessionToken: token
+    };
 
-        if(qrScanner){
 
-            await qrScanner.stop();
+    let r;
+
+
+    /*
+     * Procesar la acción identificada
+     * en el código QR.
+     */
+    switch (info.action) {
+
+
+      /*
+       * QR1:
+       * Ubicación física del tomo.
+       */
+      case 'ubicacionPublica':
+
+        r = await api(
+          'ubicacionPublica',
+          parametros
+        );
+
+        if (
+          manejarAccesoRestringido_(r)
+        ) {
+
+          await cerrarEscanerQR();
+          return;
 
         }
 
-    }catch(e){
+        renderResultadoQRUbicacion_(r);
 
-        console.warn(
-            'No se pudo detener inmediatamente el lector:',
-            e
+        break;
+
+
+      /*
+       * Índice digital:
+       * Lista de documentos del tomo.
+       */
+      case 'indicePublico':
+
+        r = await api(
+          'indicePublico',
+          parametros
         );
 
-    }
+        if (
+          manejarAccesoRestringido_(r)
+        ) {
 
-
-    /*
-     * Analizar URL.
-     */
-    let info;
-
-
-    try{
-
-        info =
-            analizarQR_(
-                decodedText
-            );
-
-    }catch(e){
-
-        mostrarMensajeScanner_(
-            e.message,
-            true
-        );
-
-        qrScannerActivo =
-            false;
-
-        return;
-
-    }
-
-
-    /*
-     * Consultar backend.
-     */
-    try{
-
-        mostrarMensajeScanner_(
-            'Consultando información...',
-            false
-        );
-
-
-        let r;
-
-
-        if(
-            info.action ===
-            'ubicacionPublica'
-        ){
-
-            r =
-                await api(
-                    'ubicacionPublica',
-                    {
-                        token:
-                            info.token,
-
-                        sessionToken:
-                            token
-                    }
-                );
-
-
-            if(
-                manejarAccesoRestringido_(
-                    r
-                )
-            ){
-
-                cerrarEscanerQR();
-
-                return;
-
-            }
-
-
-            renderResultadoQRUbicacion_(
-                r
-            );
-
-
-        }else if(
-            info.action ===
-            'indicePublico'
-        ){
-
-            r =
-                await api(
-                    'indicePublico',
-                    {
-                        token:
-                            info.token,
-
-                        sessionToken:
-                            token
-                    }
-                );
-
-
-            if(
-                manejarAccesoRestringido_(
-                    r
-                )
-            ){
-
-                cerrarEscanerQR();
-
-                return;
-
-            }
-
-
-            renderResultadoQRIndice_(
-                r
-            );
-
-
-        }else{
-
-            throw Error(
-                'El código QR no corresponde a un QR válido del SGD-DV.'
-            );
+          await cerrarEscanerQR();
+          return;
 
         }
 
+        renderResultadoQRIndice_(r);
 
-    }catch(e){
+        break;
 
-        console.error(
-            'Error consultando QR:',
-            e
+
+      /*
+       * QR2:
+       * Repositorio digital del tomo.
+       *
+       * Reutiliza la vista del índice,
+       * que contiene la tabla documental
+       * y los enlaces a los PDF.
+       */
+      case 'repositorioPublico':
+
+        r = await api(
+          'repositorioPublico',
+          parametros
         );
 
+        if (
+          manejarAccesoRestringido_(r)
+        ) {
 
-        mostrarMensajeScanner_(
-            e.message ||
-            'No fue posible consultar la información del QR.',
-            true
+          await cerrarEscanerQR();
+          return;
+
+        }
+
+        renderResultadoQRIndice_(r);
+
+        break;
+
+
+      /*
+       * Acción desconocida.
+       */
+      default:
+
+        throw Error(
+          'El código QR no corresponde a una acción válida del SGD-DV.'
         );
-
-
-        /*
-         * Permitir volver a intentar.
-         */
-        qrScannerActivo =
-            false;
 
     }
+
+
+    /*
+     * Cerrar el escáner después
+     * de procesar correctamente.
+     */
+    await cerrarEscanerQR();
+
+
+  } catch (e) {
+
+    console.error(
+      'Error consultando QR:',
+      e
+    );
+
+    mostrarMensajeScanner_(
+      e.message ||
+      'No fue posible consultar la información del QR.',
+      true
+    );
+
+    qrScannerActivo = false;
+
+  }
 
 }
-
-
+    
 /**
  * Analiza la URL obtenida del QR.
  */
@@ -7081,12 +7110,13 @@ function analizarQR_(texto) {
     url.searchParams.get('token') || ''
   ).trim();
 
-  const accionesPermitidas = [
-    'ubicacionPublica',
-    'indicePublico'
-  ];
-
-  if (!accionesPermitidas.includes(action)) {
+    const accionesPermitidas = [
+        'ubicacionPublica',
+        'indicePublico',
+        'repositorioPublico'
+    ];
+  
+if (!accionesPermitidas.includes(action)) {
     throw Error(
       'El QR no contiene una acción válida.'
     );
@@ -7747,11 +7777,11 @@ function renderResultadoQRIndice_(
                 QR RECONOCIDO
             </div>
 
-
             <div class="qr-resultado-subtitulo">
-                ÍNDICE DIGITAL DEL TOMO
+                ${r.modo === 'repositorio'
+                    ? 'REPOSITORIO DIGITAL'
+                    : 'ÍNDICE DIGITAL DEL TOMO'}
             </div>
-
 
             <div class="qr-indice-identificacion">
 
